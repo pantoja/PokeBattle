@@ -22,7 +22,7 @@ Also, includes a Heroku `app.json` and a working Django `production.py` settings
 
 This is a good starting point for modern Python/JavaScript web projects.
 
-## Deployment 
+## Deployment
 ### Setup
 This project comes with an `app.json` file, which can be used to create an app on Heroku from a GitHub repository.
 
