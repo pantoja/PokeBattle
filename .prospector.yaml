@@ -45,6 +45,7 @@ ignore-paths:
   - env
   - .env
   - .venv
+  - pokebattle
 
 ignore-patterns:
   - .+/migrations/.+
