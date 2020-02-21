@@ -33,6 +33,7 @@ pylint:
     - invalid-name
     - no-self-use
     - no-member
+    - too-many-ancestors
     - import-error  #TODO: Remove this exception
   options:
     max-line-length: 100
