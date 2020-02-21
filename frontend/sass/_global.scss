@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+select, input {
+  background-color: #8370cc;
+  border: none;
+  color: #ffffff;
+  padding: 5px;
+}
+
+
+body {
+  height: 100vh;  // TODO: Remove this line
+  background: linear-gradient(180deg, #e1d0ef 0%, #cab8fb 100%);
+  color: rgb(41, 52, 76);
+}
+
+main {
+  padding: 3rem;
+}
