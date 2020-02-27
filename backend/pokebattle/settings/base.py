@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "django_js_reverse",
     "webpack_loader",
     "import_export",
-    "widget_tweaks",
     "common",
     "users",
     "battles",

@@ -11,3 +11,6 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
     form_class = BattleForm
     model = Battle
     success_url = reverse_lazy("home")  # TODO: Change success url to the next step
+
+    def get_initial(self):
+        return {"user_creator": self.request.user}

@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
-{% load widget_tweaks %}
 
 {% block title %}Create Battle{% endblock %}
 
 {% block body %}
 <form method="post" class="choose-opponent-form">
   {% csrf_token %}
+  {{ form.errors }}
+  {{ form.non_field_errors}}
   <h2 class="choose-opponent-title">Choose your opponent:</h2>
   <div class="opponent-form-container">
+    {{ form.user_creator }}
     {{ form.user_opponent }}
     <input type="submit" value="Go!" class="opponent-form-button">
   </div>
