@@ -1,6 +1,6 @@
 from django import forms
 
-from battles.models import Battle
+from battles.models import Battle, Team
 from users.models import User
 
 
@@ -17,3 +17,9 @@ class BattleForm(forms.ModelForm):
         self.fields["user_opponent"].queryset = User.objects.exclude(
             id=self.initial["user_creator"].id
         )
+
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ["trainer", "battle"]
