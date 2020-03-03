@@ -4,7 +4,7 @@ from battles.models import Battle
 from users.models import User
 
 
-class BattleForm(forms.ModelForm):
+class CreateBattleForm(forms.ModelForm):
     class Meta:
         model = Battle
         fields = [

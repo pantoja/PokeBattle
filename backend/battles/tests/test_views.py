@@ -6,7 +6,7 @@ from model_mommy import mommy
 from battles.models import Battle
 
 
-class TestBattleView(TestCase):
+class TestCreateBattleView(TestCase):
     view_name = "battles:create_battle"
 
     def setUp(self):
@@ -29,10 +29,16 @@ class TestBattleView(TestCase):
 
         creator = Battle.objects.last().user_creator
         opponent = Battle.objects.last().user_opponent
-        self.assertTupleEqual((creator, opponent), (self.creator, self.opponent))
+        self.assertEqual((creator, opponent), (self.creator, self.opponent))
 
     def test_unlogged_user_cant_create_battle(self):
-        pass
+        with self.assertRaises(TypeError):
+            post_data = {"user_creator": None, "user_opponent": self.opponent.id}
+            self.client.post(self.view_url, post_data, follow=True)
 
     def test_create_battle_redirects_to_success_url(self):
-        pass
+        post_data = {"user_creator": self.creator.id, "user_opponent": self.opponent.id}
+        response = self.client.post(self.view_url, post_data, follow=True)
+        self.assertRedirects(
+            response, "/", status_code=302, target_status_code=200, fetch_redirect_response=True,
+        )
