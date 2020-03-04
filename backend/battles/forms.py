@@ -20,6 +20,24 @@ class BattleForm(forms.ModelForm):
 
 
 class TeamForm(forms.ModelForm):
+    pokemon_1 = forms.IntegerField()
+    pokemon_2 = forms.IntegerField()
+    pokemon_3 = forms.IntegerField()
+
     class Meta:
         model = Team
-        fields = ["trainer", "battle"]
+        fields = ["trainer", "pokemon_1", "pokemon_2", "pokemon_3"]
+
+    def save(self, commit=True):
+        # Saves Team object
+        trainer = self.cleaned_data["trainer"]
+
+        pokemon_1 = self.cleaned_data["pokemon_1"]
+        pokemon_2 = self.cleaned_data["pokemon_2"]
+        pokemon_3 = self.cleaned_data["pokemon_3"]
+
+        team = (pokemon_1, pokemon_2, pokemon_3)
+
+        instance = Team.objects.create(trainer=trainer)
+        instance.team.set(team)
+        return instance

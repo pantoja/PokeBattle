@@ -7,34 +7,20 @@
   {% csrf_token %}
   {{ form.errors }}
   {{ form.non_field_errors}}
+  {{ form.trainer }}
   <h2 class="choose-team-title">Choose your team:</h2>
   <div class="choose-team-container">
     <div class="choose-pokemon-container">
       <label for="pokemon_1">First Pokemon</label>
-      <select name="pokemon_1">
-        <option disabled selected>-----</option>
-        {% for p in pokemon %}
-          <option value={{p}}>{{p|capfirst}}</option>
-        {% endfor %}
-      </select>
+      {{form.pokemon_1}}
     </div>
     <div class="choose-pokemon-container">
       <label for="pokemon_2">Second Pokemon</label>
-      <select name="pokemon_2">
-        <option disabled selected>-----</option>
-        {% for p in pokemon %}
-          <option value={{p}}>{{p|capfirst}}</option>
-        {% endfor %}
-      </select>
+      {{form.pokemon_2}}
     </div>
     <div class="choose-pokemon-container">
       <label for="pokemon_3">Third Pokemon</label>
-      <select name="pokemon_3">
-        <option disabled selected>-----</option>
-        {% for p in pokemon %}
-          <option value={{p}}>{{p|capfirst}}</option>
-        {% endfor %}
-      </select>
+      {{form.pokemon_3}}
     </div>
     <input type="submit" value="Go!" class="team-form-button">
   </div>

@@ -34,7 +34,8 @@ pylint:
     - no-self-use
     - no-member
     - too-many-ancestors
-    - import-error  #TODO: Remove this exception
+    - import-error
+    - attribute-defined-outside-init
   options:
     max-line-length: 100
 
