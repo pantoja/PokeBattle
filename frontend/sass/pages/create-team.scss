@@ -14,6 +14,12 @@
   .choose-pokemon-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    .choose-pokemon-label{
+      margin: 0;
+      margin-right: 15px;
+    }
   }
   .team-form-button {
     margin-top: 20px;

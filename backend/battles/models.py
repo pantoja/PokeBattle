@@ -19,7 +19,7 @@ class Battle(models.Model):
 
 
 class Team(models.Model):
-    # battle = models.ForeignKey(Battle, on_delete=models.CASCADE, related_name="battle")
+    battle = models.ForeignKey(Battle, on_delete=models.CASCADE, related_name="battle")
     trainer = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Trainer", related_name="trainer"
     )

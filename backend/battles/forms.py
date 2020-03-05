@@ -38,6 +38,6 @@ class TeamForm(forms.ModelForm):
 
         team = (pokemon_1, pokemon_2, pokemon_3)
 
-        instance = Team.objects.create(trainer=trainer)
+        instance = Team.objects.create(trainer=trainer, battle=self.initial["battle"])
         instance.team.set(team)
         return instance

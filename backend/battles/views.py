@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 
 from battles.forms import BattleForm, TeamForm
 from battles.helpers import save_pokemon_in_team
-from battles.models import Battle, Team
+from battles.models import Battle
 from services.api import get_pokemon_list
 
 
@@ -13,22 +13,23 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
     template_name = "battles/create_battle.html"
     form_class = BattleForm
     model = Battle
-    success_url = reverse_lazy("battles:create_team")
 
     def get_initial(self):
         return {"user_creator": self.request.user}
+
+    def get_success_url(self):
+        self.success_url = reverse_lazy("battles:create_team", args=[self.object.id])
+        return self.success_url
 
 
 class CreateTeamView(LoginRequiredMixin, CreateView):
     template_name = "battles/create_team.html"
     form_class = TeamForm
-    model = Team
     success_url = reverse_lazy("home")
 
     def get_initial(self):
-        return {"trainer": self.request.user}
-
-    # TODO: link to battle's id with get_queryset
+        battle = Battle.objects.get(pk=self.kwargs["pk"])
+        return {"trainer": self.request.user, "battle": battle}
 
     def get_context_data(self, **kwargs):
         context = super(CreateTeamView, self).get_context_data(**kwargs)
