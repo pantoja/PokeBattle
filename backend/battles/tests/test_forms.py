@@ -17,8 +17,3 @@ class TestCreateBattleForm(TestCase):
         }
         form = CreateBattleForm(**params)
         self.assertTrue(form)
-
-    def test_form_exclude_session_option(
-        self,
-    ):  # TODO: Write test for session exception in battle form
-        pass
