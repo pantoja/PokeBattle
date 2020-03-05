@@ -1,0 +1,19 @@
+.choose-opponent-form {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .choose-opponent-title {
+    margin-bottom: 2rem;
+  }
+  .opponent-form-button{
+    width: min-content;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  #id_user_creator {
+    display: none;
+  }
+}

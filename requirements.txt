@@ -6,7 +6,7 @@
 #
 amqp==2.5.2               # via kombu
 backcall==0.1.0           # via ipython
-billiard==3.6.2.0         # via celery
+billiard==3.6.3.0         # via celery
 brotlipy==0.7.0
 celery[redis]==4.4.0
 certifi==2019.11.28       # via sentry-sdk
@@ -19,7 +19,7 @@ django-import-export==2.0.2
 django-js-reverse==0.9.1
 django-log-request-id==1.4.1
 django-model-utils==4.0.0
-django-webpack-loader==0.6.0
+django-webpack-loader==0.7.0
 django==2.2.10
 et-xmlfile==1.0.1         # via openpyxl
 gunicorn==20.0.4
@@ -31,7 +31,7 @@ kombu==4.6.7              # via celery
 markuppy==1.14            # via tablib
 odfpy==1.4.1              # via tablib
 openpyxl==3.0.3           # via tablib
-parso==0.6.1              # via jedi
+parso==0.6.2              # via jedi
 pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
 prompt-toolkit==3.0.3     # via ipython
@@ -44,7 +44,7 @@ python-decouple==3.3
 pytz==2019.3              # via celery, django
 pyyaml==5.3               # via tablib
 redis==3.4.1              # via celery
-sentry-sdk==0.14.1
+sentry-sdk==0.14.2
 six==1.14.0               # via traitlets
 sqlparse==0.3.0           # via django
 tablib[html,ods,xls,xlsx,yaml]==1.1.0  # via django-import-export
