@@ -6,9 +6,8 @@ POKEAPI_ROOT_URL = 'https://pokeapi.co/api/v2/pokemon/'
 def get_pokemon_list():
     response = requests.get(f"{POKEAPI_ROOT_URL}?limit=50")
     if not response.ok:
-        return None   
+        return None
     return response.json()["results"]
-
 
 
 def get_pokemon_stats(pokemon):

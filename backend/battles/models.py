@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 from pokemon.models import Pokemon
 from users.models import User
@@ -12,7 +11,7 @@ class Battle(models.Model):
     user_opponent = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Opponent", related_name="user_opponent"
     )
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "Battle nº " + str(self.id)
