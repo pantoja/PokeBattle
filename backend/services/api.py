@@ -1,15 +1,20 @@
 import requests
 
+POKEAPI_ROOT_URL = 'https://pokeapi.co/api/v2/pokemon/'
+
 
 def get_pokemon_list():
-    url = "https://pokeapi.co/api/v2/pokemon/?limit=50"
-    response = requests.get(url)
-    response = response.json()
-    return response["results"]
+    response = requests.get(f"{POKEAPI_ROOT_URL}?limit=50")
+    if not response.ok:
+        return None   
+    return response.json()["results"]
+
 
 
 def get_pokemon_stats(pokemon):
-    response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon}")
+    response = requests.get(f"{POKEAPI_ROOT_URL}{pokemon}")
+    if not response.ok:
+        return None
     response = response.json()
     data = {
         "name": response["forms"][0]["name"],
