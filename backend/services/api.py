@@ -1,6 +1,7 @@
 import requests
 
-POKEAPI_ROOT_URL = 'https://pokeapi.co/api/v2/pokemon/'
+
+POKEAPI_ROOT_URL = "https://pokeapi.co/api/v2/pokemon/"
 
 
 def get_pokemon_list():
