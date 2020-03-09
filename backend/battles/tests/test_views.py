@@ -11,12 +11,11 @@ class TestCreateBattleView(TestCase):
 
     def setUp(self):
         self.creator = mommy.make("users.User")
-        self.creator.set_password("1234567s8")
         self.creator.save()
         self.opponent = mommy.make("users.User")
         self.view_url = reverse(self.view_name)
         self.client = Client()
-        self.client.login(email=self.creator.email, password="1234567s8")
+        self.client.force_login(self.creator)
 
     def test_create_battle(self):
         post_data = {"user_creator": self.creator.id, "user_opponent": self.opponent.id}
