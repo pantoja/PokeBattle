@@ -18,8 +18,7 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
         return {"user_creator": self.request.user}
 
     def get_success_url(self):
-        self.success_url = reverse_lazy("battles:create_team", args=[self.object.id])
-        return self.success_url
+        return reverse_lazy("battles:create_team", args=[self.object.id])
 
 
 class CreateTeamView(LoginRequiredMixin, CreateView):
