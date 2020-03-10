@@ -55,7 +55,7 @@ class CreateTeamForm(forms.ModelForm):
         team = (pokemon_1, pokemon_2, pokemon_3)
 
         for pokemon in team:
-            if 1 < pokemon < POKE_API_LIMIT:
+            if pokemon < 0 or pokemon > POKE_API_LIMIT:
                 raise forms.ValidationError("Choose a valid pokemon")
 
         if duplicate_pokemon(team):
