@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+
   .choose-team-title {
     margin-bottom: 50px;
   }
@@ -43,4 +43,8 @@
     margin-top: 20px;
     font-weight: 500;
   }
+}
+
+.team-already-exists-title {
+  text-align: center;
 }
