@@ -5,7 +5,6 @@
 {% block body %}
 <form method="post" class="choose-team-form">
   {% csrf_token %}
-  {{ form.errors }}
   {{ form.non_field_errors}}
   {{ form.trainer }}
   <h2 class="choose-team-title">Choose your team:</h2>
