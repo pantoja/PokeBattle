@@ -1,8 +1,26 @@
 .choose-team-form {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
   .choose-team-title {
     margin-bottom: 50px;
   }
+
+  .errorlist {
+    background-color: $orange;
+    color: #ffffff;
+    border-radius: 10px;
+    border: 2px solid $orange;
+    box-shadow: 0px 1px 15px -10px #000000bf;
+    width: fit-content;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
   #id_trainer {
     display: none;
   }
@@ -23,5 +41,6 @@
   }
   .team-form-button {
     margin-top: 20px;
+    font-weight: 500;
   }
 }
