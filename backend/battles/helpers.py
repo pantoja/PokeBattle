@@ -33,3 +33,7 @@ def duplicate_pokemon(team):
         if team.count(pokemon) > 1:
             return True
     return False
+
+
+def run_battle(team_1, team_2):  # noqa
+    pass

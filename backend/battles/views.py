@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from battles.forms import BattleForm, CreateTeamForm
-from battles.helpers import save_pokemon_in_team
+from battles.helpers import run_battle, save_pokemon_in_team
 from battles.models import Battle
 from services.api import get_pokemon_list
 from users.models import User
@@ -58,4 +58,20 @@ class CreateTeamView(LoginRequiredMixin, CreateView):
         save_pokemon_in_team(selected_team)
 
         self.object = form.save()
+
+        battle = Battle.objects.get(pk=self.kwargs["pk"])
+        creator = battle.user_creator
+        opponent = battle.user_opponent
+
+        if (
+            creator.teams.filter(pk=battle.pk).exists()
+            and opponent.teams.filter(pk=battle.pk).exists()
+        ):
+            run_battle(
+                creator.teams.get(pk=battle.pk).team.all(),
+                opponent.teams.get(pk=battle.pk).team.all(),
+            )
+        else:
+            print("ainda nao")
+
         return HttpResponseRedirect(self.get_success_url())
