@@ -27,17 +27,11 @@ class TestCreateTeamForm(TestCase):
 
     def test_pokemon_exceeds_points_limit(self):
         params = {
-            "initial": {"trainer": self.trainer},
+            "initial": {"trainer": self.trainer, "battle": self.battle},
             "data": {
-                "pokemon_1": mommy.make(
-                    "pokemon.Pokemon", id=1, attack=200, defense=200, hp=200
-                ).id,
-                "pokemon_2": mommy.make(
-                    "pokemon.Pokemon", id=2, attack=200, defense=200, hp=200
-                ).id,
-                "pokemon_3": mommy.make(
-                    "pokemon.Pokemon", id=3, attack=200, defense=200, hp=200
-                ).id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", id=2).id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
             },
         }
         form = CreateTeamForm(**params)
