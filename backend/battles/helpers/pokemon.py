@@ -1,4 +1,4 @@
-from pokemon.models import Pokemon
+from pokemon.models import Pokemon  # noqa
 from services.api import get_pokemon_stats
 
 
@@ -24,7 +24,6 @@ def pokemon_attr_exceeds_limit(team):
 
     for pkn_data in team_data:
         pkn_points.append(sum([pkn_data["attack"], pkn_data["defense"], pkn_data["hp"]]))
-
     return sum(pkn_points) < limit
 
 
@@ -33,7 +32,3 @@ def duplicate_pokemon(team):
         if team.count(pokemon) > 1:
             return True
     return False
-
-
-def run_battle(team_1, team_2):  # noqa
-    pass
