@@ -1,6 +1,6 @@
 from django import forms
 
-from battles.helpers import duplicate_pokemon, pokemon_attr_exceeds_limit
+from battles.helpers import duplicate_pokemon, pokemon_team_exceeds_limit
 from battles.models import Battle, Team
 from services.api import POKE_API_LIMIT
 from users.models import User
@@ -60,7 +60,7 @@ class CreateTeamForm(forms.ModelForm):
         if duplicate_pokemon(team):
             raise forms.ValidationError("Your team has duplicates, please use unique ids")
 
-        if not pokemon_attr_exceeds_limit(team):
+        if pokemon_team_exceeds_limit(team):
             raise forms.ValidationError(
                 "Your team exceeds the 600 points limit, please choose another team"
             )
