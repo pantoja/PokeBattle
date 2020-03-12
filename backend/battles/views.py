@@ -43,7 +43,7 @@ class CreateTeamView(LoginRequiredMixin, CreateView):
         user = User.objects.get(id=self.request.user.id)
         battle = self.kwargs["pk"]
         if user.teams.filter(battle=battle).exists():
-            context["invalid"] = True
+            context["user_has_team"] = True
 
         return context
 
