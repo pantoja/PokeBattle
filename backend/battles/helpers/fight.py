@@ -1,28 +1,29 @@
-def run_battle(team_1, team_2):  # noqa
+def run_battle(creator_team_object, opponent_team_object):
     result = []
+    creator_team = creator_team_object.team.all()
+    opponent_team = opponent_team_object.team.all()
+    result.append(first_round(creator_team[0], opponent_team[0]))
+    result.append(second_round(creator_team[1], opponent_team[1]))
+    result.append(third_round(creator_team[2], opponent_team[2]))
 
-    result.append(first_round(team_1[0], team_2[0]))
-    result.append(second_round(team_1[1], team_2[1]))
-    result.append(third_round(team_1[2], team_2[2]))
-
-    if result.count(1) > result.count(2):
-        return team_1
-    return team_2
-
-
-def first_round(pkn_1, pkn_2):
-    if pkn_1.attack > pkn_2.defense:
-        return 1
-    return 2
+    if result.count("creator") > result.count("opponent"):
+        return {"winner": creator_team_object, "loser": opponent_team_object}
+    return {"winner": opponent_team_object, "loser": creator_team_object}
 
 
-def second_round(pkn_1, pkn_2):
-    if pkn_1.defense > pkn_2.attack:
-        return 1
-    return 2
+def first_round(creator_pkn, opponent_pkn):
+    if creator_pkn.attack > opponent_pkn.defense:
+        return "creator"
+    return "opponent"
 
 
-def third_round(pkn_1, pkn_2):
-    if pkn_1.hp > pkn_2.hp:
-        return 1
-    return 2
+def second_round(creator_pkn, opponent_pkn):
+    if creator_pkn.defense > opponent_pkn.attack:
+        return "creator"
+    return "opponent"
+
+
+def third_round(creator_pkn, opponent_pkn):
+    if creator_pkn.hp > opponent_pkn.hp:
+        return "creator"
+    return "opponent"

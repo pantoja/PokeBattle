@@ -8,9 +8,9 @@ from battles.forms import CreateTeamForm
 class TestCreateTeamForm(TestCase):
     def setUp(self):
         self.trainer = mommy.make("users.User")
-        self.pokemon_1 = mommy.make("pokemon.Pokemon")
-        self.pokemon_2 = mommy.make("pokemon.Pokemon")
-        self.pokemon_3 = mommy.make("pokemon.Pokemon")
+        self.pokemon_1 = mommy.make("pokemon.Pokemon", id=1)
+        self.pokemon_2 = mommy.make("pokemon.Pokemon", id=2)
+        self.pokemon_3 = mommy.make("pokemon.Pokemon", id=3)
         self.battle = mommy.make("battles.Battle")
 
     def test_create_a_team(self):
@@ -42,3 +42,26 @@ class TestCreateTeamForm(TestCase):
         }
         form = CreateTeamForm(**params)
         self.assertTrue(form.is_valid())
+
+    def test_send_result_email(self):
+        params = {
+            "initial": {"battle": self.battle},
+            "data": {
+                "trainer": self.trainer,
+                "pokemon_1": self.pokemon_1.id,
+                "pokemon_2": self.pokemon_2.id,
+                "pokemon_3": self.pokemon_3.id,
+            },
+        }
+        CreateTeamForm(**params)
+
+        self.second_trainer = mommy.make("users.User")
+        params = {
+            "initial": {"battle": self.battle},
+            "data": {
+                "trainer": self.second_trainer,
+                "pokemon_1": self.pokemon_1.id,
+                "pokemon_2": self.pokemon_2.id,
+                "pokemon_3": self.pokemon_3.id,
+            },
+        }
