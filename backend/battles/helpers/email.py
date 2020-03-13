@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from templated_email import send_templated_mail
 
 
@@ -6,10 +8,10 @@ def send_result_email(result):
     loser = result["loser"]
     send_templated_mail(
         template_name="send_result",
-        from_email="victoria.pantoja@vinta.com.br",
-        recipient_list=["vicpantojadoamaral@gmail.com"],  # TODO: use trainer's emails
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[winner.trainer.email, loser.trainer.email],
         context={
-            "winner_name": winner.trainer,
+            "winner": winner.trainer,
             "winner_team": winner.team.all(),
             "loser": loser.trainer,
             "loser_team": loser.team.all(),
