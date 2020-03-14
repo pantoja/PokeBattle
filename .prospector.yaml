@@ -33,6 +33,9 @@ pylint:
     - invalid-name
     - no-self-use
     - no-member
+    - too-many-ancestors
+    - attribute-defined-outside-init
+    - import-error #TODO: Remove this exception, doens't work on my personal computer
   options:
     max-line-length: 100
 
