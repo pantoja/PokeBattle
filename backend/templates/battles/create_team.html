@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{% if invalid %}
+{% if user_has_team %}
   <h2 class="team-already-exists-title">This battle has already begun. Check your email for results</h2>
 {% else %}
   <form method="post" class="choose-team-form">
