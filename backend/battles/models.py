@@ -12,6 +12,7 @@ class Battle(models.Model):
         User, on_delete=models.CASCADE, verbose_name="Opponent", related_name="invited_to_battle"
     )
     created = models.DateTimeField(auto_now_add=True)
+    settled = models.BooleanField(default=False)
 
     def __str__(self):
         return "Battle nº " + str(self.id)
