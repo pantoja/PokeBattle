@@ -15,7 +15,7 @@ body {
 }
 
 main {
-  padding: 3rem;
+  margin: 0 8vw;
 }
 
 ul {
@@ -26,4 +26,9 @@ ul {
 
 h1, h2, h3 {
   font-weight: 700;
+}
+
+a {
+  color: inherit !important;
+  text-decoration: none !important;
 }

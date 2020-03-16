@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Settled Battles{% endblock %}
+
+{% block body %}
+
+{% include "includes/page-title.html" with title="Settled Battles" %}
+
+<div class="battle-list">
+  {% for battle in battles %}
+  <div class="battle-item">
+    <span>{{ battle.created|date:'d/m/y' }}</span>
+    <span>{{ battle }}</span>
+    <span>{{ battle.user_creator }} VS {{ battle.user_opponent }}</span>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

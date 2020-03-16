@@ -1,0 +1,18 @@
+<header class="main-header">
+  <h1>PokeBattle</h1>
+</header>
+
+<nav>
+  <ul class="navbar">
+    <li class="navbar-item"><a href="/create-battle">Create a Battle</a></li>
+    <li class="navbar-item"><a href="/settled-battles">Settled Battles</a></li>
+    <li class="navbar-item"><a href="/">Active Battles</a></li>
+    <li class="welcome-user">
+      {% if user.is_authenticated %}
+        Welcome, <a href="/">{{ user }}</a>
+      {% else %}
+        <a href="/">Login</a>
+      {% endif %}
+    </li>
+  </ul>
+</nav>
