@@ -1,4 +1,4 @@
-from pokemon.models import Pokemon  # noqa
+from pokemon.models import Pokemon
 from services.api import get_pokemon_stats
 
 

@@ -1,8 +1,8 @@
 from django import forms
 
+from battles.helpers.common import duplicate_pokemon, pokemon_attr_exceeds_limit
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
-from battles.helpers.pokemon import duplicate_pokemon, pokemon_attr_exceeds_limit
 from battles.models import Battle, Team
 from services.api import POKE_API_LIMIT
 from users.models import User

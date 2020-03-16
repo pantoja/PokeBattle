@@ -41,7 +41,7 @@ class TestCreateTeamForm(TestCase):
             },
         }
         form = CreateTeamForm(**params)
-        self.assertTrue(form.is_valid())
+        self.assertFalse(form.is_valid())
 
     def test_send_result_email(self):
         params = {
