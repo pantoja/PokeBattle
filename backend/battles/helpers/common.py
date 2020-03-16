@@ -33,3 +33,10 @@ def duplicate_pokemon(team):
         if team.count(pokemon) > 1:
             return True
     return False
+
+
+def change_battle_status(battle, winner):
+    b = battle
+    b.settled = True
+    b.winner = winner
+    b.save()

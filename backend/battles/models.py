@@ -13,6 +13,14 @@ class Battle(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     settled = models.BooleanField(default=False)
+    winner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Winner",
+        related_name="winner",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return "Battle nº " + str(self.id)

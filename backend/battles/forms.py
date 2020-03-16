@@ -1,6 +1,10 @@
 from django import forms
 
-from battles.helpers.common import duplicate_pokemon, pokemon_team_exceeds_limit
+from battles.helpers.common import (
+    change_battle_status,
+    duplicate_pokemon,
+    pokemon_team_exceeds_limit,
+)
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
@@ -52,6 +56,7 @@ class CreateTeamForm(forms.ModelForm):
         if trainer == opponent:
             result = run_battle(creator.teams.get(battle=battle.pk), instance)
             send_result_email(result)
+            change_battle_status(battle, result["winner"].trainer)
         return instance
 
     def clean(self):
