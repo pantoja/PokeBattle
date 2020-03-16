@@ -79,7 +79,7 @@
   </div>
 
   <p>Congratulations {{ winner }}, you won!
-    Play another round in <a href="pantoja-pokebattle.herokuapp.com">pantoja-pokebattle.herokuapp.com</a>
+    Play another round at <a href="pantoja-pokebattle.herokuapp.com/create-battle">PokeBattle</a>
   </p>
 
 </div>
