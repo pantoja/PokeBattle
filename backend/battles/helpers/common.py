@@ -1,3 +1,6 @@
+from django.core.exceptions import PermissionDenied
+
+from battles.models import Team
 from pokemon.models import Pokemon
 from services.api import get_pokemon_stats
 
@@ -37,6 +40,9 @@ def duplicate_pokemon(team):
 
 def change_battle_status(battle, winner):
     b = battle
-    b.settled = True
-    b.winner = winner
-    b.save()
+    if len(Team.objects.filter(battle=b.id)) == 2:
+        b.settled = True
+        b.winner = winner
+        b.save()
+    else:
+        raise PermissionDenied
