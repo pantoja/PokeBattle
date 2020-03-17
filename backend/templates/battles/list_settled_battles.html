@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Your Settled Battles{% endblock %}
 
 {% block body %}
@@ -7,11 +7,25 @@
 {% include "includes/page-title.html" with title="Settled Battles" %}
 
 <div class="battle-list">
+  <div class="battle-columns">
+    <span></span>
+    <span>Battle Number</span>
+    <span>Created</span>
+    <span>Trainers</span>
+    <span>You Won</span>
+  </div>
   {% for battle in battles %}
-  <div class="battle-item">
-    <span>{{ battle.created|date:'d/m/y' }}</span>
-    <span>{{ battle }}</span>
-    <span>{{ battle.user_creator }} VS {{ battle.user_opponent }}</span>
+  <div class="battle-row">
+    <img src="{% static "image/pokeball.svg" %}" alt="" class="pokeball-icon battle-row-item">
+    <span class="battle-row-item">{{ battle }}</span>
+    <span class="battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
+    <span class="battle-row-item">{{ battle.user_creator }} VS {{ battle.user_opponent }}</span>
+    {% if request.user == battle.winner %}
+      <img src="{% static "image/tick.svg" %}" alt="" class="tick-icon battle-row-item">
+    {% else %}
+      <img src="{% static "image/cross.svg" %}" alt="" class="cross-icon battle-row-item">
+
+    {% endif %}
   </div>
   {% endfor %}
 </div>

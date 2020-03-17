@@ -1,0 +1,14 @@
+@mixin list-container {
+  display: grid;
+  row-gap: 1rem;
+  font-size: 0.8rem;
+}
+
+@mixin list-item($grid-columns) {
+  background-color: $white;
+  padding:  1rem 2rem;
+  border-radius: 30px;
+  display: grid;
+  grid-template-columns: $grid-columns;
+  box-shadow: 0px 0px 15px -12px $shadow-black;
+}
