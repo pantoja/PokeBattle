@@ -6,8 +6,8 @@
 
 {% include "includes/page-title.html" with title="Settled Battles" %}
 
-<div class="battle-list">
-  <div class="battle-columns">
+<div class="settled-battle-list">
+  <div class="settled-battle-columns">
     <span></span>
     <span>Battle Number</span>
     <span>Created</span>
@@ -15,15 +15,15 @@
     <span>You Won</span>
   </div>
   {% for battle in battles %}
-  <div class="battle-row">
-    <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon battle-row-item">
-    <span class="battle-row-item">{{ battle }}</span>
-    <span class="battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
-    <span class="battle-row-item">{{ battle.user_creator.get_short_name }} VS {{ battle.user_opponent.get_short_name }}</span>
+  <div class="settled-battle-row">
+    <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon settled-battle-row-item">
+    <span class="settled-battle-row-item">{{ battle }}</span>
+    <span class="settled-battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
+    <span class="settled-battle-row-item">{{ battle.user_creator.get_short_name }} VS {{ battle.user_opponent.get_short_name }}</span>
     {% if request.user == battle.winner %}
-      <img src="{% static "image/tick.svg" %}" alt="yes" class="tick-icon battle-row-item">
+      <img src="{% static "image/tick.svg" %}" alt="yes" class="tick-icon settled-battle-row-item">
     {% else %}
-      <img src="{% static "image/cross.svg" %}" alt="no" class="cross-icon battle-row-item">
+      <img src="{% static "image/cross.svg" %}" alt="no" class="cross-icon settled-battle-row-item">
 
     {% endif %}
   </div>
