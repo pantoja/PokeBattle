@@ -38,8 +38,8 @@ pylint:
     - import-error #TODO: Remove this exception, doens't work on my personal computer
     - relative-beyond-top-level
     - line-too-long
-options:
-    max-line-length: 100
+    options:
+        max-line-length: 100
 
 dodgy:
   run: true
