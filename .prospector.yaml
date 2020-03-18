@@ -35,11 +35,9 @@ pylint:
     - no-member
     - too-many-ancestors
     - attribute-defined-outside-init
-    - import-error #TODO: Remove this exception, doens't work on my personal computer
-    - relative-beyond-top-level
-    - line-too-long
-    options:
-        max-line-length: 100
+    - import-error
+  options:
+    max-line-length: 100
 
 dodgy:
   run: true
