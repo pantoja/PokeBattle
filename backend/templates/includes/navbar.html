@@ -9,7 +9,7 @@
     <li class="navbar-item"><a href="/">Active Battles</a></li>
     <li class="welcome-user">
       {% if user.is_authenticated %}
-        Welcome, <a href="/">{{ user }}</a>
+        Welcome, <a href="/">{{ user.get_short_name }}</a>
       {% else %}
         <a href="/">Login</a>
       {% endif %}

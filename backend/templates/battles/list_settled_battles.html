@@ -16,14 +16,14 @@
   </div>
   {% for battle in battles %}
   <div class="battle-row">
-    <img src="{% static "image/pokeball.svg" %}" alt="" class="pokeball-icon battle-row-item">
+    <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon battle-row-item">
     <span class="battle-row-item">{{ battle }}</span>
     <span class="battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
-    <span class="battle-row-item">{{ battle.user_creator }} VS {{ battle.user_opponent }}</span>
+    <span class="battle-row-item">{{ battle.user_creator.get_short_name }} VS {{ battle.user_opponent.get_short_name }}</span>
     {% if request.user == battle.winner %}
-      <img src="{% static "image/tick.svg" %}" alt="" class="tick-icon battle-row-item">
+      <img src="{% static "image/tick.svg" %}" alt="yes" class="tick-icon battle-row-item">
     {% else %}
-      <img src="{% static "image/cross.svg" %}" alt="" class="cross-icon battle-row-item">
+      <img src="{% static "image/cross.svg" %}" alt="no" class="cross-icon battle-row-item">
 
     {% endif %}
   </div>
