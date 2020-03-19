@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 from django.test import TestCase
 
 from model_mommy import mommy
@@ -50,3 +51,18 @@ class TestTeamModel(TestCase):
             winner=self.trainer_opponent,
         )
         self.assertRaises(ValidationError, battle.clean)
+
+
+class TestBattleModel(TestCase):
+    def setUp(self):
+        self.creator = mommy.make("users.User")
+        self.opponent = mommy.make("users.User")
+
+    def test_create_battle(self):
+        item = Battle.objects.create(user_creator=self.creator, user_opponent=self.opponent)
+        check = Battle.objects.filter(id=item.id).exists()
+        self.assertTrue(check)
+
+    def test_create_empty_field_battle(self):
+        with self.assertRaises(IntegrityError):
+            Battle.objects.create(user_creator=self.creator, user_opponent=None)

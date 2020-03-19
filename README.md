@@ -22,6 +22,64 @@ Also, includes a Heroku `app.json` and a working Django `production.py` settings
 
 This is a good starting point for modern Python/JavaScript web projects.
 
+## Running
+### Setup
+- Inside the `backend` folder, do the following:
+- Create a copy of ``{{project_name}}/settings/local.py.example``:  
+  `cp {{project_name}}/settings/local.py.example {{project_name}}/settings/local.py`
+- Create a copy of ``.env.example``:
+  `cp .env.example .env`
+
+#### If you are using plain python:
+- Create the migrations for `users` app: 
+  `python manage.py makemigrations`
+- Run the migrations:
+  `python manage.py migrate`
+
+#### If you are using Docker:
+- Create the migrations for `users` app:  
+  `docker-compose run --rm backend python manage.py makemigrations`
+- Run the migrations:
+  `docker-compose run --rm backend python manage.py migrate`
+
+### Tools
+- Setup [editorconfig](http://editorconfig.org/), [prospector](https://prospector.landscape.io/en/master/) and [ESLint](http://eslint.org/) in the text editor you will use to develop.
+
+### Running the project (without docker)
+- Open a command line window and go to the project's directory.
+- `pip install -r requirements.txt && pip install -r dev-requirements.txt`
+- `npm install`
+- `npm run start`
+- Open another command line window and go to the `backend` directory.
+- `workon theprojectname` or `source theprojectname/bin/activate` depending on if you are using virtualenvwrapper or just virtualenv.
+- `python manage.py runserver`
+
+
+### Running the project (with docker)
+- Open a command line window and go to the project's directory.
+- `docker-compose up -d `
+To access the logs for each service run `docker-compose logs -f service_name` (either backend, frontend, etc)
+
+#### Celery
+- Open a command line window and go to the project's directory
+- `workon theprojectname` or `source theprojectname/bin/activate` depending on if you are using virtualenvwrapper or just virtualenv.
+- `python manage.py celery`
+
+### Testing
+`make test`
+
+Will run django tests using `--keepdb` and `--parallel`. You may pass a path to the desired test module in the make command. E.g.:
+
+`make test someapp.tests.test_views`
+
+### Adding new pypi libs
+Add the libname to either requirements.in or dev-requirents.in, then either upgrade the libs with `make upgrade` or manually compile it and then,  install.
+`pip-compile requirements.in > requirements.txt` or `make upgrade`
+`pip install -r requirements.txt`
+
+### Cleaning example code
+Before start creating your own apps, run the command `make clean_examples` in order to clean up the example apps from the front and backend.
+
 ## Deployment
 ### Setup
 This project comes with an `app.json` file, which can be used to create an app on Heroku from a GitHub repository.
