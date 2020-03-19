@@ -1,4 +1,10 @@
-from django.shortcuts import render  # noqa
+from django.views.generic import CreateView
+
+from users.forms import UserSignUpForm
+from users.models import User
 
 
-# Create your views here.
+class UserSignUpView(CreateView):
+    model = User
+    form_class = UserSignUpForm
+    template_name = "users/sign-up.html"
