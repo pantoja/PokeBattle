@@ -2,6 +2,7 @@ import requests
 
 
 POKEAPI_ROOT_URL = "https://pokeapi.co/api/v2/pokemon/"
+POKE_API_LIMIT = 807
 
 
 def get_pokemon_list():

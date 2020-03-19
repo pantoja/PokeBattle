@@ -9,7 +9,11 @@ class Pokemon(models.Model):
     attack = models.IntegerField("Attack")
     defense = models.IntegerField("Defense")
     hp = models.IntegerField("HP")
-    # TODO: Sum of stats
+
+    @property
+    def attr_sum(self):
+        attr = [self.attack, self.defense, self.hp]
+        return sum(attr)
 
     def __str__(self):
         return self.name

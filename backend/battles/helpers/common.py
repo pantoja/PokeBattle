@@ -14,3 +14,21 @@ def save_pokemon_in_team(selected_team):
                 defense=data["defense"],
                 hp=data["hp"],
             )
+
+
+def pokemon_attr_exceeds_limit(team):
+    limit = 600
+
+    team_data = [get_pokemon_stats(pokemon) for pokemon in team]
+    pkn_points = []
+
+    for pkn_data in team_data:
+        pkn_points.append(sum([pkn_data["attack"], pkn_data["defense"], pkn_data["hp"]]))
+    return sum(pkn_points) < limit
+
+
+def duplicate_pokemon(team):
+    for pokemon in team:
+        if team.count(pokemon) > 1:
+            return True
+    return False

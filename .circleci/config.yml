@@ -76,7 +76,7 @@ jobs:
             SECRET_KEY: "$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)')"
             DATABASE_URL: 'sqlite:///'
             ALLOWED_HOSTS: '.example.org'
-            SENDGRID_USERNAME: 'test'
+            SENDGRID_USERNAME: 'apikey'
             SENDGRID_PASSWORD: 'test'
             REDIS_URL: 'redis://'
       - run:

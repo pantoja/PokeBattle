@@ -3,10 +3,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from battles.forms import CreateBattleForm, TeamForm
-from battles.helpers import save_pokemon_in_team
+from battles.forms import CreateBattleForm, CreateTeamForm
+from battles.helpers.common import save_pokemon_in_team
 from battles.models import Battle
 from services.api import get_pokemon_list
+from users.models import User
 
 
 class CreateBattleView(LoginRequiredMixin, CreateView):
@@ -23,7 +24,7 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
 
 class CreateTeamView(LoginRequiredMixin, CreateView):
     template_name = "battles/create_team.html"
-    form_class = TeamForm
+    form_class = CreateTeamForm
     success_url = reverse_lazy("home")
 
     def get_initial(self):
@@ -32,9 +33,18 @@ class CreateTeamView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateTeamView, self).get_context_data(**kwargs)
+
+        # Add pokemon dropdown
         pokemon_list = get_pokemon_list()
         pokemon_list = [p["name"] for p in pokemon_list]
         context["pokemon"] = pokemon_list
+
+        # If user already created a team for this battle
+        user = User.objects.get(id=self.request.user.id)
+        battle = self.kwargs["pk"]
+        if user.teams.filter(battle=battle).exists():
+            context["invalid"] = True
+
         return context
 
     def form_valid(self, form):

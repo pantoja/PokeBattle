@@ -3,26 +3,30 @@
 {% block title %}Create your team{% endblock %}
 
 {% block body %}
-<form method="post" class="choose-team-form">
-  {% csrf_token %}
-  {{ form.errors }}
-  {{ form.non_field_errors}}
-  {{ form.trainer }}
-  <h2 class="choose-team-title">Choose your team:</h2>
-  <div class="choose-team-container">
-    <div class="choose-pokemon-container">
-      <label for="pokemon_1" class="choose-pokemon-label">First Pokemon</label>
-      {{form.pokemon_1}}
+
+{% if invalid %}
+  <h2 class="team-already-exists-title">This battle has already begun. Check your email for results</h2>
+{% else %}
+  <form method="post" class="choose-team-form">
+    {% csrf_token %}
+    {{ form.non_field_errors}}
+    {{ form.trainer }}
+    <h2 class="choose-team-title">Choose your team:</h2>
+    <div class="choose-team-container">
+      <div class="choose-pokemon-container">
+        <label for="pokemon_1" class="choose-pokemon-label">First Pokemon</label>
+        {{form.pokemon_1}}
+      </div>
+      <div class="choose-pokemon-container">
+        <label for="pokemon_2" class="choose-pokemon-label">Second Pokemon</label>
+        {{form.pokemon_2}}
+      </div>
+      <div class="choose-pokemon-container">
+        <label for="pokemon_3" class="choose-pokemon-label">Third Pokemon</label>
+        {{form.pokemon_3}}
+      </div>
+      <input type="submit" value="Go!" class="team-form-button">
     </div>
-    <div class="choose-pokemon-container">
-      <label for="pokemon_2" class="choose-pokemon-label">Second Pokemon</label>
-      {{form.pokemon_2}}
-    </div>
-    <div class="choose-pokemon-container">
-      <label for="pokemon_3" class="choose-pokemon-label">Third Pokemon</label>
-      {{form.pokemon_3}}
-    </div>
-    <input type="submit" value="Go!" class="team-form-button">
-  </div>
-</form>
+  </form>
+{% endif %}
 {% endblock %}
