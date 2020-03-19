@@ -33,6 +33,7 @@ jdcal==1.4.1              # via openpyxl
 jedi==0.16.0              # via ipython
 kombu==4.6.8              # via celery
 markuppy==1.14            # via tablib
+mock==4.0.2               # via -r requirements.in
 odfpy==1.4.1              # via tablib
 openpyxl==3.0.3           # via tablib
 parso==0.6.2              # via jedi
