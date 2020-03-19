@@ -2,6 +2,8 @@
   display: grid;
   row-gap: 1rem;
   font-size: 0.8rem;
+  margin: 50px 0;
+  text-align: center;
 }
 
 @mixin list-item($grid-columns) {
@@ -11,4 +13,5 @@
   display: grid;
   grid-template-columns: $grid-columns;
   box-shadow: 0px 0px 15px -12px $shadow-black;
+  text-align: center;
 }
