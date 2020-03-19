@@ -50,7 +50,7 @@ class TestCreateTeamForm(TestCase):
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
 
-    @mock.patch("battles.helpers.get_pokemon_stats")
+    @mock.patch("battles.helpers.common.get_pokemon_stats")
     def test_pokemon_exceeds_points_limit(self, mock_get_pokemon_stats):
         params = {
             "data": {
