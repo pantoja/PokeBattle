@@ -9,9 +9,9 @@ from battles.forms import CreateBattleForm, CreateTeamForm
 class TestCreateTeamForm(TestCase):
     def setUp(self):
         self.trainer = mommy.make("users.User")
-        self.pokemon_1 = mommy.make("pokemon.Pokemon")
-        self.pokemon_2 = mommy.make("pokemon.Pokemon")
-        self.pokemon_3 = mommy.make("pokemon.Pokemon")
+        self.pokemon_1 = mommy.make("pokemon.Pokemon", id=1)
+        self.pokemon_2 = mommy.make("pokemon.Pokemon", id=2)
+        self.pokemon_3 = mommy.make("pokemon.Pokemon", id=3)
         self.battle = mommy.make("battles.Battle")
 
     def test_create_a_team(self):

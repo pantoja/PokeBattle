@@ -1,6 +1,8 @@
 from django import forms
 
-from battles.helpers import duplicate_pokemon, pokemon_team_exceeds_limit
+from battles.helpers.common import duplicate_pokemon, pokemon_team_exceeds_limit
+from battles.helpers.email import send_result_email
+from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
 from services.api import POKE_API_LIMIT
 from users.models import User
@@ -41,6 +43,15 @@ class CreateTeamForm(forms.ModelForm):
         team = (pokemon_1, pokemon_2, pokemon_3)
         instance = Team.objects.create(trainer=trainer, battle=self.initial["battle"])
         instance.team.set(team)
+
+        # Runs battle
+
+        battle = Battle.objects.get(pk=self.initial["battle"].pk)
+        creator = battle.user_creator
+        opponent = battle.user_opponent
+        if trainer == opponent:
+            result = run_battle(creator.teams.get(battle=battle.pk), instance)
+            send_result_email(result)
         return instance
 
     def clean(self):

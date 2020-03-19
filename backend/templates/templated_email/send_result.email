@@ -1,0 +1,87 @@
+{% block subject %}PokeBattle - Here's the result of your battle{% endblock %}
+{% block html %}
+
+<div>
+  <h1 style="text-align:center;">PokeBattle</h1>
+  <p>
+    Hi, trainer
+  </p>
+
+  Here's the result of the Pokebattle of {{ winner }} VS {{ loser }}:
+
+  <h3 style="text-align:center;">First Round</h3>
+  <div style="text-align:center;">
+    <div>
+      <img src={{ winner_team.0.sprite }} alt={{ winner_team.0.name }}>
+      <p>
+        {{ winner_team.0|capfirst }}
+      </p>
+      <p>
+        ATT: {{ winner_team.0.attack }} DEF: {{ winner_team.0.defense }} HP: {{ winner_team.0.hp }}
+      </p>
+    </div>
+    VS
+    <div>
+      <img src={{ loser_team.0.sprite }} alt={{ loser_team.0.name }}>
+      <p>
+        {{ loser_team.0|capfirst }}
+      </p>
+      <p>
+        ATT: {{ loser_team.0.attack }} DEF: {{ loser_team.0.defense }} HP: {{ loser_team.0.hp }}
+      </p>
+    </div>
+  </div>
+
+  <h3 style="text-align:center;">Second Round</h3>
+  <div style="text-align:center;">
+    <div>
+      <img src={{ winner_team.1.sprite }} alt={{ winner_team.1.name }}>
+      <p>
+        {{ winner_team.1|capfirst }}
+      </p>
+      <p>
+        ATT: {{ winner_team.1.attack }} DEF: {{ winner_team.1.defense }} HP: {{ winner_team.1.hp }}
+      </p>
+    </div>
+    VS
+    <div>
+      <img src={{ loser_team.1.sprite }} alt={{ loser_team.1.name }}>
+      <p>
+        {{ loser_team.1|capfirst }}
+      </p>
+      <p>
+        ATT: {{ loser_team.1.attack }} DEF: {{ loser_team.1.defense }} HP: {{ loser_team.1.hp }}
+      </p>
+    </div>
+  </div>
+
+  <h3 style="text-align:center;">Third Round</h3>
+  <div style="text-align:center;">
+    <div>
+      <img src={{ winner_team.2.sprite }} alt={{ winner_team.2.name }}>
+      <p>
+        {{ winner_team.2|capfirst }}
+      </p>
+      <p>
+        ATT: {{ winner_team.2.attack }} DEF: {{ winner_team.2.defense }} HP: {{ winner_team.2.hp }}
+      </p>
+    </div>
+    VS
+    <div>
+      <img src={{ loser_team.2.sprite }} alt={{ loser_team.2.name }}>
+      <p>
+        {{ loser_team.2|capfirst }}
+      </p>
+      <p>
+        ATT: {{ loser_team.2.attack }} DEF: {{ loser_team.2.defense }} HP: {{ loser_team.2.hp }}
+      </p>
+    </div>
+  </div>
+
+  <p>Congratulations {{ winner }}, you won!
+    Play another round at <a href="pantoja-pokebattle.herokuapp.com/create-battle">PokeBattle</a>
+  </p>
+
+</div>
+
+{% endblock %}

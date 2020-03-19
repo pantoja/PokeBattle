@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
-from battles.helpers import save_pokemon_in_team
+from battles.helpers.common import save_pokemon_in_team
 from battles.models import Battle
 from services.api import get_pokemon_list
 from users.models import User
