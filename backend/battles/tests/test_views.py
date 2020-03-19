@@ -39,5 +39,9 @@ class TestCreateBattleView(TestCase):
         post_data = {"user_creator": self.creator.id, "user_opponent": self.opponent.id}
         response = self.client.post(self.view_url, post_data, follow=True)
         self.assertRedirects(
-            response, "/", status_code=302, target_status_code=200, fetch_redirect_response=True,
+            response,
+            "/create-team/1",
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
         )
