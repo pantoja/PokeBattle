@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from battles.forms import BattleForm, CreateTeamForm
+from battles.forms import CreateBattleForm, CreateTeamForm
 from battles.helpers.common import save_pokemon_in_team
 from battles.models import Battle
 from services.api import get_pokemon_list
@@ -12,7 +12,7 @@ from users.models import User
 
 class CreateBattleView(LoginRequiredMixin, CreateView):
     template_name = "battles/create_battle.html"
-    form_class = BattleForm
+    form_class = CreateBattleForm
     model = Battle
 
     def get_initial(self):
