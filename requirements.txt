@@ -8,7 +8,7 @@ amqp==2.5.2               # via kombu
 backcall==0.1.0           # via ipython
 billiard==3.6.3.0         # via celery
 brotlipy==0.7.0           # via -r requirements.in
-celery[redis]==4.4.1      # via -r requirements.in
+celery[redis]==4.4.2      # via -r requirements.in
 certifi==2019.11.28       # via requests, sentry-sdk
 cffi==1.14.0              # via brotlipy
 chardet==3.0.4            # via requests
@@ -46,7 +46,7 @@ pycparser==2.20           # via cffi
 pygments==2.6.1           # via ipython
 python-decouple==3.3      # via -r requirements.in
 pytz==2019.3              # via celery, django
-pyyaml==5.3               # via tablib
+pyyaml==5.3.1             # via tablib
 redis==3.4.1              # via celery
 requests==2.23.0          # via -r requirements.in
 sentry-sdk==0.14.2        # via -r requirements.in
