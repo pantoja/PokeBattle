@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+import mock
 from model_mommy import mommy
 
 from battles.forms import CreateBattleForm, CreateTeamForm
@@ -49,7 +50,8 @@ class TestCreateTeamForm(TestCase):
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
 
-    def test_pokemon_exceeds_points_limit(self):
+    @mock.patch("battles.helpers.get_pokemon_stats")
+    def test_pokemon_exceeds_points_limit(self, mock_get_pokemon_stats):
         params = {
             "data": {
                 "trainer": self.trainer.id,
@@ -58,8 +60,17 @@ class TestCreateTeamForm(TestCase):
                 "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
             },
         }
+        mock_get_pokemon_stats.return_value = {
+            "name": "mock_name",
+            "id": 1,
+            "sprite": "",
+            "attack": 360,
+            "defense": 360,
+            "hp": 360,
+        }
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
+        assert mock_get_pokemon_stats.called
 
 
 class TestCreateBattleForm(TestCase):
