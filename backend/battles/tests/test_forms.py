@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-import mock
 from model_mommy import mommy
+import mock
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 
