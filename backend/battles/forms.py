@@ -6,7 +6,7 @@ from services.api import POKE_API_LIMIT
 from users.models import User
 
 
-class BattleForm(forms.ModelForm):
+class CreateBattleForm(forms.ModelForm):
     class Meta:
         model = Battle
         fields = [

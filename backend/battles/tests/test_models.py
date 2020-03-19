@@ -1,8 +1,9 @@
+from django.db.utils import IntegrityError
 from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.models import Team
+from battles.models import Battle, Team
 
 
 class TestTeamModel(TestCase):
@@ -19,3 +20,18 @@ class TestTeamModel(TestCase):
         item.team.set(self.team)
         check = Team.objects.filter(id=item.id).exists()
         self.assertTrue(check)
+
+
+class TestBattleModel(TestCase):
+    def setUp(self):
+        self.creator = mommy.make("users.User")
+        self.opponent = mommy.make("users.User")
+
+    def test_create_battle(self):
+        item = Battle.objects.create(user_creator=self.creator, user_opponent=self.opponent)
+        check = Battle.objects.filter(id=item.id).exists()
+        self.assertTrue(check)
+
+    def test_create_empty_field_battle(self):
+        with self.assertRaises(IntegrityError):
+            Battle.objects.create(user_creator=self.creator, user_opponent=None)
