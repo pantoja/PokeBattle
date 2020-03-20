@@ -1,3 +1,5 @@
+import logging
+
 from django import forms
 
 from battles.helpers.common import (
@@ -10,6 +12,10 @@ from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
 from services.api import POKE_API_LIMIT
 from users.models import User
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARNING)
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -54,8 +60,9 @@ class CreateTeamForm(forms.ModelForm):
         creator = battle.user_creator
         opponent = battle.user_opponent
         if trainer == opponent:
-            print("uepa")
             result = run_battle(creator.teams.get(battle=battle.pk), instance)
+            if not result:
+                logger.error("Battle did not run")
             send_result_email(result)
             change_battle_status(battle, result["winner"].trainer)
         return instance
