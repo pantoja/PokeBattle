@@ -54,6 +54,7 @@ class CreateTeamForm(forms.ModelForm):
         creator = battle.user_creator
         opponent = battle.user_opponent
         if trainer == opponent:
+            print("uepa")
             result = run_battle(creator.teams.get(battle=battle.pk), instance)
             send_result_email(result)
             change_battle_status(battle, result["winner"].trainer)

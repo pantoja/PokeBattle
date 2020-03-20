@@ -5,7 +5,7 @@ def run_battle(creator_team_object, opponent_team_object):
     result.append(first_round(creator_team[0], opponent_team[0]))
     result.append(second_round(creator_team[1], opponent_team[1]))
     result.append(third_round(creator_team[2], opponent_team[2]))
-
+    print(result)
     if result.count("creator") > result.count("opponent"):
         return {"winner": creator_team_object, "loser": opponent_team_object}
     return {"winner": opponent_team_object, "loser": creator_team_object}

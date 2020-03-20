@@ -34,7 +34,6 @@ class CreateTeamView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateTeamView, self).get_context_data(**kwargs)
-
         # Add pokemon dropdown
         pokemon_list = get_pokemon_list()
         pokemon_list = [p["name"] for p in pokemon_list]
