@@ -3,10 +3,22 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
-<form method="post" class="sign-up">
+<form method="post" class="sign-up-form">
   {% csrf_token %}
   {{ form.errors }}
   {{ form.non_field_errors}}
-  {{ form }}
+  <div class="sign-up-container">
+    <label for="username" class="sign-up-label">Username</label>
+    {{ form.username }}
+  </div>
+  <div class="sign-up-container">
+    <label for="password1" class="sign-up-label">Password</label>
+    {{ form.password1 }}
+  </div>
+  <div class="sign-up-container">
+    <label for="password2" class="sign-up-label">Repeat Password</label>
+    {{ form.password2 }}
+  </div>
+  <input type="submit" name="Sign Up" id="sign-up">
 </form>
 {% endblock %}
