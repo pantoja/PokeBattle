@@ -39,10 +39,9 @@ def duplicate_pokemon(team):
 
 
 def change_battle_status(battle, winner):
-    b = battle
-    if len(Team.objects.filter(battle=b.id)) == 2:
-        b.settled = True
-        b.winner = winner
-        b.save()
+    if len(Team.objects.filter(battle=battle.id)) == 2:
+        battle.settled = True
+        battle.winner = winner
+        battle.save()
     else:
         raise PermissionDenied
