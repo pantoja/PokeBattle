@@ -55,8 +55,8 @@ class CreateTeamForm(forms.ModelForm):
         opponent = battle.user_opponent
         if trainer == opponent:
             result = run_battle(creator.teams.get(battle=battle.pk), instance)
-            send_result_email(result)
             change_battle_status(battle, result["winner"].trainer)
+            send_result_email(result)
         return instance
 
     def clean(self):

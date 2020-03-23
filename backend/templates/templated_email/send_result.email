@@ -1,4 +1,26 @@
 {% block subject %}PokeBattle - Here's the result of your battle{% endblock %}
+
+{% block plain %}
+
+    Hi, trainer,
+    Here's the result of the Pokebattle of {{ winner }} VS {{ loser }}.
+
+    First Round:
+
+    ATT: {{ winner_team.0.attack }} DEF: {{ winner_team.0.defense }} HP: {{ winner_team.0.hp }} --> {{ winner_team.0|capfirst }} VS {{ loser_team.0|capfirst }} <-- ATT: {{ loser_team.0.attack }} DEF: {{ loser_team.0.defense }} HP: {{ loser_team.0.hp }}
+
+    Second Round:
+
+    ATT: {{ winner_team.1.attack }} DEF: {{ winner_team.1.defense }} HP: {{ winner_team.1.hp }} --> {{ winner_team.1|capfirst }} VS {{ loser_team.1|capfirst }} <-- ATT: {{ loser_team.1.attack }} DEF: {{ loser_team.1.defense }} HP: {{ loser_team.1.hp }}
+
+    Third Round:
+
+    ATT: {{ winner_team.2.attack }} DEF: {{ winner_team.2.defense }} HP: {{ winner_team.2.hp }} --> {{ winner_team.2|capfirst }} VS {{ loser_team.2|capfirst }} <-- ATT: {{ loser_team.2.attack }} DEF: {{ loser_team.2.defense }} HP: {{ loser_team.2.hp }}
+
+Congratulations {{ winner }}, you won! Play another round at pantoja-pokebattle.herokuapp.com
+
+{% endblock %}
+
 {% block html %}
 
 <div>
@@ -78,8 +100,8 @@
     </div>
   </div>
 
-  <p>Congratulations {{ winner }}, you won!
-    Play another round at <a href="pantoja-pokebattle.herokuapp.com/create-battle">PokeBattle</a>
+  <p> Congratulations {{ winner }}, you won!
+    Play another round at <a href="pantoja-pokebattle.herokuapp.com">PokeBattle</a>
   </p>
 
 </div>
