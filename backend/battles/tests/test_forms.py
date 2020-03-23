@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from model_mommy import mommy
+import mock
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 
@@ -15,56 +16,69 @@ class TestCreateTeamForm(TestCase):
 
     def test_create_a_team(self):
         params = {
-            "initial": {"trainer": self.trainer},
             "data": {
-                "pokemon_1": self.pokemon_1,
-                "pokemon_2": self.pokemon_2,
-                "pokemon_3": self.pokemon_3,
+                "trainer": self.trainer.id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", id=2).id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
             },
         }
         form = CreateTeamForm(**params)
-        self.assertTrue(form)
+        self.assertTrue(form.is_valid())
 
-    def test_pokemon_exceeds_points_limit(self):
+    def test_team_cant_have_identical_pokemon(self):
         params = {
-            "initial": {"trainer": self.trainer},
             "data": {
-                "pokemon_1": mommy.make(
-                    "pokemon.Pokemon", id=1, attack=200, defense=200, hp=200
-                ).id,
-                "pokemon_2": mommy.make(
-                    "pokemon.Pokemon", id=2, attack=200, defense=200, hp=200
-                ).id,
-                "pokemon_3": mommy.make(
-                    "pokemon.Pokemon", id=3, attack=200, defense=200, hp=200
-                ).id,
+                "trainer": self.trainer.id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", id=2).id,
             },
         }
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
+        self.assertEqual(
+            ["Your team has duplicates, please use unique ids"], form.non_field_errors()
+        )
 
-    def test_send_result_email(self):
+    def test_team_cant_have_invalid_pokemon(self):
         params = {
-            "initial": {"battle": self.battle},
             "data": {
-                "trainer": self.trainer,
-                "pokemon_1": self.pokemon_1.id,
-                "pokemon_2": self.pokemon_2.id,
-                "pokemon_3": self.pokemon_3.id,
+                "trainer": self.trainer.id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", id=-5).id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", id=2).id,
             },
         }
-        CreateTeamForm(**params)
+        form = CreateTeamForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(["Choose a valid pokemon"], form.non_field_errors())
 
-        self.second_trainer = mommy.make("users.User")
+    @mock.patch("battles.helpers.common.get_pokemon_stats")
+    def test_pokemon_exceeds_points_limit(self, mock_get_pokemon_stats):
         params = {
-            "initial": {"battle": self.battle},
             "data": {
-                "trainer": self.second_trainer,
-                "pokemon_1": self.pokemon_1.id,
-                "pokemon_2": self.pokemon_2.id,
-                "pokemon_3": self.pokemon_3.id,
+                "trainer": self.trainer.id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", id=493).id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", id=2).id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
             },
         }
+        mock_get_pokemon_stats.return_value = {
+            "name": "mock_name",
+            "id": 1,
+            "sprite": "",
+            "attack": 360,
+            "defense": 360,
+            "hp": 360,
+        }
+        form = CreateTeamForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            ["Your team exceeds the 600 points limit, please choose another team"],
+            form.non_field_errors(),
+        )
+        assert mock_get_pokemon_stats.called
 
 
 class TestCreateBattleForm(TestCase):

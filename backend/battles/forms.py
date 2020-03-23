@@ -1,6 +1,10 @@
 from django import forms
 
-from battles.helpers.common import duplicate_pokemon, pokemon_attr_exceeds_limit
+from battles.helpers.common import (
+    change_battle_status,
+    duplicate_pokemon,
+    pokemon_team_exceeds_limit,
+)
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
@@ -41,7 +45,6 @@ class CreateTeamForm(forms.ModelForm):
         pokemon_3 = self.cleaned_data["pokemon_3"]
 
         team = (pokemon_1, pokemon_2, pokemon_3)
-
         instance = Team.objects.create(trainer=trainer, battle=self.initial["battle"])
         instance.team.set(team)
 
@@ -53,6 +56,7 @@ class CreateTeamForm(forms.ModelForm):
         if trainer == opponent:
             result = run_battle(creator.teams.get(battle=battle.pk), instance)
             send_result_email(result)
+            change_battle_status(battle, result["winner"].trainer)
         return instance
 
     def clean(self):
@@ -72,7 +76,7 @@ class CreateTeamForm(forms.ModelForm):
         if duplicate_pokemon(team):
             raise forms.ValidationError("Your team has duplicates, please use unique ids")
 
-        if not pokemon_attr_exceeds_limit(team):
+        if pokemon_team_exceeds_limit(team):
             raise forms.ValidationError(
                 "Your team exceeds the 600 points limit, please choose another team"
             )

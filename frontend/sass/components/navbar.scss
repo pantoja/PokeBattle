@@ -1,0 +1,26 @@
+.main-header {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0px 0px 18px -10px $shadow-black;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2vh 10vw;
+
+  .navbar-item {
+    background-color: $white;
+    color: $blue-grey;
+    padding: 15px 40px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 18px -10px $shadow-black;
+    border: 2px solid $white;
+    transition: border ease 0.2s;
+
+    &:hover {
+      border: 2px solid $blue-grey;
+    }
+  }
+}

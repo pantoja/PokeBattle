@@ -1,3 +1,6 @@
+from django.core.exceptions import PermissionDenied
+
+from battles.models import Team
 from pokemon.models import Pokemon
 from services.api import get_pokemon_stats
 
@@ -16,15 +19,16 @@ def save_pokemon_in_team(selected_team):
             )
 
 
-def pokemon_attr_exceeds_limit(team):
+def pokemon_team_exceeds_limit(team):
     limit = 600
 
-    team_data = [get_pokemon_stats(pokemon) for pokemon in team]
-    pkn_points = []
+    team_stats = [get_pokemon_stats(pokemon) for pokemon in team]
+    sum_pokemon_stats = []
 
-    for pkn_data in team_data:
-        pkn_points.append(sum([pkn_data["attack"], pkn_data["defense"], pkn_data["hp"]]))
-    return sum(pkn_points) < limit
+    for pokemon in team_stats:
+        sum_pokemon_stats.append(sum([pokemon["attack"], pokemon["defense"], pokemon["hp"]]))
+
+    return sum(sum_pokemon_stats) > limit
 
 
 def duplicate_pokemon(team):
@@ -32,3 +36,12 @@ def duplicate_pokemon(team):
         if team.count(pokemon) > 1:
             return True
     return False
+
+
+def change_battle_status(battle, winner):
+    if len(Team.objects.filter(battle=battle.id)) == 2:
+        battle.settled = True
+        battle.winner = winner
+        battle.save()
+    else:
+        raise PermissionDenied
