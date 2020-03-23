@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from model_mommy import mommy
+import mock
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 
@@ -36,6 +37,9 @@ class TestCreateTeamForm(TestCase):
         }
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
+        self.assertEqual(
+            ["Your team has duplicates, please use unique ids"], form.non_field_errors()
+        )
 
     def test_team_cant_have_invalid_pokemon(self):
         params = {
@@ -48,8 +52,10 @@ class TestCreateTeamForm(TestCase):
         }
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
+        self.assertEqual(["Choose a valid pokemon"], form.non_field_errors())
 
-    def test_pokemon_exceeds_points_limit(self):
+    @mock.patch("battles.helpers.common.get_pokemon_stats")
+    def test_pokemon_exceeds_points_limit(self, mock_get_pokemon_stats):
         params = {
             "data": {
                 "trainer": self.trainer.id,
@@ -58,8 +64,21 @@ class TestCreateTeamForm(TestCase):
                 "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
             },
         }
+        mock_get_pokemon_stats.return_value = {
+            "name": "mock_name",
+            "id": 1,
+            "sprite": "",
+            "attack": 360,
+            "defense": 360,
+            "hp": 360,
+        }
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
+        self.assertEqual(
+            ["Your team exceeds the 600 points limit, please choose another team"],
+            form.non_field_errors(),
+        )
+        assert mock_get_pokemon_stats.called
 
 
 class TestCreateBattleForm(TestCase):
