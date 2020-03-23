@@ -23,4 +23,11 @@
       border: 2px solid $blue-grey;
     }
   }
+  .auth-link{
+    text-decoration: underline;
+    transition: color ease 0.05s;
+    &:hover {
+      color: $orange;
+    }
+  }
 }

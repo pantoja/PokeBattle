@@ -8,10 +8,12 @@
 {% else %}
 <form method="post" class="sign-up-form">
   {% csrf_token %}
-  {% for field in form %}
-    {{ field.errors|striptags }}
-  {% endfor %}
-    <div class="sign-up-container">
+  {% if form.errors %}
+    {% for field in form %}
+      {{ field.errors }}
+    {% endfor %}
+  {% endif %}
+  <div class="sign-up-container">
     <label for="username" class="sign-up-label">Username</label>
     {{ form.email }}
   </div>

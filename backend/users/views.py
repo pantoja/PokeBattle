@@ -10,7 +10,7 @@ from users.models import User
 class UserSignUpView(CreateView):
     model = User
     form_class = UserSignUpForm
-    template_name = "users/sign-up.html"
+    template_name = "users/signup.html"
     success_url = reverse_lazy("home")
 
     def get_context_data(self, **kwargs):

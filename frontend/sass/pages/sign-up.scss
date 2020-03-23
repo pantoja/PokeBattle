@@ -2,6 +2,10 @@
   display: grid;
   justify-content: center;
   gap: 10px;
+  .errorlist {
+    @include error-message;
+    justify-self: center;
+  }
   .sign-up-container {
     display: flex;
     justify-content: space-between;
