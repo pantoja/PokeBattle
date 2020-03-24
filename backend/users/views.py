@@ -1,10 +1,19 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from users.forms import UserSignUpForm
 from users.models import User
+
+
+class UserLoginView(LoginView):
+    template_name = "users/login.html"
+
+
+class UserLogoutView(LogoutView):
+    template_name = "users/logout.html"
 
 
 class UserSignUpView(CreateView):

@@ -6,6 +6,10 @@
     @include error-message;
     justify-self: center;
   }
+  .sign-up-title {
+    justify-self: center;
+    margin: 50px;
+  }
   .sign-up-container {
     display: flex;
     justify-content: space-between;

@@ -8,11 +8,14 @@
 {% else %}
 <form method="post" class="sign-up-form">
   {% csrf_token %}
+
   {% if form.errors %}
     {% for field in form %}
       {{ field.errors }}
     {% endfor %}
   {% endif %}
+
+  <h3 class="sign-up-title">Sign Up</h3>
   <div class="sign-up-container">
     <label for="username" class="sign-up-label">Username</label>
     {{ form.email }}

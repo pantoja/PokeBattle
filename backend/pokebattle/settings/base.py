@@ -93,6 +93,10 @@ USE_TZ = True
 
 STATICFILES_DIRS = (base_dir_join("../frontend"),)
 
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
+
 # Webpack
 WEBPACK_LOADER = {
     "DEFAULT": {
