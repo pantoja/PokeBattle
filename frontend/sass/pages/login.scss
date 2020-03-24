@@ -1,6 +1,12 @@
 .login-form {
   @include form-grid;
 
+  .errorlist {
+    @include error-message;
+    justify-self: center;
+    max-width: 330px;
+    text-align: center;
+  }
   .login-title {
     @include form-title;
   }
