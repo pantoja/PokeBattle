@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 from battles.helpers.common import save_pokemon_in_team
@@ -86,3 +86,8 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
             Q(user_creator=user) | Q(user_opponent=user), settled=False
         )
         return context
+
+
+class DetailBattleView(DetailView):
+    model = Battle
+    template_name = "battles/detail_battle.html"
