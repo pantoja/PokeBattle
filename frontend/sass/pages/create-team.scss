@@ -1,11 +1,8 @@
 .choose-team-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include form-grid;
 
   .choose-team-title {
-    margin-bottom: 50px;
+    @include form-title;
   }
 
   .errorlist {
@@ -15,27 +12,14 @@
   #id_trainer {
     display: none;
   }
-  .choose-team-container {
-    display: grid;
-    justify-content: center;
-    grid-gap: 10px;
-  }
   .choose-pokemon-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include form-field-container;
 
     .choose-pokemon-label{
-      margin: 0;
-      margin-right: 15px;
+      @include form-label;
     }
   }
   .team-form-button {
-    margin-top: 20px;
-    font-weight: 500;
+    @include form-submit;
   }
-}
-
-.team-already-exists-title {
-  text-align: center;
 }

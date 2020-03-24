@@ -25,3 +25,30 @@
   padding: 1rem;
   margin-bottom: 2rem;
 }
+
+@mixin form-grid {
+  display: grid;
+  justify-content: center;
+  gap: 10px;
+}
+
+@mixin form-field-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin form-label {
+  margin: 0;
+  margin-right: 20px;
+}
+
+@mixin form-submit {
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+@mixin form-title {
+  margin: 30px;
+  justify-self: center;
+}

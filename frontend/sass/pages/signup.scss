@@ -1,0 +1,21 @@
+.sign-up-form {
+  @include form-grid;
+
+  .errorlist {
+    @include error-message;
+    justify-self: center;
+  }
+  .sign-up-title {
+    @include form-title;
+  }
+  .sign-up-container {
+    @include form-field-container;
+
+    .sign-up-label {
+      @include form-label;
+    }
+  }
+  .sign-up-submit {
+    @include form-submit;
+  }
+}

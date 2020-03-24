@@ -15,7 +15,7 @@
     {% endfor %}
   {% endif %}
 
-  <h3 class="sign-up-title">Sign Up</h3>
+  <h2 class="sign-up-title">Sign Up</h2>
   <div class="sign-up-container">
     <label for="username" class="sign-up-label">Username</label>
     {{ form.email }}
@@ -28,7 +28,7 @@
     <label for="password2" class="sign-up-label">Repeat Password</label>
     {{ form.password2 }}
   </div>
-  <input type="submit" name="Sign Up" id="sign-up">
+  <input type="submit" name="Sign Up" class="sign-up-submit">
 </form>
 {% endif %}
 {% endblock %}
