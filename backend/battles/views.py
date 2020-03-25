@@ -96,6 +96,7 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         battle = context["battle"]
         winner = battle.winner
         if winner == battle.user_creator:
@@ -103,6 +104,11 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
         else:
             loser = battle.user_creator
 
-        context["winner"] = winner.teams.get(battle=battle)
-        context["loser"] = loser.teams.get(battle=battle)
+        context["winner"] = winner.get_short_name
+        context["loser"] = loser.get_short_name
+
+        winner_team = winner.teams.get(battle=battle).team.all()
+        loser_team = loser.teams.get(battle=battle).team.all()
+        context["pokemon"] = zip(winner_team, loser_team)
+
         return context

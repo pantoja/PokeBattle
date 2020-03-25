@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your Battle{% endblock %}
+
+{% block body %}
+{% include "includes/page-title.html" with title=battle %}
+
+<div class="battle-detail">
+  <p>
+    <span class="detail-title">Players:</span>
+    {{ winner }} <span>VS</span> {{ loser }}
+  </p>
+
+  <p>
+    <span class="detail-title">Winner:</span>
+    {{ winner }}
+    {% if user.get_short_name == winner %}
+    <img src="{% static "image/party-popper.png" %}" alt="party-popper" class="winner-icon">
+    {% endif %}
+  </p>
+
+  <div class="battle-container">
+    {% for pkn in pokemon %}
+    <p class="detail-title">Round {{ forloop.counter }}</p>
+    <div class="round-detail">
+      {% include "includes/pokemon-card.html" with pokemon=pkn.0 trainer=winner %}
+      <span class="versus">VS</span>
+      {% include "includes/pokemon-card.html" with pokemon=pkn.1 trainer=loser %}
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
