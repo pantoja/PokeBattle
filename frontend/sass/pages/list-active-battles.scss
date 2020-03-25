@@ -2,11 +2,11 @@
   @include list-container;
 
   .active-battle-columns {
-    @include list-item(40px repeat(3, 1fr));
+    @include list-item(40px repeat(4, 1fr));
     font-weight: 500
   }
   .active-battle-row {
-    @include list-item(40px repeat(3, 1fr));
+    @include list-item(40px repeat(4, 1fr));
 
     .active-battle-row-item {
       align-self: center;
