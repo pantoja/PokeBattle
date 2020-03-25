@@ -22,12 +22,6 @@ class UserSignUpView(CreateView):
     template_name = "users/signup.html"
     success_url = reverse_lazy("home")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            context["user_already_logged"] = True
-        return context
-
     def form_valid(self, form):
         super().form_valid(form)
         email = form.cleaned_data.get("email")

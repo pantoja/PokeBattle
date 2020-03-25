@@ -12,6 +12,7 @@
     <span>Battle Number</span>
     <span>Created</span>
     <span>Trainers</span>
+    <span>Pending Answer From</span>
   </div>
   {% for battle in battles %}
   <div class="active-battle-row">
@@ -19,6 +20,7 @@
     <span class="active-battle-row-item">{{ battle }}</span>
     <span class="active-battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
     <span class="active-battle-row-item">{{ battle.user_creator.get_short_name }} VS {{ battle.user_opponent.get_short_name }}</span>
+    <span class="active-battle-row-item">{{ battle.user_opponent.get_short_name }}</span>
   </div>
   {% endfor %}
 </div>
