@@ -83,9 +83,7 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)
         user = self.request.user.id
-        context["battles"] = Battle.objects.filter(
-            Q(user_creator=user) | Q(user_opponent=user), settled=False
-        )
+        context["battles"] = Battle.objects.filter(user_creator=user, settled=False)
         return context
 
 
@@ -96,6 +94,7 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        # Determine if you are opponent or creator
         battle = context["battle"]
         if self.request.user == battle.user_creator:
             opponent = battle.user_opponent
@@ -105,11 +104,14 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
         context["opponent"] = opponent.get_short_name
         your_team = self.request.user.teams.get(battle=battle).team.all()
 
-        if battle.winner:
+        # Battle is settled
+        if battle.settled:
             context["winner"] = battle.winner.get_short_name
             opponent_team = opponent.teams.get(battle=battle).team.all()
             context["pokemon"] = zip(your_team, opponent_team)
+
             return context
 
+        # Battle is not settled
         context["pokemon"] = zip(your_team, [0, 0, 0])
         return context
