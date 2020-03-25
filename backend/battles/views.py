@@ -73,3 +73,16 @@ class ListSettledBattlesView(LoginRequiredMixin, ListView):
             Q(user_creator=user) | Q(user_opponent=user), settled=True
         )
         return context
+
+
+class ListActiveBattlesView(LoginRequiredMixin, ListView):
+    model = Battle
+    template_name = "battles/list_active_battles.html"
+
+    def get_context_data(self, **kwargs):  # noqa
+        context = super().get_context_data(**kwargs)
+        user = self.request.user.id
+        context["battles"] = Battle.objects.filter(
+            Q(user_creator=user) | Q(user_opponent=user), settled=False
+        )
+        return context

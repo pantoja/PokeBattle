@@ -1,14 +1,14 @@
-.settled-battle-list {
+.active-battle-list {
   @include list-container;
 
-  .settled-battle-columns {
-    @include list-item(40px repeat(3, 1fr) 60px);
+  .active-battle-columns {
+    @include list-item(40px repeat(4, 1fr));
     font-weight: 500
   }
-  .settled-battle-row {
-    @include list-item(40px repeat(3, 1fr) 60px);
+  .active-battle-row {
+    @include list-item(40px repeat(4, 1fr));
 
-    .settled-battle-row-item {
+    .active-battle-row-item {
       align-self: center;
     }
 

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Your Active Battles{% endblock %}
+
+{% block body %}
+
+{% include "includes/page-title.html" with title="Active Battles" %}
+
+<div class="active-battle-list">
+  <div class="active-battle-columns">
+    <span></span>
+    <span>Battle Number</span>
+    <span>Created</span>
+    <span>Trainers</span>
+    <span>Pending Answer From</span>
+  </div>
+  {% for battle in battles %}
+  <div class="active-battle-row">
+    <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon active-battle-row-item">
+    <span class="active-battle-row-item">{{ battle }}</span>
+    <span class="active-battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
+    <span class="active-battle-row-item">{{ battle.user_creator.get_short_name }} VS {{ battle.user_opponent.get_short_name }}</span>
+    <span class="active-battle-row-item">{{ battle.user_opponent.get_short_name }}</span>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
