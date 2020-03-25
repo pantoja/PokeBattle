@@ -24,11 +24,10 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
         return reverse_lazy("battles:create_team", args=[self.object.id])
 
 
-class CreateTeamView(LoginRequiredMixin, UserIsNotInThisBattleMixin, CreateView):
+class CreateTeamView(LoginRequiredMixin, CreateView):
     template_name = "battles/create_team.html"
     form_class = CreateTeamForm
     success_url = reverse_lazy("home")
-    model = Battle
 
     def get_initial(self):
         battle = Battle.objects.get(pk=self.kwargs["pk"])

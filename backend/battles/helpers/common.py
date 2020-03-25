@@ -47,6 +47,7 @@ def duplicate_pokemon(team):
 def change_battle_status(battle, winner):
     if not len(Team.objects.filter(battle=battle.id)) == 2:
         logger.error("Battle did not save both teams")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         raise PermissionDenied
     battle.settled = True
     battle.winner = winner
