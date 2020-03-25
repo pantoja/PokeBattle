@@ -9,11 +9,15 @@
 <div class="battle-detail">
   <p>
     <span class="detail-title">Players:</span>
-    {{ winner }} <span>VS</span> {{ loser }}
+    {{ user.get_short_name }} <span>VS</span> {{ opponent }}
   </p>
 
   <p>
     <span class="detail-title">Winner:</span>
+    {% if not winner %}
+      ?
+    {% endif %}
+
     {{ winner }}
     {% if user.get_short_name == winner %}
     <img src="{% static "image/party-popper.png" %}" alt="party-popper" class="winner-icon">
@@ -21,13 +25,18 @@
   </p>
 
   <div class="battle-container">
-    {% for pkn in pokemon %}
+    {% for pokemon in pokemon %}
+
     <p class="detail-title">Round {{ forloop.counter }}</p>
     <div class="round-detail">
-      {% include "includes/pokemon-card.html" with pokemon=pkn.0 trainer=winner %}
+      {% include "includes/pokemon-card.html" with pokemon=pokemon.0 trainer=user.get_short_name %}
       <span class="versus">VS</span>
-      {% include "includes/pokemon-card.html" with pokemon=pkn.1 trainer=loser %}
-    </div>
+      {% if winner %}
+        {% include "includes/pokemon-card.html" with pokemon=pokemon.1 trainer=opponent %}
+      {% else %}
+        {% include "includes/pokemon-card.html" with trainer=opponent pokemon=False %}
+      {%  endif %}
+      </div>
     {% endfor %}
   </div>
 

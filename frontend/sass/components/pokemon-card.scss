@@ -17,4 +17,12 @@
   .pokemon-stats {
     font-weight: 500;
   }
+  .no-pokemon {
+    font-weight: 700;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+  }
 }
