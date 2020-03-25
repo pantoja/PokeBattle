@@ -6,6 +6,7 @@ from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 from battles.helpers.common import save_pokemon_in_team
+from battles.mixins import UserIsNotInThisBattleMixin
 from battles.models import Battle
 from services.api import get_pokemon_list
 from users.models import User
@@ -23,10 +24,11 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
         return reverse_lazy("battles:create_team", args=[self.object.id])
 
 
-class CreateTeamView(LoginRequiredMixin, CreateView):
+class CreateTeamView(LoginRequiredMixin, UserIsNotInThisBattleMixin, CreateView):
     template_name = "battles/create_team.html"
     form_class = CreateTeamForm
     success_url = reverse_lazy("home")
+    model = Battle
 
     def get_initial(self):
         battle = Battle.objects.get(pk=self.kwargs["pk"])
@@ -88,6 +90,19 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
         return context
 
 
-class DetailBattleView(DetailView):
+class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
     model = Battle
     template_name = "battles/detail_battle.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        battle = context["battle"]
+        winner = battle.winner
+        if winner == battle.user_creator:
+            loser = battle.user_opponent
+        else:
+            loser = battle.user_creator
+
+        context["winner"] = winner.teams.get(battle=battle)
+        context["loser"] = loser.teams.get(battle=battle)
+        return context
