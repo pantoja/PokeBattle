@@ -105,9 +105,8 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
         context["opponent"] = opponent.get_short_name
         your_team = self.request.user.teams.get(battle=battle).team.all()
 
-        winner = battle.winner
-        if winner:
-            context["winner"] = winner.get_short_name
+        if battle.winner:
+            context["winner"] = battle.winner.get_short_name
             opponent_team = opponent.teams.get(battle=battle).team.all()
             context["pokemon"] = zip(your_team, opponent_team)
             return context
