@@ -1,5 +1,5 @@
 <header class="main-header">
-  <h1>PokeBattle</h1>
+  <h1><a href="{% url 'home' %}">PokeBattle</a></h1>
 </header>
 
 <nav>
@@ -9,9 +9,10 @@
     <li class="navbar-item"><a href="{% url 'battles:active_battles' %}">Active Battles</a></li>
     <li class="welcome-user">
       {% if user.is_authenticated %}
-        Welcome, <a href="/">{{ user.get_short_name }}</a>
+        Welcome, {{ user.get_short_name }} |
+        <a href="{% url 'users:logout' %}" class="auth-link">Logout</a>
       {% else %}
-        <a href="/">Login</a>
+      <a href="{% url 'users:login' %}" class="auth-link">Login</a> | <a href="{% url 'users:signup' %}" class="auth-link">Sign Up</a>
       {% endif %}
     </li>
   </ul>
