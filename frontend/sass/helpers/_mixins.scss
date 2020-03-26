@@ -1,0 +1,56 @@
+@mixin list-container {
+  display: grid;
+  row-gap: 1rem;
+  font-size: 0.8rem;
+  margin: 50px 0;
+  text-align: center;
+}
+
+@mixin list-item($grid-columns) {
+  background-color: $white;
+  padding:  1rem 2rem;
+  border-radius: 30px;
+  display: grid;
+  grid-template-columns: $grid-columns;
+  box-shadow: 0px 0px 15px -12px $shadow-black;
+  text-align: center;
+}
+
+@mixin error-message{
+  background-color: $orange;
+  color: $white;
+  border-radius: 10px;
+  border: 2px solid $orange;
+  box-shadow: 0px 1px 15px -10px $shadow-black;
+  width: fit-content;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem;
+}
+
+@mixin form-grid {
+  display: grid;
+  justify-content: center;
+  gap: 10px;
+}
+
+@mixin form-field-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin form-label {
+  margin: 0;
+  margin-right: 20px;
+}
+
+@mixin form-submit {
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+@mixin form-title {
+  margin: 30px;
+  justify-self: center;
+}

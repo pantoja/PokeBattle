@@ -93,6 +93,10 @@ USE_TZ = True
 
 STATICFILES_DIRS = (base_dir_join("../frontend"),)
 
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
+
 # Webpack
 WEBPACK_LOADER = {
     "DEFAULT": {
@@ -112,3 +116,6 @@ CELERY_ACKS_LATE = True
 # Sentry
 SENTRY_DSN = config("SENTRY_DSN", default="")
 COMMIT_SHA = config("HEROKU_SLUG_COMMIT", default="")
+
+# Django-templated-email
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'

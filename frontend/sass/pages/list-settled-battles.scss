@@ -1,0 +1,25 @@
+.settled-battle-list {
+  @include list-container;
+
+  .settled-battle-columns {
+    @include list-item(40px repeat(3, 1fr) 60px);
+    font-weight: 500
+  }
+  .settled-battle-row {
+    @include list-item(40px repeat(3, 1fr) 60px);
+
+    .settled-battle-row-item {
+      align-self: center;
+    }
+
+    .pokeball-icon, .cross-icon{
+      width: 20px;
+    }
+    .tick-icon, .cross-icon {
+      justify-self: center;
+    }
+    .tick-icon {
+      width: 25px;
+    }
+  }
+}
