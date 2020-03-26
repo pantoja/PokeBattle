@@ -83,7 +83,9 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)
         user = self.request.user.id
-        context["battles"] = Battle.objects.filter(user_creator=user, settled=False)
+        context["battles"] = Battle.objects.filter(
+            Q(user_creator=user) | Q(user_opponent=user), settled=False
+        )
         return context
 
 

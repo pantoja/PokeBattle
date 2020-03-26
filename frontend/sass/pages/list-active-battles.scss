@@ -5,6 +5,7 @@
     @include list-item(40px repeat(4, 1fr));
     font-weight: 500
   }
+
   .active-battle-row {
     @include list-item(40px repeat(4, 1fr));
 
@@ -21,5 +22,20 @@
     .tick-icon {
       width: 25px;
     }
+  }
+}
+.answer-link{
+  position: relative;
+
+  &:after {
+      content: 'Answer';
+      color: $white;
+      background-color: $orange;
+      padding: 5px;
+      position: absolute;
+      right: 0;
+      bottom: 12px;
+      font-weight: 500;
+      outline: dashed $blue-grey;
   }
 }

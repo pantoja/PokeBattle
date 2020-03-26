@@ -15,13 +15,28 @@
     <span>Pending Answer From</span>
   </div>
   {% for battle in battles %}
+
+  {% if battle.user_opponent == user %}
+  <a href="{% url 'battles:create_team' battle.id %}" class="active-battle-row answer-link">
+    <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon active-battle-row-item">
+    <span class="active-battle-row-item">{{ battle }}</span>
+    <span class="active-battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
+    <span class="active-battle-row-item">{{ battle.user_creator.get_short_name }} VS
+      {{ battle.user_opponent.get_short_name }}</span>
+    <span class="active-battle-row-item">You</span>
+  </a>
+
+  {% else %}
   <a href="{% url 'battles:detail_battle' battle.id %}" class="active-battle-row">
     <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon active-battle-row-item">
     <span class="active-battle-row-item">{{ battle }}</span>
     <span class="active-battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
-    <span class="active-battle-row-item">{{ battle.user_creator.get_short_name }} VS {{ battle.user_opponent.get_short_name }}</span>
+    <span class="active-battle-row-item">{{ battle.user_creator.get_short_name }} VS
+      {{ battle.user_opponent.get_short_name }}</span>
     <span class="active-battle-row-item">{{ battle.user_opponent.get_short_name }}</span>
   </a>
+  {% endif %}
+
   {% endfor %}
 </div>
 
