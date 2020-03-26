@@ -89,7 +89,7 @@ class TestCreateBattleForm(TestCase):
     def test_form_is_valid(self):
         params = {
             "initial": {"user_creator": self.creator},
-            "data": {"user_opponent": self.opponent},
+            "data": {"user_creator": self.creator.id, "user_opponent": self.opponent.id},
         }
         form = CreateBattleForm(**params)
-        self.assertTrue(form)
+        self.assertTrue(form.is_valid())
