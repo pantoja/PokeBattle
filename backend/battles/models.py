@@ -23,6 +23,9 @@ class Battle(models.Model):
         null=True,
     )
 
+    class Meta:
+        ordering = ["-pk"]
+
     def clean(self):
         if self.user_creator == self.user_opponent:
             raise ValidationError("The creator and opponent users can't be the same")
@@ -41,6 +44,9 @@ class Team(models.Model):
         User, on_delete=models.CASCADE, verbose_name="Trainer", related_name="teams"
     )
     team = models.ManyToManyField(Pokemon, verbose_name="Team")
+
+    class Meta:
+        ordering = ["-battle"]
 
     def __str__(self):
         return f"{self.trainer}'s team"
