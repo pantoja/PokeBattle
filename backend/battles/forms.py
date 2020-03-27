@@ -8,7 +8,7 @@ from battles.helpers.common import (
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
-from services.api import POKE_API_LIMIT
+from services.api import POKEAPI_LIMIT
 from users.models import User
 
 
@@ -70,7 +70,7 @@ class CreateTeamForm(forms.ModelForm):
         team = (pokemon_1, pokemon_2, pokemon_3)
 
         for pokemon in team:
-            if pokemon < 0 or pokemon > POKE_API_LIMIT:
+            if pokemon < 0 or pokemon > POKEAPI_LIMIT:
                 raise forms.ValidationError("Choose a valid pokemon")
 
         if duplicate_pokemon(team):
