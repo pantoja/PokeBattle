@@ -32,15 +32,21 @@ class CreateBattleForm(forms.ModelForm):
 class CreateTeamForm(forms.ModelForm):
     pokemon_1 = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(url="pokemon:pokemon_autocomplete"),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
+        ),
     )
     pokemon_2 = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(url="pokemon:pokemon_autocomplete"),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
+        ),
     )
     pokemon_3 = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(url="pokemon:pokemon_autocomplete"),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
+        ),
     )
 
     class Meta:
