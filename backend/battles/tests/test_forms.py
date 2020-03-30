@@ -18,9 +18,9 @@ class TestCreateTeamForm(TestCase):
         params = {
             "data": {
                 "trainer": self.trainer.id,
-                "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
-                "pokemon_2": mommy.make("pokemon.Pokemon", id=2).id,
-                "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
             },
         }
         form = CreateTeamForm(**params)
