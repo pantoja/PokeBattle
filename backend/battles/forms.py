@@ -11,7 +11,6 @@ from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
 from pokemon.models import Pokemon
-from services.api import POKEAPI_LIMIT
 from users.models import User
 
 
@@ -80,10 +79,6 @@ class CreateTeamForm(forms.ModelForm):
         pokemon_3 = cleaned_data.get("pokemon_3")
 
         team = (pokemon_1, pokemon_2, pokemon_3)
-
-        for pokemon in team:
-            if pokemon < 0 or pokemon > POKEAPI_LIMIT:
-                raise forms.ValidationError("Choose a valid pokemon")
 
         if duplicate_pokemon(team):
             raise forms.ValidationError("Your team has duplicates, please use unique ids")

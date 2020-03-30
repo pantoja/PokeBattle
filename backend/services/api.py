@@ -13,7 +13,7 @@ def get_pokemon_list():
 
 
 def get_pokemon_stats(pokemon):
-    response = requests.get(f"{POKEAPI_ROOT_URL}{pokemon}")
+    response = requests.get(f"{POKEAPI_ROOT_URL}{pokemon.name}")
     if not response.ok:
         return None
     response = response.json()
