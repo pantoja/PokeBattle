@@ -1,5 +1,7 @@
 from django import forms
 
+from dal import autocomplete
+
 from battles.helpers.common import (
     change_battle_status,
     duplicate_pokemon,
@@ -8,6 +10,7 @@ from battles.helpers.common import (
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
+from pokemon.models import Pokemon
 from services.api import POKEAPI_LIMIT
 from users.models import User
 
@@ -28,9 +31,18 @@ class CreateBattleForm(forms.ModelForm):
 
 
 class CreateTeamForm(forms.ModelForm):
-    pokemon_1 = forms.IntegerField()
-    pokemon_2 = forms.IntegerField()
-    pokemon_3 = forms.IntegerField()
+    pokemon_1 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(url="pokemon:pokemon_autocomplete"),
+    )
+    pokemon_2 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(url="pokemon:pokemon_autocomplete"),
+    )
+    pokemon_3 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(url="pokemon:pokemon_autocomplete"),
+    )
 
     class Meta:
         model = Team

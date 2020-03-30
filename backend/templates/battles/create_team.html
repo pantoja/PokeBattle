@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Create your team{% endblock %}
 
@@ -7,12 +8,12 @@
 {% if user_has_team %}
 <h2 class="team-already-exists-title">This battle has already begun. Check your email for results</h2>
 {% else %}
+
   <form method="post" class="choose-team-form">
     {% csrf_token %}
     {{ form.trainer }}
 
     {{ form.non_field_errors}}
-
     <h2 class="choose-team-title">Choose your team:</h2>
     <div class="choose-pokemon-container">
       <label for="pokemon_1" class="choose-pokemon-label">First Pokemon</label>
@@ -29,4 +30,28 @@
     <input type="submit" value="Go!" class="team-form-button">
   </form>
 {% endif %}
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+<script>
+  (function($) {
+      $('#add-form').click(function() {
+          var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+          var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+          newTable.find(':input').each(function() {
+              for (attr of ['name', 'id'])
+                  $(this).attr(
+                      attr,
+                      $(this).attr(attr).replace('__prefix__', index)
+                  )
+          })
+          newTable.insertBefore($(this))
+          $('#id_inline_test_models-TOTAL_FORMS').val(
+              parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+          )
+          newTable.slideDown()
+      })
+  })($)
+  </script>
 {% endblock %}
