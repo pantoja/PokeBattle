@@ -1,6 +1,6 @@
 import logging
 
-from backend.pokebattle import celery_app
+from pokebattle import celery_app
 from pokemon.helpers import save_pokemon
 from services.api import get_pokemon_list
 
