@@ -2,9 +2,10 @@ from django import forms
 
 from dal import autocomplete
 
+from battles.choices import POKEMON_ORDER_CHOICES
 from battles.helpers.common import (
     change_battle_status,
-    duplicate_pokemon,
+    duplicate_in_set,
     pokemon_team_exceeds_limit,
 )
 from battles.helpers.email import send_result_email
@@ -49,9 +50,13 @@ class CreateTeamForm(forms.ModelForm):
         ),
     )
 
+    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1)
+    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2)
+    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3)
+
     class Meta:
         model = Team
-        fields = ["trainer", "pokemon_1", "pokemon_2", "pokemon_3"]
+        fields = ["trainer", "pokemon_1", "pokemon_2", "pokemon_3", "order_1", "order_2", "order_3"]
 
     def save(self, commit=True):
         # Saves Team object
@@ -61,9 +66,23 @@ class CreateTeamForm(forms.ModelForm):
         pokemon_2 = self.cleaned_data["pokemon_2"]
         pokemon_3 = self.cleaned_data["pokemon_3"]
 
-        team = (pokemon_1, pokemon_2, pokemon_3)
-        instance = Team.objects.create(trainer=trainer, battle=self.initial["battle"])
-        instance.team.set(team)
+        order_1 = self.cleaned_data["order_1"]
+        order_2 = self.cleaned_data["order_2"]
+        order_3 = self.cleaned_data["order_3"]
+
+        battle_order = {
+            order_1: pokemon_1,
+            order_2: pokemon_2,
+            order_3: pokemon_3,
+        }
+
+        instance = Team.objects.create(
+            trainer=trainer,
+            battle=self.initial["battle"],
+            first_pokemon=battle_order["1"],
+            second_pokemon=battle_order["2"],
+            third_pokemon=battle_order["3"],
+        )
 
         # Runs battle
 
@@ -86,8 +105,17 @@ class CreateTeamForm(forms.ModelForm):
 
         team = (pokemon_1, pokemon_2, pokemon_3)
 
-        if duplicate_pokemon(team):
-            raise forms.ValidationError("Your team has duplicates, please use unique ids")
+        order_1 = self.cleaned_data["order_1"]
+        order_2 = self.cleaned_data["order_2"]
+        order_3 = self.cleaned_data["order_3"]
+
+        order = (order_1, order_2, order_3)
+
+        if duplicate_in_set(order):
+            raise forms.ValidationError("Please allocate one pokemon per round")
+
+        if duplicate_in_set(team):
+            raise forms.ValidationError("Your team has duplicates, please use unique pokemon")
 
         if pokemon_team_exceeds_limit(team):
             raise forms.ValidationError(

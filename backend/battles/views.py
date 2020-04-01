@@ -106,12 +106,22 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
             opponent = battle.user_creator
 
         context["opponent"] = opponent.get_short_name
-        your_team = self.request.user.teams.get(battle=battle).team.all()
+        your_team_object = self.request.user.teams.get(battle=battle)
+        your_team = (
+            your_team_object.first_pokemon,
+            your_team_object.second_pokemon,
+            your_team_object.third_pokemon,
+        )
 
         # Battle is settled
         if battle.settled:
             context["winner"] = battle.winner.get_short_name
-            opponent_team = opponent.teams.get(battle=battle).team.all()
+            opponent_team_object = opponent.teams.get(battle=battle)
+            opponent_team = (
+                opponent_team_object.first_pokemon,
+                opponent_team_object.second_pokemon,
+                opponent_team_object.third_pokemon,
+            )
             context["pokemon"] = zip(your_team, opponent_team)
 
             return context

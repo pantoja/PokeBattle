@@ -22,11 +22,8 @@ def pokemon_team_exceeds_limit(team):
     return sum(sum_pokemon_stats) > limit
 
 
-def duplicate_pokemon(team):
-    for pokemon in team:
-        if team.count(pokemon) > 1:
-            return True
-    return False
+def duplicate_in_set(item_set):
+    return len(item_set) != len(set(item_set))
 
 
 def change_battle_status(battle, winner):
