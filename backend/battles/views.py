@@ -1,13 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 from battles.mixins import UserIsNotInThisBattleMixin, UserNotInvitedToBattleMixin
 from battles.models import Battle
-from pokemon.helpers import save_pokemon
 from services.api import get_pokemon_list
 from users.models import User
 
@@ -49,20 +47,6 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
             context["user_has_team"] = True
 
         return context
-
-    def form_valid(self, form):
-        # Saves unsaved pokemon
-
-        pokemon_1 = form.cleaned_data["pokemon_1"]
-        pokemon_2 = form.cleaned_data["pokemon_2"]
-        pokemon_3 = form.cleaned_data["pokemon_3"]
-
-        selected_team = [pokemon_1, pokemon_2, pokemon_3]
-        for pokemon in selected_team:
-            save_pokemon(pokemon)
-
-        self.object = form.save()
-        return HttpResponseRedirect(self.get_success_url())
 
 
 class ListSettledBattlesView(LoginRequiredMixin, ListView):
