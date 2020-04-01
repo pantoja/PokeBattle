@@ -13,7 +13,7 @@ logger.setLevel(logging.WARNING)
 def pokemon_team_exceeds_limit(team):
     limit = 600
 
-    team_stats = [get_pokemon_stats(pokemon) for pokemon in team]
+    team_stats = [get_pokemon_stats(pokemon.name) for pokemon in team]
     sum_pokemon_stats = []
 
     for pokemon in team_stats:
