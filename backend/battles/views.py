@@ -5,7 +5,11 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
-from battles.helpers.common import save_pokemon_in_team
+from battles.helpers.common import (
+    get_battle_opponent,
+    get_respective_teams_in_battle,
+    save_pokemon_in_team,
+)
 from battles.mixins import UserIsNotInThisBattleMixin, UserNotInvitedToBattleMixin
 from battles.models import Battle
 from services.api import get_pokemon_list
@@ -97,24 +101,11 @@ class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Determine if you are opponent or creator
         battle = context["battle"]
-        if self.request.user == battle.user_creator:
-            opponent = battle.user_opponent
-        else:
-            opponent = battle.user_creator
 
-        context["opponent"] = opponent.get_short_name
-        your_team = self.request.user.teams.get(battle=battle).team.all()
+        opponent = get_battle_opponent(self.request.user, battle)
+        context["opponent"] = opponent.get_short_name()
 
-        # Battle is settled
-        if battle.settled:
-            context["winner"] = battle.winner.get_short_name
-            opponent_team = opponent.teams.get(battle=battle).team.all()
-            context["pokemon"] = zip(your_team, opponent_team)
-
-            return context
-
-        # Battle is not settled
-        context["pokemon"] = zip(your_team, [0, 0, 0])
+        data = get_respective_teams_in_battle(self.request.user, opponent, battle)
+        context.update(data)
         return context
