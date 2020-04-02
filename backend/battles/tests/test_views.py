@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from model_mommy import mommy
 
-from battles.models import Battle, Team
+from battles.models import Battle
 
 
 class TestCreateBattleView(TestCase):
@@ -64,17 +64,18 @@ class TestDetailBattleView(TestCase):
         self.view_url = reverse(self.view_name, kwargs={"pk": 1})
 
     def test_detail_battle_successfully(self):
-        battle = Battle.objects.create(
+        battle = mommy.make(
+            "battles.Battle",
             user_creator=self.trainer_1,
             user_opponent=self.trainer_2,
             settled=True,
-            winner=self.trainer_1,
+            winner=self.trainer_2,
         )
 
-        team_1 = Team.objects.create(trainer=self.trainer_1, battle=battle)
+        team_1 = mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
         team_1.team.set(self.team)
 
-        team_2 = Team.objects.create(trainer=self.trainer_2, battle=battle)
+        team_2 = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
         team_2.team.set(self.team)
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
@@ -84,7 +85,7 @@ class TestDetailBattleView(TestCase):
             user_creator=self.trainer_2, user_opponent=self.trainer_1, settled=False,
         )
 
-        creator_team = Team.objects.create(trainer=self.trainer_2, battle=battle)
+        creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
         creator_team.team.set(self.team)
 
         response = self.client.get(self.view_url)
@@ -93,28 +94,32 @@ class TestDetailBattleView(TestCase):
     def test_user_not_in_this_battle_is_denied(self):
         trainer_3 = mommy.make("users.User")
 
-        battle = Battle.objects.create(
+        battle = mommy.make(
+            "battles.Battle",
             user_creator=self.trainer_2,
             user_opponent=trainer_3,
             settled=True,
             winner=self.trainer_2,
         )
 
-        creator_team = Team.objects.create(trainer=self.trainer_2, battle=battle)
+        creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
         creator_team.team.set(self.team)
 
-        opponent_team = Team.objects.create(trainer=trainer_3, battle=battle)
+        opponent_team = mommy.make("battles.Team", trainer=trainer_3, battle=battle)
         opponent_team.team.set(self.team)
 
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 302)
 
     def test_allow_user_is_creator_of_active_battle(self):
-        battle = Battle.objects.create(
-            user_creator=self.trainer_1, user_opponent=self.trainer_2, settled=False,
+        battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=False,
         )
 
-        creator_team = Team.objects.create(trainer=self.trainer_1, battle=battle)
+        creator_team = mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
         creator_team.team.set(self.team)
 
         response = self.client.get(self.view_url)
@@ -153,7 +158,7 @@ class CreateTeamView(TestCase):
         battle = Battle.objects.create(
             user_creator=self.creator, user_opponent=self.opponent, settled=False,
         )
-        creator_team = Team.objects.create(trainer=self.creator, battle=battle)
+        creator_team = mommy.make("battles.Team", trainer=self.creator, battle=battle)
         team = mommy.make("pokemon.Pokemon", _quantity=3)
         creator_team.team.set(team)
         response = self.client.get(self.view_url)
