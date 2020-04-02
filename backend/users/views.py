@@ -13,7 +13,7 @@ class UserLoginView(LoginView):
 
 
 class UserLogoutView(LogoutView):
-    template_name = "users/logout.html"
+    pass
 
 
 class UserSignUpView(CreateView):

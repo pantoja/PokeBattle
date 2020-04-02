@@ -20,6 +20,7 @@
     {{ form.password }}
   </div>
   <input type="submit" value="Login" class="login-submit">
+  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
 </form>
 {% endif %}
 {% endblock %}
