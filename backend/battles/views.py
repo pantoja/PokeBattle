@@ -2,10 +2,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
-from battles.helpers.common import save_pokemon_in_team
+from battles.helpers.common import (
+    get_battle_opponent,
+    get_respective_teams_in_battle,
+    save_pokemon_in_team,
+)
+from battles.mixins import UserIsNotInThisBattleMixin, UserNotInvitedToBattleMixin
 from battles.models import Battle
 from services.api import get_pokemon_list
 from users.models import User
@@ -23,10 +28,11 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
         return reverse_lazy("battles:create_team", args=[self.object.id])
 
 
-class CreateTeamView(LoginRequiredMixin, CreateView):
+class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView):
     template_name = "battles/create_team.html"
     form_class = CreateTeamForm
     success_url = reverse_lazy("home")
+    model = Battle
 
     def get_initial(self):
         battle = Battle.objects.get(pk=self.kwargs["pk"])
@@ -85,4 +91,21 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
         context["battles"] = Battle.objects.filter(
             Q(user_creator=user) | Q(user_opponent=user), settled=False
         )
+        return context
+
+
+class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
+    model = Battle
+    template_name = "battles/detail_battle.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        battle = context["battle"]
+
+        opponent = get_battle_opponent(self.request.user, battle)
+        context["opponent"] = opponent.get_short_name()
+
+        data = get_respective_teams_in_battle(self.request.user, opponent, battle)
+        context.update(data)
         return context

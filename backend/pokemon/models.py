@@ -11,4 +11,4 @@ class Pokemon(models.Model):
     hp = models.IntegerField("HP")
 
     def __str__(self):
-        return self.name
+        return self.name.capitalize()

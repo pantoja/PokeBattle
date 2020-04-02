@@ -15,7 +15,7 @@
     <span>You Won</span>
   </div>
   {% for battle in battles %}
-  <div class="settled-battle-row">
+  <a href="{% url 'battles:detail_battle' battle.id %}" class="settled-battle-row">
     <img src="{% static "image/pokeball.svg" %}" alt="pokeball-icon" class="pokeball-icon settled-battle-row-item">
     <span class="settled-battle-row-item">{{ battle }}</span>
     <span class="settled-battle-row-item">{{ battle.created|date:'d/m/y' }}</span>
@@ -26,7 +26,7 @@
       <img src="{% static "image/cross.svg" %}" alt="no" class="cross-icon settled-battle-row-item">
 
     {% endif %}
-  </div>
+  </a>
   {% endfor %}
 </div>
 
