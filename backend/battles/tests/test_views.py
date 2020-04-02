@@ -81,8 +81,11 @@ class TestDetailBattleView(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user_not_creator_of_active_battle_is_denied(self):
-        battle = Battle.objects.create(
-            user_creator=self.trainer_2, user_opponent=self.trainer_1, settled=False,
+        battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_2,
+            user_opponent=self.trainer_1,
+            settled=False,
         )
 
         creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
@@ -138,16 +141,16 @@ class CreateTeamView(TestCase):
         self.view_url = reverse(self.view_name, kwargs={"pk": 1})
 
     def test_user_allowed_to_create_team(self):
-        Battle.objects.create(
-            user_creator=self.creator, user_opponent=self.opponent, settled=False,
+        mommy.make(
+            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
         )
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
     def test_user_not_invited_to_battle_is_redirected(self):
         user_creator = mommy.make("users.User")
-        Battle.objects.create(
-            user_creator=self.opponent, user_opponent=user_creator, settled=False,
+        mommy.make(
+            "battles.Battle", user_creator=self.opponent, user_opponent=user_creator, settled=False,
         )
         response = self.client.get(self.view_url)
         self.assertRedirects(
@@ -155,10 +158,10 @@ class CreateTeamView(TestCase):
         )
 
     def test_user_already_has_team_in_this_battle(self):
-        battle = Battle.objects.create(
-            user_creator=self.creator, user_opponent=self.opponent, settled=False,
+        battle = mommy.make(
+            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
         )
-        creator_team = Team.objects.create(trainer=self.creator, battle=battle)
+        creator_team = mommy.make("battles.Team", trainer=self.creator, battle=battle)
         team = mommy.make("pokemon.Pokemon", _quantity=3)
         creator_team.team.set(team)
         response = self.client.get(self.view_url)
@@ -178,8 +181,11 @@ class TestListActiveBattles(TestCase):
         self.view_url = reverse(self.view_name)
 
     def test_list_active_battles_succesfully(self):
-        Battle.objects.create(
-            user_creator=self.trainer_1, user_opponent=self.trainer_2, settled=False,
+        mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=False,
         )
 
         response = self.client.get(self.view_url)
@@ -187,11 +193,17 @@ class TestListActiveBattles(TestCase):
         self.assertTrue(response.context["battles"])
 
     def test_settled_battle_is_not_listed(self):
-        active_battle = Battle.objects.create(
-            user_creator=self.trainer_1, user_opponent=self.trainer_2, settled=False,
+        active_battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=False,
         )
-        settled_battle = Battle.objects.create(
-            user_creator=self.trainer_1, user_opponent=self.trainer_2, settled=True,
+        settled_battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=True,
         )
 
         response = self.client.get(self.view_url)
@@ -213,7 +225,8 @@ class TestListSettledBattles(TestCase):
         self.view_url = reverse(self.view_name)
 
     def test_list_settled_battles_succesfully(self):
-        Battle.objects.create(
+        mommy.make(
+            "battles.Battle",
             user_creator=self.trainer_1,
             user_opponent=self.trainer_2,
             settled=True,
@@ -225,11 +238,17 @@ class TestListSettledBattles(TestCase):
         self.assertTrue(response.context["battles"])
 
     def test_active_battle_is_not_listed(self):
-        active_battle = Battle.objects.create(
-            user_creator=self.trainer_1, user_opponent=self.trainer_2, settled=False,
+        active_battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=False,
         )
-        settled_battle = Battle.objects.create(
-            user_creator=self.trainer_1, user_opponent=self.trainer_2, settled=True,
+        settled_battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=True,
         )
 
         response = self.client.get(self.view_url)
