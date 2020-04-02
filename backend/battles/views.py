@@ -6,7 +6,6 @@ from django.views.generic import CreateView, DetailView, ListView
 from battles.forms import CreateBattleForm, CreateTeamForm
 from battles.mixins import UserIsNotInThisBattleMixin, UserNotInvitedToBattleMixin
 from battles.models import Battle
-from services.api import get_pokemon_list
 from users.models import User
 
 
@@ -34,11 +33,6 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
 
     def get_context_data(self, **kwargs):
         context = super(CreateTeamView, self).get_context_data(**kwargs)
-
-        # Add pokemon dropdown
-        pokemon_list = get_pokemon_list()
-        pokemon_list = [p["name"] for p in pokemon_list]
-        context["pokemon"] = pokemon_list
 
         # If user already created a team for this battle
         user = User.objects.get(id=self.request.user.id)
