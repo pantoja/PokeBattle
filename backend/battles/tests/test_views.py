@@ -45,3 +45,77 @@ class TestCreateBattleView(TestCase):
             target_status_code=200,
             fetch_redirect_response=True,
         )
+
+
+class TestDetailBattleView(TestCase):
+    view_name = "battles:detail_battle"
+
+    def setUp(self):
+        self.trainer_1 = mommy.make("users.User")
+        self.trainer_2 = mommy.make("users.User")
+        self.client = Client()
+        self.client.force_login(self.trainer_1)
+        self.team = mommy.make("pokemon.Pokemon", _quantity=3)
+        self.view_url = reverse(self.view_name, kwargs={"pk": 1})
+
+    def test_detail_battle_successfully(self):
+        battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=True,
+            winner=self.trainer_2,
+        )
+
+        team_1 = mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
+        team_1.team.set(self.team)
+
+        team_2 = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
+        team_2.team.set(self.team)
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_not_creator_of_active_battle_is_denied(self):
+        battle = Battle.objects.create(
+            user_creator=self.trainer_2, user_opponent=self.trainer_1, settled=False,
+        )
+
+        creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
+        creator_team.team.set(self.team)
+
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_user_not_in_this_battle_is_denied(self):
+        trainer_3 = mommy.make("users.User")
+
+        battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_2,
+            user_opponent=trainer_3,
+            settled=True,
+            winner=self.trainer_2,
+        )
+
+        creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
+        creator_team.team.set(self.team)
+
+        opponent_team = mommy.make("battles.Team", trainer=trainer_3, battle=battle)
+        opponent_team.team.set(self.team)
+
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_allow_user_is_creator_of_active_battle(self):
+        battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer_1,
+            user_opponent=self.trainer_2,
+            settled=False,
+        )
+
+        creator_team = mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
+        creator_team.team.set(self.team)
+
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 200)

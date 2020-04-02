@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from common.models import IndexedTimeStampedModel
 
-from .managers import UserManager
+from .managers import UserManager  # noqa
 
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
@@ -28,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         return self.email
 
     def get_short_name(self):
-        return self.email.split("@")[0]
+        return self.email.split("@")[0].capitalize()
 
     def __str__(self):
         return self.email
