@@ -3,6 +3,7 @@ import logging
 from django.core.exceptions import PermissionDenied
 
 from battles.models import Team
+from pokemon.models import Pokemon
 from services.api import get_pokemon_stats
 
 
@@ -10,10 +11,24 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 
 
+def save_pokemon_in_team(selected_team):
+    for pokemon in selected_team:
+        if not Pokemon.objects.filter(id=pokemon).exists():
+            data = get_pokemon_stats(pokemon)
+            Pokemon.objects.create(
+                name=data["name"],
+                id=data["id"],
+                sprite=data["sprite"],
+                attack=data["attack"],
+                defense=data["defense"],
+                hp=data["hp"],
+            )
+
+
 def pokemon_team_exceeds_limit(team):
     limit = 600
 
-    team_stats = [get_pokemon_stats(pokemon.name) for pokemon in team]
+    team_stats = [get_pokemon_stats(pokemon) for pokemon in team]
     sum_pokemon_stats = []
 
     for pokemon in team_stats:
@@ -22,8 +37,11 @@ def pokemon_team_exceeds_limit(team):
     return sum(sum_pokemon_stats) > limit
 
 
-def duplicate_in_set(item_set):
-    return len(item_set) != len(set(item_set))
+def duplicate_pokemon(team):
+    for pokemon in team:
+        if team.count(pokemon) > 1:
+            return True
+    return False
 
 
 def change_battle_status(battle, winner):
@@ -42,20 +60,10 @@ def get_battle_opponent(user, battle):
 
 
 def get_respective_teams_in_battle(user, opponent, battle):
-    your_team_object = user.teams.get(battle=battle)
-    your_team = (
-        your_team_object.first_pokemon,
-        your_team_object.second_pokemon,
-        your_team_object.third_pokemon,
-    )
+    your_team = user.teams.get(battle=battle).team.all()
 
     if battle.settled:
-        opponent_team_object = opponent.teams.get(battle=battle)
-        opponent_team = (
-            opponent_team_object.first_pokemon,
-            opponent_team_object.second_pokemon,
-            opponent_team_object.third_pokemon,
-        )
+        opponent_team = opponent.teams.get(battle=battle).team.all()
         return {"winner": battle.winner.get_short_name, "pokemon": zip(your_team, opponent_team)}
 
     return {"pokemon": zip(your_team, [0, 0, 0])}

@@ -1,17 +1,14 @@
 from django import forms
 
-from dal import autocomplete
-
-from battles.choices import POKEMON_ORDER_CHOICES
 from battles.helpers.common import (
     change_battle_status,
-    duplicate_in_set,
+    duplicate_pokemon,
     pokemon_team_exceeds_limit,
 )
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
-from pokemon.models import Pokemon
+from services.api import POKE_API_LIMIT
 from users.models import User
 
 
@@ -31,32 +28,13 @@ class CreateBattleForm(forms.ModelForm):
 
 
 class CreateTeamForm(forms.ModelForm):
-    pokemon_1 = forms.ModelChoiceField(
-        queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(
-            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
-        ),
-    )
-    pokemon_2 = forms.ModelChoiceField(
-        queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(
-            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
-        ),
-    )
-    pokemon_3 = forms.ModelChoiceField(
-        queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(
-            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
-        ),
-    )
-
-    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1)
-    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2)
-    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3)
+    pokemon_1 = forms.IntegerField()
+    pokemon_2 = forms.IntegerField()
+    pokemon_3 = forms.IntegerField()
 
     class Meta:
         model = Team
-        fields = ["trainer", "pokemon_1", "pokemon_2", "pokemon_3", "order_1", "order_2", "order_3"]
+        fields = ["trainer", "pokemon_1", "pokemon_2", "pokemon_3"]
 
     def save(self, commit=True):
         # Saves Team object
@@ -66,23 +44,9 @@ class CreateTeamForm(forms.ModelForm):
         pokemon_2 = self.cleaned_data["pokemon_2"]
         pokemon_3 = self.cleaned_data["pokemon_3"]
 
-        order_1 = self.cleaned_data["order_1"]
-        order_2 = self.cleaned_data["order_2"]
-        order_3 = self.cleaned_data["order_3"]
-
-        battle_order = {
-            order_1: pokemon_1,
-            order_2: pokemon_2,
-            order_3: pokemon_3,
-        }
-
-        instance = Team.objects.create(
-            trainer=trainer,
-            battle=self.initial["battle"],
-            first_pokemon=battle_order["1"],
-            second_pokemon=battle_order["2"],
-            third_pokemon=battle_order["3"],
-        )
+        team = (pokemon_1, pokemon_2, pokemon_3)
+        instance = Team.objects.create(trainer=trainer, battle=self.initial["battle"])
+        instance.team.set(team)
 
         # Runs battle
 
@@ -105,17 +69,12 @@ class CreateTeamForm(forms.ModelForm):
 
         team = (pokemon_1, pokemon_2, pokemon_3)
 
-        order_1 = self.cleaned_data["order_1"]
-        order_2 = self.cleaned_data["order_2"]
-        order_3 = self.cleaned_data["order_3"]
+        for pokemon in team:
+            if pokemon < 0 or pokemon > POKE_API_LIMIT:
+                raise forms.ValidationError("Choose a valid pokemon")
 
-        order = (order_1, order_2, order_3)
-
-        if duplicate_in_set(order):
-            raise forms.ValidationError("Please allocate one pokemon per round")
-
-        if duplicate_in_set(team):
-            raise forms.ValidationError("Your team has duplicates, please use unique pokemon")
+        if duplicate_pokemon(team):
+            raise forms.ValidationError("Your team has duplicates, please use unique ids")
 
         if pokemon_team_exceeds_limit(team):
             raise forms.ValidationError(

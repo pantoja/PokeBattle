@@ -43,15 +43,7 @@ class Team(models.Model):
     trainer = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Trainer", related_name="teams"
     )
-    first_pokemon = models.ForeignKey(
-        Pokemon, related_name="first_pokemon", on_delete=models.CASCADE
-    )
-    second_pokemon = models.ForeignKey(
-        Pokemon, related_name="second_pokemon", on_delete=models.CASCADE
-    )
-    third_pokemon = models.ForeignKey(
-        Pokemon, related_name="third_pokemon", on_delete=models.CASCADE
-    )
+    team = models.ManyToManyField(Pokemon, verbose_name="Team")
 
     class Meta:
         ordering = ["-battle"]

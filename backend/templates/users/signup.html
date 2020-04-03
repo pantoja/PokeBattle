@@ -4,7 +4,7 @@
 
 {% block body %}
 {% if user.is_authenticated %}
-  <h3>You're already logged in.</h3>
+  <h3>You're already logged in. <a href="">Logout</a></h3>
 {% else %}
 <form method="post" class="sign-up-form">
   {% csrf_token %}

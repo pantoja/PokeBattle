@@ -12,8 +12,8 @@ def send_result_email(result):
         recipient_list=[winner.trainer.email, loser.trainer.email],
         context={
             "winner": winner.trainer,
-            "winner_team": (winner.first_pokemon, winner.second_pokemon, winner.third_pokemon),
+            "winner_team": winner.team.all(),
             "loser": loser.trainer,
-            "loser_team": (loser.first_pokemon, loser.second_pokemon, loser.third_pokemon),
+            "loser_team": loser.team.all(),
         },
     )
