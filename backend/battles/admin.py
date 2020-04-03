@@ -7,5 +7,9 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ("trainer", "battle")
 
 
-admin.site.register(Battle)
+class BattleAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "user_creator", "user_opponent")
+
+
+admin.site.register(Battle, BattleAdmin)
 admin.site.register(Team, TeamAdmin)
