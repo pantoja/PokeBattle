@@ -18,8 +18,13 @@ class TestTeamModel(TestCase):
         self.team = (self.pokemon_1.id, self.pokemon_2.id, self.pokemon_3.id)
 
     def test_create_team(self):
-        item = Team.objects.create(trainer=self.trainer, battle=self.battle)
-        item.team.set(self.team)
+        item = Team.objects.create(
+            trainer=self.trainer,
+            battle=self.battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
         check = Team.objects.filter(id=item.id).exists()
         self.assertTrue(check)
 
