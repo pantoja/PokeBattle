@@ -54,7 +54,6 @@ class ListSettledBattlesView(LoginRequiredMixin, ListView):
         context["battles"] = Battle.objects.filter(
             Q(user_creator=user) | Q(user_opponent=user), settled=True
         )
-        print(self.request.user)
         return context
 
 
