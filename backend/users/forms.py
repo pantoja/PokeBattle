@@ -15,7 +15,6 @@ class InviteFriendForm(forms.Form):
 
     def clean(self):
         email = self.cleaned_data["email"]
-
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This user already has an account")
         return self.cleaned_data
