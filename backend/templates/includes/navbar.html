@@ -7,7 +7,7 @@
     <li class="navbar-item"><a href="{% url 'battles:create_battle' %}">Create a Battle</a></li>
     <li class="navbar-item"><a href="{% url 'battles:settled_battles' %}">Settled Battles</a></li>
     <li class="navbar-item"><a href="{% url 'battles:active_battles' %}">Active Battles</a></li>
-    <li class="navbar-item"><a href="{% url 'users:invite_friend' %}">Invite a friend</a></li>
+    <li class="navbar-item" id="invite-button"><a href="{% url 'users:invite_friend' %}">Invite a friend</a></li>
     <li class="welcome-user">
       {% if user.is_authenticated %}
         Welcome, {{ user.get_short_name }} |
