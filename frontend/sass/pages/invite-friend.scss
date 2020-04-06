@@ -1,10 +1,14 @@
 .invite-friend-form {
   @include form-grid;
+
   .invite-form-title {
     @include form-title;
   }
   .submit-invite {
     @include form-submit;
     margin-left: 5px;
+  }
+  .errorlist {
+    @include error-message;
   }
 }
