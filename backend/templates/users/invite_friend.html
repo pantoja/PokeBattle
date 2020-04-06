@@ -7,12 +7,12 @@
 
 <form method="post" class="invite-friend-form">
   {{ form.non_field_errors }}
-  <h2 class="form-title">Invite a friend</h2>
+  <h2 class="invite-form-title">Invite a friend</h2>
   {% csrf_token %}
-  <div class="input-container">
-    <label class="email-label" for="username">Email</label>
+  <div class="invite-container">
+    <label class="email-label" for="email">Email:</label>
     {{ form.email }}
+    <input type="submit" value="Send invite!" class="submit-invite">
   </div>
-  <input type="submit" value="Send invite!" class="email-submit">
 </form>
 {% endblock %}
