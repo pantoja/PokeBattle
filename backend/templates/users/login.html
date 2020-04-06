@@ -3,6 +3,10 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+
+{% if user.is_authenticated %}
+  <h3>You're already logged in.</h3>
+{% else %}
 <form method="post" class="login-form">
   {{ form.non_field_errors }}
   <h2 class="login-title">Login</h2>
@@ -17,4 +21,5 @@
   </div>
   <input type="submit" value="Login" class="login-submit">
 </form>
+{% endif %}
 {% endblock %}
