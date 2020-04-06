@@ -29,13 +29,14 @@ class TestTeamModel(TestCase):
         self.assertTrue(check)
 
     def test_create_active_battle(self):
-        battle = Battle.objects.create(
-            user_creator=self.trainer, user_opponent=self.trainer_opponent
+        battle = mommy.make(
+            "battles.Battle", user_creator=self.trainer, user_opponent=self.trainer_opponent
         )
         self.assertTrue(battle)
 
     def test_create_settled_battle(self):
-        battle = Battle.objects.create(
+        battle = mommy.make(
+            "battles.Battle",
             user_creator=self.trainer,
             user_opponent=self.trainer_opponent,
             settled=True,
@@ -44,13 +45,17 @@ class TestTeamModel(TestCase):
         self.assertTrue(battle)
 
     def test_battle_cant_be_settled_without_winner(self):
-        battle = Battle.objects.create(
-            user_creator=self.trainer, user_opponent=self.trainer_opponent, settled=True
+        battle = mommy.make(
+            "battles.Battle",
+            user_creator=self.trainer,
+            user_opponent=self.trainer_opponent,
+            settled=True,
         )
         self.assertRaises(ValidationError, battle.clean)
 
     def test_battle_cant_have_winner_without_being_settled(self):
-        battle = Battle.objects.create(
+        battle = mommy.make(
+            "battles.Battle",
             user_creator=self.trainer,
             user_opponent=self.trainer_opponent,
             winner=self.trainer_opponent,
@@ -64,10 +69,10 @@ class TestBattleModel(TestCase):
         self.opponent = mommy.make("users.User")
 
     def test_create_battle(self):
-        item = Battle.objects.create(user_creator=self.creator, user_opponent=self.opponent)
+        item = mommy.make("battles.Battle", user_creator=self.creator, user_opponent=self.opponent)
         check = Battle.objects.filter(id=item.id).exists()
         self.assertTrue(check)
 
     def test_create_empty_field_battle(self):
         with self.assertRaises(IntegrityError):
-            Battle.objects.create(user_creator=self.creator, user_opponent=None)
+            mommy.make("battles.Battle", user_creator=self.creator, user_opponent=None)
