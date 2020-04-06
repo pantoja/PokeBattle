@@ -60,7 +60,9 @@ class TestDetailBattleView(TestCase):
         self.trainer_2 = mommy.make("users.User")
         self.client = Client()
         self.client.force_login(self.trainer_1)
-        self.team = mommy.make("pokemon.Pokemon", _quantity=3)
+        self.pokemon_1 = mommy.make("pokemon.Pokemon", id=1)
+        self.pokemon_2 = mommy.make("pokemon.Pokemon", id=2)
+        self.pokemon_3 = mommy.make("pokemon.Pokemon", id=3)
         self.view_url = reverse(self.view_name, kwargs={"pk": 1})
 
     def test_detail_battle_successfully(self):
@@ -72,11 +74,24 @@ class TestDetailBattleView(TestCase):
             winner=self.trainer_2,
         )
 
-        team_1 = mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
-        team_1.team.set(self.team)
+        mommy.make(
+            "battles.Team",
+            trainer=self.trainer_1,
+            battle=battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
 
-        team_2 = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
-        team_2.team.set(self.team)
+        mommy.make(
+            "battles.Team",
+            trainer=self.trainer_2,
+            battle=battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
+
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
@@ -88,8 +103,14 @@ class TestDetailBattleView(TestCase):
             settled=False,
         )
 
-        creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
-        creator_team.team.set(self.team)
+        mommy.make(
+            "battles.Team",
+            trainer=self.trainer_2,
+            battle=battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
 
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 302)
@@ -105,11 +126,23 @@ class TestDetailBattleView(TestCase):
             winner=self.trainer_2,
         )
 
-        creator_team = mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
-        creator_team.team.set(self.team)
+        mommy.make(
+            "battles.Team",
+            trainer=self.trainer_2,
+            battle=battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
 
-        opponent_team = mommy.make("battles.Team", trainer=trainer_3, battle=battle)
-        opponent_team.team.set(self.team)
+        mommy.make(
+            "battles.Team",
+            trainer=trainer_3,
+            battle=battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
 
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 302)
@@ -121,15 +154,19 @@ class TestDetailBattleView(TestCase):
             user_opponent=self.trainer_2,
             settled=False,
         )
-
-        creator_team = mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
-        creator_team.team.set(self.team)
-
+        mommy.make(
+            "battles.Team",
+            trainer=self.trainer_1,
+            battle=battle,
+            first_pokemon=self.pokemon_1,
+            second_pokemon=self.pokemon_2,
+            third_pokemon=self.pokemon_3,
+        )
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
 
-class CreateTeamView(TestCase):
+class TestCreateTeamView(TestCase):
     view_name = "battles:create_team"
 
     def setUp(self):
@@ -161,9 +198,15 @@ class CreateTeamView(TestCase):
         battle = mommy.make(
             "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
         )
-        creator_team = mommy.make("battles.Team", trainer=self.creator, battle=battle)
-        team = mommy.make("pokemon.Pokemon", _quantity=3)
-        creator_team.team.set(team)
+
+        mommy.make(
+            "battles.Team",
+            trainer=self.creator,
+            battle=battle,
+            first_pokemon=mommy.make("pokemon.Pokemon", id=1),
+            second_pokemon=mommy.make("pokemon.Pokemon", id=2),
+            third_pokemon=mommy.make("pokemon.Pokemon", id=3),
+        )
         response = self.client.get(self.view_url)
         self.assertTrue(response.context["user_has_team"])
 

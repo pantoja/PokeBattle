@@ -22,11 +22,8 @@ def pokemon_team_exceeds_limit(team):
     return sum(sum_pokemon_stats) > limit
 
 
-def duplicate_pokemon(team):
-    for pokemon in team:
-        if team.count(pokemon) > 1:
-            return True
-    return False
+def duplicate_in_set(item_set):
+    return len(item_set) != len(set(item_set))
 
 
 def change_battle_status(battle, winner):
@@ -45,10 +42,20 @@ def get_battle_opponent(user, battle):
 
 
 def get_respective_teams_in_battle(user, opponent, battle):
-    your_team = user.teams.get(battle=battle).team.all()
+    your_team_object = user.teams.get(battle=battle)
+    your_team = (
+        your_team_object.first_pokemon,
+        your_team_object.second_pokemon,
+        your_team_object.third_pokemon,
+    )
 
     if battle.settled:
-        opponent_team = opponent.teams.get(battle=battle).team.all()
+        opponent_team_object = opponent.teams.get(battle=battle)
+        opponent_team = (
+            opponent_team_object.first_pokemon,
+            opponent_team_object.second_pokemon,
+            opponent_team_object.third_pokemon,
+        )
         return {"winner": battle.winner.get_short_name, "pokemon": zip(your_team, opponent_team)}
 
     return {"pokemon": zip(your_team, [0, 0, 0])}

@@ -13,10 +13,15 @@
     display: none;
   }
   .choose-pokemon-container {
-    @include form-field-container;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 180px auto auto auto;
 
     .choose-pokemon-label{
       @include form-label;
+    }
+    .choose-round-label {
+      margin: 0 20px;
     }
   }
   .team-form-button {

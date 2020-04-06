@@ -21,6 +21,9 @@ class TestCreateTeamForm(TestCase):
                 "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
                 "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
                 "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+                "order_1": "1",
+                "order_2": "2",
+                "order_3": "3",
             },
         }
         form = CreateTeamForm(**params)
@@ -33,12 +36,15 @@ class TestCreateTeamForm(TestCase):
                 "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
                 "pokemon_2": mommy.make("pokemon.Pokemon", id=1).id,
                 "pokemon_3": mommy.make("pokemon.Pokemon", id=2).id,
+                "order_1": "1",
+                "order_2": "2",
+                "order_3": "3",
             },
         }
         form = CreateTeamForm(**params)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            ["Your team has duplicates, please use unique ids"], form.non_field_errors()
+            ["Your team has duplicates, please use unique pokemon"], form.non_field_errors()
         )
 
     @mock.patch("battles.helpers.common.get_pokemon_stats")
@@ -49,6 +55,9 @@ class TestCreateTeamForm(TestCase):
                 "pokemon_1": mommy.make("pokemon.Pokemon", id=493).id,
                 "pokemon_2": mommy.make("pokemon.Pokemon", id=2).id,
                 "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
+                "order_1": "1",
+                "order_2": "2",
+                "order_3": "3",
             },
         }
         mock_get_pokemon_stats.return_value = {
@@ -66,6 +75,22 @@ class TestCreateTeamForm(TestCase):
             form.non_field_errors(),
         )
         assert mock_get_pokemon_stats.called
+
+    def test_more_than_one_pokemon_cant_battle_in_the_same_round(self):
+        params = {
+            "data": {
+                "trainer": self.trainer.id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", id=1).id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", id=2).id,
+                "order_1": "2",
+                "order_2": "2",
+                "order_3": "3",
+            },
+        }
+        form = CreateTeamForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(["Please allocate one pokemon per round"], form.non_field_errors())
 
 
 class TestCreateBattleForm(TestCase):
