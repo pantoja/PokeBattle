@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from users.forms import UserSignUpForm
+from users.forms import InviteFriendForm, UserSignUpForm
 
 
 class TestSignUpForm(TestCase):
@@ -33,3 +33,23 @@ class TestSignUpForm(TestCase):
         form = UserSignUpForm(**params)
         self.assertFalse(form.is_valid())
         self.assertIn("User with this Email already exists.", form["email"].errors)
+
+
+class TestInviteFriendForm(TestCase):
+    def setUp(self):
+        self.user = mommy.make("users.User")
+
+    def test_invite_user_succesfully(self):
+        params = {
+            "data": {"email": "new_user@email.com"},
+        }
+        form = InviteFriendForm(**params)
+        self.assertTrue(form.is_valid())
+
+    def test_invite_already_signed_user(self):
+        params = {"data": {"email": self.user.email}}
+        form = InviteFriendForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            ["This user already has an account"], form.non_field_errors(),
+        )

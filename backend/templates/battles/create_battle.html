@@ -13,5 +13,7 @@
     {{ form.user_opponent }}
     <input type="submit" value="Go!" class="opponent-form-button">
   </div>
+  <span>OR</span>
+  <a href="{% url 'users:invite_friend' %}">Invite a friend!</a>
 </form>
 {% endblock %}
