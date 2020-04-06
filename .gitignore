@@ -45,3 +45,9 @@ spritesmith.scss
 
 # templated email
 tmp_email/
+
+# redis
+*.rdb
+
+# celerybeat
+celerybeat-schedule.*

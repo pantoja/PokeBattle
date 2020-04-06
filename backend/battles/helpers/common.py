@@ -3,7 +3,6 @@ import logging
 from django.core.exceptions import PermissionDenied
 
 from battles.models import Team
-from pokemon.models import Pokemon
 from services.api import get_pokemon_stats
 
 
@@ -11,24 +10,10 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 
 
-def save_pokemon_in_team(selected_team):
-    for pokemon in selected_team:
-        if not Pokemon.objects.filter(id=pokemon).exists():
-            data = get_pokemon_stats(pokemon)
-            Pokemon.objects.create(
-                name=data["name"],
-                id=data["id"],
-                sprite=data["sprite"],
-                attack=data["attack"],
-                defense=data["defense"],
-                hp=data["hp"],
-            )
-
-
 def pokemon_team_exceeds_limit(team):
     limit = 600
 
-    team_stats = [get_pokemon_stats(pokemon) for pokemon in team]
+    team_stats = [get_pokemon_stats(pokemon.name) for pokemon in team]
     sum_pokemon_stats = []
 
     for pokemon in team_stats:

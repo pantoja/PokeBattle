@@ -1,5 +1,7 @@
 from django import forms
 
+from dal import autocomplete
+
 from battles.helpers.common import (
     change_battle_status,
     duplicate_pokemon,
@@ -8,7 +10,7 @@ from battles.helpers.common import (
 from battles.helpers.email import send_result_email
 from battles.helpers.fight import run_battle
 from battles.models import Battle, Team
-from services.api import POKE_API_LIMIT
+from pokemon.models import Pokemon
 from users.models import User
 
 
@@ -28,9 +30,24 @@ class CreateBattleForm(forms.ModelForm):
 
 
 class CreateTeamForm(forms.ModelForm):
-    pokemon_1 = forms.IntegerField()
-    pokemon_2 = forms.IntegerField()
-    pokemon_3 = forms.IntegerField()
+    pokemon_1 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
+        ),
+    )
+    pokemon_2 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
+        ),
+    )
+    pokemon_3 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon:pokemon_autocomplete", attrs={"data-html": True}
+        ),
+    )
 
     class Meta:
         model = Team
@@ -68,10 +85,6 @@ class CreateTeamForm(forms.ModelForm):
         pokemon_3 = cleaned_data.get("pokemon_3")
 
         team = (pokemon_1, pokemon_2, pokemon_3)
-
-        for pokemon in team:
-            if pokemon < 0 or pokemon > POKE_API_LIMIT:
-                raise forms.ValidationError("Choose a valid pokemon")
 
         if duplicate_pokemon(team):
             raise forms.ValidationError("Your team has duplicates, please use unique ids")

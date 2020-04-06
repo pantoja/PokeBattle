@@ -18,9 +18,9 @@ class TestCreateTeamForm(TestCase):
         params = {
             "data": {
                 "trainer": self.trainer.id,
-                "pokemon_1": mommy.make("pokemon.Pokemon", id=1).id,
-                "pokemon_2": mommy.make("pokemon.Pokemon", id=2).id,
-                "pokemon_3": mommy.make("pokemon.Pokemon", id=3).id,
+                "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
+                "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
+                "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
             },
         }
         form = CreateTeamForm(**params)
@@ -40,19 +40,6 @@ class TestCreateTeamForm(TestCase):
         self.assertEqual(
             ["Your team has duplicates, please use unique ids"], form.non_field_errors()
         )
-
-    def test_team_cant_have_invalid_pokemon(self):
-        params = {
-            "data": {
-                "trainer": self.trainer.id,
-                "pokemon_1": mommy.make("pokemon.Pokemon", id=-5).id,
-                "pokemon_2": mommy.make("pokemon.Pokemon", id=1).id,
-                "pokemon_3": mommy.make("pokemon.Pokemon", id=2).id,
-            },
-        }
-        form = CreateTeamForm(**params)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(["Choose a valid pokemon"], form.non_field_errors())
 
     @mock.patch("battles.helpers.common.get_pokemon_stats")
     def test_pokemon_exceeds_points_limit(self, mock_get_pokemon_stats):
