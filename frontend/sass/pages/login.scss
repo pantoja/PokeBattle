@@ -19,4 +19,11 @@
   .login-submit {
     @include form-submit;
   }
+  .google-btn-login {
+    @include google-btn;
+
+    .google-btn-text {
+      padding: 0 50px;
+    }
+  }
 }

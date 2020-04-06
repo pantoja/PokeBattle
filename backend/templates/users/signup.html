@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Sign Up{% endblock %}
 
 {% block body %}
@@ -20,7 +20,7 @@
 
   <h2 class="sign-up-title">Sign Up</h2>
   <div class="sign-up-container">
-    <label for="username" class="sign-up-label">Username</label>
+    <label for="username" class="sign-up-label">Email</label>
     {{ form.email }}
   </div>
   <div class="sign-up-container">
@@ -32,6 +32,12 @@
     {{ form.password2 }}
   </div>
   <input type="submit" value="Sign Up" class="sign-up-submit">
+  <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-btn-signup">
+    <img src="{% static "image/google.svg" %}" alt="" class="google-icon">
+    <span class="google-btn-text">
+      Sign Up with Google
+    </span>
+  </a>
 </form>
 {% endif %}
 {% endblock %}

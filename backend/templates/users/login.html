@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
@@ -20,6 +21,12 @@
     {{ form.password }}
   </div>
   <input type="submit" value="Login" class="login-submit">
+  <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-btn-login">
+    <img src="{% static "image/google.svg" %}" alt="" class="google-icon">
+    <span class="google-btn-text">
+      Sign In with Google
+    </span>
+  </a>
 </form>
 {% endif %}
 {% endblock %}
