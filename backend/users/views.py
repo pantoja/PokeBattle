@@ -41,5 +41,6 @@ class InviteFriendView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         invitee = self.request.user.email
         invited = form.cleaned_data.get("email")
-        send_signup_invite_email(invitee, invited)
+        url = self.request.build_absolute_uri("/")
+        send_signup_invite_email(invitee, invited, url)
         return HttpResponseRedirect(self.get_success_url())
