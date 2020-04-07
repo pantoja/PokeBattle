@@ -17,7 +17,7 @@
 
     ATT: {{ winner_team.2.attack }} DEF: {{ winner_team.2.defense }} HP: {{ winner_team.2.hp }} --> {{ winner_team.2|capfirst }} VS {{ loser_team.2|capfirst }} <-- ATT: {{ loser_team.2.attack }} DEF: {{ loser_team.2.defense }} HP: {{ loser_team.2.hp }}
 
-Congratulations {{ winner }}, you won! Play another round at pantoja-pokebattle.herokuapp.com
+Congratulations {{ winner }}, you won! Play another round at {{ url }}
 
 {% endblock %}
 
@@ -116,7 +116,7 @@ Congratulations {{ winner }}, you won! Play another round at pantoja-pokebattle.
   </table>
 
   <p> Congratulations, {{ winner.get_short_name }} is the winner of this battle.
-    Play another round at <a href="pantoja-pokebattle.herokuapp.com">PokeBattle</a>
+    Play another round at <a href="{{ url }}">PokeBattle</a>
   </p>
 
 </div>

@@ -57,11 +57,13 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
         opponent = battle.user_opponent
 
         if self.object.trainer == battle.user_creator:
-            send_invite_to_match(creator, opponent)
+            send_invite_to_match(
+                creator, opponent, self.request.build_absolute_uri(f"/create-team/{battle.id}")
+            )
         if self.object.trainer == battle.user_opponent:
             result = run_battle(creator.teams.get(battle=battle.pk), self.object)
             change_battle_status(battle, result["winner"].trainer)
-            send_result_email(result)
+            send_result_email(result, self.request.build_absolute_uri("/"))
 
         return HttpResponseRedirect(self.get_success_url())
 
