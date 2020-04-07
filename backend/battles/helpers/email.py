@@ -17,3 +17,12 @@ def send_result_email(result):
             "loser_team": (loser.first_pokemon, loser.second_pokemon, loser.third_pokemon),
         },
     )
+
+
+def send_invite_to_match(invitee, invited):
+    send_templated_mail(
+        template_name="invite_to_battle",
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[invited],
+        context={"invitee": invitee, "invited": invited},
+    )
