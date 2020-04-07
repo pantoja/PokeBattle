@@ -173,15 +173,14 @@ class TestCreateTeamView(TestCase):
     def setUp(self):
         self.creator = mommy.make("users.User")
         self.opponent = mommy.make("users.User")
-
+        self.battle = mommy.make(
+            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent
+        )
         self.client = Client()
         self.client.force_login(self.creator)
         self.view_url = reverse(self.view_name, kwargs={"pk": 1})
 
     def test_user_allowed_to_create_team(self):
-        mommy.make(
-            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
-        )
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
@@ -190,34 +189,23 @@ class TestCreateTeamView(TestCase):
         mommy.make(
             "battles.Battle", user_creator=self.opponent, user_opponent=user_creator, settled=False,
         )
-        response = self.client.get(self.view_url)
+        url = reverse(self.view_name, kwargs={"pk": 2})
+        response = self.client.get(url)
         self.assertRedirects(
             response, "/", status_code=302, target_status_code=200, fetch_redirect_response=True,
         )
 
     def test_user_already_has_team_in_this_battle(self):
-        battle = mommy.make(
-            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
-        )
-
         mommy.make(
-            "battles.Team",
-            trainer=self.creator,
-            battle=battle,
-            first_pokemon=mommy.make("pokemon.Pokemon", id=1),
-            second_pokemon=mommy.make("pokemon.Pokemon", id=2),
-            third_pokemon=mommy.make("pokemon.Pokemon", id=3),
+            "battles.Team", trainer=self.creator, battle=self.battle,
         )
         response = self.client.get(self.view_url)
         self.assertTrue(response.context["user_has_team"])
 
     def test_invite_email_is_sent(self):
-        battle = mommy.make(
-            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent
-        )
         post_data = {
             "trainer": self.creator.id,
-            "battle": battle.id,
+            "battle": self.battle.id,
             "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
             "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
             "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
@@ -232,21 +220,11 @@ class TestCreateTeamView(TestCase):
         )
 
     def test_send_battle_result_email(self):
-        battle = mommy.make(
-            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False
-        )
-        mommy.make(
-            "battles.Team",
-            battle=battle,
-            trainer=self.creator,
-            first_pokemon=mommy.make("pokemon.Pokemon"),
-            second_pokemon=mommy.make("pokemon.Pokemon"),
-            third_pokemon=mommy.make("pokemon.Pokemon"),
-        )
+        mommy.make("battles.Team", battle=self.battle, trainer=self.creator)
 
         post_data = {
             "trainer": self.opponent.id,
-            "battle": battle.id,
+            "battle": self.battle.id,
             "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
             "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
             "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
@@ -257,6 +235,25 @@ class TestCreateTeamView(TestCase):
         self.client.post(self.view_url, post_data)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "PokeBattle - Here's the result of your battle")
+
+    def test_change_battle_status(self):
+        mommy.make("battles.Team", battle=self.battle, trainer=self.creator)
+
+        post_data = {
+            "trainer": self.opponent.id,
+            "battle": self.battle.id,
+            "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
+            "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
+            "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+            "order_1": "1",
+            "order_2": "2",
+            "order_3": "3",
+        }
+
+        self.client.post(self.view_url, post_data, follow=True)
+        battle = Battle.objects.get(id=self.battle.id)
+        self.assertTrue(battle.settled)
+        self.assertTrue(battle.winner)
 
 
 class TestListActiveBattles(TestCase):
