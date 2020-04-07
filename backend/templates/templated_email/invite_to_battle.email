@@ -1,4 +1,4 @@
-{% block subject %}PokeBattle - Here's the result of your battle{% endblock %}
+{% block subject %}PokeBattle - {{invitee}} invited you to a match{% endblock %}
 
 {% block plain %}
     Hi {{ invited }}, {{ invitee }} invited you to a match. Checkout at https://pantoja-pokebattle.herokuapp.com/ to play with them!

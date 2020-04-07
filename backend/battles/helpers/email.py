@@ -1,6 +1,11 @@
+import logging
+
 from django.conf import settings
 
 from templated_email import send_templated_mail
+
+
+logger = logging.getLogger(__name__)
 
 
 def send_result_email(result):
@@ -26,3 +31,4 @@ def send_invite_to_match(invitee, invited):
         recipient_list=[invited],
         context={"invitee": invitee, "invited": invited},
     )
+    logger.info("Sent email invite to battle")

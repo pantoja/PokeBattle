@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -50,6 +51,14 @@ class TestCreateBattleView(TestCase):
         response = self.client.get(self.view_url)
         options = response.context["form"].fields["user_opponent"].queryset
         self.assertNotIn(self.client, options)
+
+    def test_invite_email_is_sent(self):
+        post_data = {"user_creator": self.creator.id, "user_opponent": self.opponent.id}
+        self.client.post(self.view_url, post_data)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, f"PokeBattle - {self.creator.email} invited you to a match"
+        )
 
 
 class TestDetailBattleView(TestCase):
