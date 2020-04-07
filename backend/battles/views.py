@@ -1,11 +1,17 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
-from battles.helpers.common import get_battle_opponent, get_respective_teams_in_battle
-from battles.helpers.email import send_invite_to_match
+from battles.helpers.common import (
+    change_battle_status,
+    get_battle_opponent,
+    get_respective_teams_in_battle,
+)
+from battles.helpers.email import send_invite_to_match, send_result_email
+from battles.helpers.fight import run_battle
 from battles.mixins import UserIsNotInThisBattleMixin, UserNotInvitedToBattleMixin
 from battles.models import Battle
 from users.models import User
@@ -21,11 +27,6 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("battles:create_team", args=[self.object.id])
-
-    def form_valid(self, form):
-        self.object = form.save()
-        send_invite_to_match(self.object.user_creator.email, self.object.user_opponent.email)
-        return super().form_valid(form)
 
 
 class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView):
@@ -48,6 +49,21 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
             context["user_has_team"] = True
 
         return context
+
+    def form_valid(self, form):
+        self.object = form.save()
+        battle = self.object.battle
+        creator = battle.user_creator
+        opponent = battle.user_opponent
+
+        if self.object.trainer == battle.user_creator:
+            send_invite_to_match(creator, opponent)
+        if self.object.trainer == battle.user_opponent:
+            result = run_battle(creator.teams.get(battle=battle.pk), self.object)
+            change_battle_status(battle, result["winner"].trainer)
+            send_result_email(result)
+
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class ListSettledBattlesView(LoginRequiredMixin, ListView):

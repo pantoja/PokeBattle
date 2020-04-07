@@ -52,14 +52,6 @@ class TestCreateBattleView(TestCase):
         options = response.context["form"].fields["user_opponent"].queryset
         self.assertNotIn(self.client, options)
 
-    def test_invite_email_is_sent(self):
-        post_data = {"user_creator": self.creator.id, "user_opponent": self.opponent.id}
-        self.client.post(self.view_url, post_data)
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(
-            mail.outbox[0].subject, f"PokeBattle - {self.creator.email} invited you to a match"
-        )
-
 
 class TestDetailBattleView(TestCase):
     view_name = "battles:detail_battle"
@@ -218,6 +210,49 @@ class TestCreateTeamView(TestCase):
         )
         response = self.client.get(self.view_url)
         self.assertTrue(response.context["user_has_team"])
+
+    def test_invite_email_is_sent(self):
+        post_data = {
+            "trainer": self.creator.id,
+            "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
+            "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
+            "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+            "order_1": "1",
+            "order_2": "2",
+            "order_3": "3",
+        }
+        self.client.post(self.view_url, post_data)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, f"PokeBattle - {self.creator.email} invited you to a match"
+        )
+
+    def test_send_battle_result_email(self):
+        battle = mommy.make(
+            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False
+        )
+        mommy.make(
+            "battles.Team",
+            battle=battle,
+            trainer=self.creator,
+            first_pokemon=mommy.make("pokemon.Pokemon"),
+            second_pokemon=mommy.make("pokemon.Pokemon"),
+            third_pokemon=mommy.make("pokemon.Pokemon"),
+        )
+
+        post_data = {
+            "trainer": self.opponent.id,
+            "battle": battle.id,
+            "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
+            "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
+            "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+            "order_1": "1",
+            "order_2": "2",
+            "order_3": "3",
+        }
+        self.client.post(self.view_url, post_data)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "PokeBattle - Here's the result of your battle")
 
 
 class TestListActiveBattles(TestCase):
