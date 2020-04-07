@@ -212,8 +212,12 @@ class TestCreateTeamView(TestCase):
         self.assertTrue(response.context["user_has_team"])
 
     def test_invite_email_is_sent(self):
+        battle = mommy.make(
+            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent
+        )
         post_data = {
             "trainer": self.creator.id,
+            "battle": battle.id,
             "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
             "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
             "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
