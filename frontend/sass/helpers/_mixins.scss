@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-@mixin error-message {
+@mixin message {
   background-color: $orange;
   color: $white;
   border-radius: 10px;

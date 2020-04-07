@@ -8,6 +8,11 @@
 <form method="post" class="invite-friend-form">
   <h2 class="invite-form-title">Invite a friend</h2>
   {{ form.non_field_errors }}
+  {% for message in messages %}
+  <div class="success-message">
+    {{ message }}
+  </div>
+  {% endfor %}
   {% csrf_token %}
   <div class="invite-container">
     <label class="email-label" for="email">Email:</label>

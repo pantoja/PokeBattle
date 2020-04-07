@@ -8,7 +8,7 @@
     @include form-submit;
     margin-left: 5px;
   }
-  .errorlist {
-    @include error-message;
+  .errorlist, .success-message {
+    @include message;
   }
 }
