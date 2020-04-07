@@ -2,7 +2,7 @@
   @include form-grid;
 
   .errorlist {
-    @include error-message;
+    @include message;
     justify-self: center;
   }
   .sign-up-title {

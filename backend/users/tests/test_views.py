@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -60,3 +61,13 @@ class TestInviteUserView(TestCase):
         }
         response = self.client.post(self.view_url, post_data, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_sends_email_invite_to_signup(self):
+        post_data = {
+            "email": "new_email@email.com",
+        }
+        self.client.post(self.view_url, post_data)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, f"PokeBattle - Signup to battle with {self.user.email}"
+        )
