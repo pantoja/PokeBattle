@@ -55,11 +55,13 @@ class TestInviteUserView(TestCase):
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
-    def test_redirects_after_sent_form(self):
+    def test_display_success_message_after_sent_form(self):
         post_data = {
             "email": "new_email@email.com",
         }
         response = self.client.post(self.view_url, post_data, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertEqual(message.message, "Your invitation was sent!")
         self.assertEqual(response.status_code, 200)
 
     def test_sends_email_invite_to_signup(self):
