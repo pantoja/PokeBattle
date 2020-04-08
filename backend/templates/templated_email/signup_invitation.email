@@ -1,0 +1,10 @@
+{% block subject %}PokeBattle - Signup to battle with {{invitee}}{% endblock %}
+
+{% block plain %}
+    Hi {{ invited }}, {{ invitee }} wants to play a pokemon battle with you. Sign up at {{ url }} to play pokebattle with friends!
+{% endblock %}
+
+{% block html %}
+    <p>Hi {{ invited }},</p>
+    <p>{{ invitee }} wants to play a pokemon battle with you. Sign up at <a href="{{ url }}">Pokebattle</a> to play pokebattle with friends!</p>
+{% endblock %}
