@@ -58,7 +58,9 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
 
         if self.object.trainer == battle.user_creator:
             send_invite_to_match(
-                creator, opponent, self.request.build_absolute_uri(f"/create-team/{battle.id}")
+                creator.email,
+                opponent.email,
+                self.request.build_absolute_uri(f"/create-team/{battle.id}"),
             )
         if self.object.trainer == battle.user_opponent:
             result = run_battle(creator.teams.get(battle=battle.pk), self.object)
