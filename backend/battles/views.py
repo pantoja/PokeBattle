@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -46,8 +47,10 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
         user = User.objects.get(id=self.request.user.id)
         battle = self.kwargs["pk"]
         if user.teams.filter(battle=battle).exists():
-            context["user_has_team"] = True
-
+            messages.info(
+                self.request,
+                "You've chosen your team for this battle. Check your email for results",
+            )
         return context
 
     def form_valid(self, form):
@@ -66,8 +69,7 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
             result = run_battle(creator.teams.get(battle=battle.pk), self.object)
             change_battle_status(battle, result["winner"].trainer)
             send_result_email(result, self.request.build_absolute_uri("/"))
-
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(self.request.path)
 
 
 class ListSettledBattlesView(LoginRequiredMixin, ListView):

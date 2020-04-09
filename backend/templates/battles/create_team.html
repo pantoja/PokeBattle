@@ -5,8 +5,10 @@
 
 {% block body %}
 
-{% if user_has_team %}
-<h2 class="team-already-exists-title">This battle has already begun. Check your email for results</h2>
+{% if messages %}
+  {% for message in messages %}
+    <h2 class="team-already-exists-title">{{ message }}</h2>
+  {% endfor %}
 {% else %}
 
 <form method="post" class="choose-team-form">
