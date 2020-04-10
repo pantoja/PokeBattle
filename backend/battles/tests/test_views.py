@@ -179,6 +179,7 @@ class TestCreateTeamView(TestCase):
         self.client = Client()
         self.client.force_login(self.creator)
         self.view_url = reverse(self.view_name, kwargs={"pk": 1})
+        self.pokemon_set = mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=50, _quantity=3)
 
     def test_user_allowed_to_create_team(self):
         response = self.client.get(self.view_url)
@@ -200,15 +201,19 @@ class TestCreateTeamView(TestCase):
             "battles.Team", trainer=self.creator, battle=self.battle,
         )
         response = self.client.get(self.view_url)
-        self.assertTrue(response.context["user_has_team"])
+        message = list(response.context.get("messages"))[0]
+        self.assertEqual(
+            message.message, "You've chosen your team for this battle. Check your email for results"
+        )
+        self.assertEqual(response.status_code, 200)
 
     def test_invite_email_is_sent(self):
         post_data = {
             "trainer": self.creator.id,
             "battle": self.battle.id,
-            "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
-            "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
-            "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+            "pokemon_1": self.pokemon_set[0].id,
+            "pokemon_2": self.pokemon_set[1].id,
+            "pokemon_3": self.pokemon_set[2].id,
             "order_1": "1",
             "order_2": "2",
             "order_3": "3",
@@ -225,9 +230,9 @@ class TestCreateTeamView(TestCase):
         post_data = {
             "trainer": self.opponent.id,
             "battle": self.battle.id,
-            "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
-            "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
-            "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+            "pokemon_1": self.pokemon_set[0].id,
+            "pokemon_2": self.pokemon_set[1].id,
+            "pokemon_3": self.pokemon_set[2].id,
             "order_1": "1",
             "order_2": "2",
             "order_3": "3",
@@ -242,9 +247,9 @@ class TestCreateTeamView(TestCase):
         post_data = {
             "trainer": self.opponent.id,
             "battle": self.battle.id,
-            "pokemon_1": mommy.make("pokemon.Pokemon", name="ivysaur").id,
-            "pokemon_2": mommy.make("pokemon.Pokemon", name="bulbasaur").id,
-            "pokemon_3": mommy.make("pokemon.Pokemon", name="pikachu").id,
+            "pokemon_1": self.pokemon_set[0].id,
+            "pokemon_2": self.pokemon_set[1].id,
+            "pokemon_3": self.pokemon_set[2].id,
             "order_1": "1",
             "order_2": "2",
             "order_3": "3",
