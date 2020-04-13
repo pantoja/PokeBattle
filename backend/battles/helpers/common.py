@@ -1,9 +1,5 @@
 import logging
 
-from django.core.exceptions import PermissionDenied
-
-from battles.models import Team
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
@@ -23,9 +19,6 @@ def duplicate_in_set(item_set):
 
 
 def change_battle_status(battle, winner):
-    if not len(Team.objects.filter(battle=battle.id)) == 2:
-        logger.error("Battle did not save both teams")
-        raise PermissionDenied
     battle.settled = True
     battle.winner = winner
     battle.save()
