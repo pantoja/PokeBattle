@@ -12,7 +12,7 @@ logger = get_task_logger(__name__)
 
 @celery_app.task
 def run_battle_task(pk, url):
-    #  using %s because pylint raises a formatting error
+    #  Using %s because pylint raises a formatting error
     logger.info("Running battle number %s", pk)
     battle = Battle.objects.get(pk=pk)
     result = run_battle(

@@ -224,42 +224,6 @@ class TestCreateTeamView(TestCase):
             mail.outbox[0].subject, f"PokeBattle - {self.creator.email} invited you to a match"
         )
 
-    def test_send_battle_result_email(self):
-        mommy.make("battles.Team", battle=self.battle, trainer=self.creator)
-
-        post_data = {
-            "trainer": self.opponent.id,
-            "battle": self.battle.id,
-            "pokemon_1": self.pokemon_set[0].id,
-            "pokemon_2": self.pokemon_set[1].id,
-            "pokemon_3": self.pokemon_set[2].id,
-            "order_1": "1",
-            "order_2": "2",
-            "order_3": "3",
-        }
-        self.client.post(self.view_url, post_data)
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, "PokeBattle - Here's the result of your battle")
-
-    def test_change_battle_status(self):
-        mommy.make("battles.Team", battle=self.battle, trainer=self.creator)
-
-        post_data = {
-            "trainer": self.opponent.id,
-            "battle": self.battle.id,
-            "pokemon_1": self.pokemon_set[0].id,
-            "pokemon_2": self.pokemon_set[1].id,
-            "pokemon_3": self.pokemon_set[2].id,
-            "order_1": "1",
-            "order_2": "2",
-            "order_3": "3",
-        }
-
-        self.client.post(self.view_url, post_data, follow=True)
-        battle = Battle.objects.get(id=self.battle.id)
-        self.assertTrue(battle.settled)
-        self.assertTrue(battle.winner)
-
 
 class TestListActiveBattles(TestCase):
     view_name = "battles:active_battles"
