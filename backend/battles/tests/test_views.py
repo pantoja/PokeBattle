@@ -193,7 +193,11 @@ class TestCreateTeamView(TestCase):
         url = reverse(self.view_name, kwargs={"pk": 2})
         response = self.client.get(url)
         self.assertRedirects(
-            response, "/", status_code=302, target_status_code=200, fetch_redirect_response=True,
+            response,
+            "/create-battle/",
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
         )
 
     def test_user_already_has_team_in_this_battle(self):
