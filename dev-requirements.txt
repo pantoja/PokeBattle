@@ -16,13 +16,13 @@ click==7.1.1              # via black, safety
 coverage==5.0.4           # via -r dev-requirements.in
 distlib==0.3.0            # via virtualenv
 django-naomi==0.8         # via -r dev-requirements.in
-django==2.2.11            # via -r dev-requirements.in, django-naomi, model-mommy
+django==2.2.12            # via -r dev-requirements.in, django-naomi, model-mommy
 dodgy==0.2.1              # via prospector
 dparse==0.5.0             # via safety
 filelock==3.0.12          # via virtualenv
 gitdb==4.0.2              # via gitpython
 gitpython==3.1.0          # via bandit
-identify==1.4.11          # via pre-commit
+identify==1.4.13          # via pre-commit
 idna==2.9                 # via requests
 isort==4.3.21             # via -r dev-requirements.in, pylint
 lazy-object-proxy==1.4.3  # via astroid
@@ -60,8 +60,8 @@ stevedore==1.32.0         # via bandit
 toml==0.10.0              # via black, dparse, pre-commit
 typed-ast==1.4.1          # via black
 urllib3==1.25.8           # via requests
-virtualenv-clone==0.5.3   # via pipenv
-virtualenv==20.0.13       # via pipenv, pre-commit
+virtualenv-clone==0.5.4   # via pipenv
+virtualenv==20.0.15       # via pipenv, pre-commit
 wrapt==1.11.2             # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:

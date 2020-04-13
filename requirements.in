@@ -17,3 +17,5 @@ sentry-sdk
 requests
 django-templated-email
 mock
+django-autocomplete-light
+social-auth-app-django

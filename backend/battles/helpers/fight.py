@@ -1,7 +1,15 @@
 def run_battle(creator_team_object, opponent_team_object):
     result = []
-    creator_team = creator_team_object.team.all()
-    opponent_team = opponent_team_object.team.all()
+    creator_team = (
+        creator_team_object.first_pokemon,
+        creator_team_object.second_pokemon,
+        creator_team_object.third_pokemon,
+    )
+    opponent_team = (
+        creator_team_object.first_pokemon,
+        creator_team_object.second_pokemon,
+        creator_team_object.third_pokemon,
+    )
     result.append(first_round(creator_team[0], opponent_team[0]))
     result.append(second_round(creator_team[1], opponent_team[1]))
     result.append(third_round(creator_team[2], opponent_team[2]))

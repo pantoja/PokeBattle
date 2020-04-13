@@ -1,10 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 
-from users.forms import UserSignUpForm
+from users.email import send_signup_invite_email
+from users.forms import InviteFriendForm, UserSignUpForm
 from users.models import User
 
 
@@ -13,7 +16,7 @@ class UserLoginView(LoginView):
 
 
 class UserLogoutView(LogoutView):
-    template_name = "users/logout.html"
+    pass
 
 
 class UserSignUpView(CreateView):
@@ -29,3 +32,16 @@ class UserSignUpView(CreateView):
         user = authenticate(email=email, password=password)
         login(self.request, user)
         return HttpResponseRedirect(self.get_success_url())
+
+
+class InviteFriendView(LoginRequiredMixin, FormView):
+    form_class = InviteFriendForm
+    template_name = "users/invite_friend.html"
+
+    def form_valid(self, form):
+        invitee = self.request.user.email
+        invited = form.cleaned_data.get("email")
+        url = self.request.build_absolute_uri("/")
+        send_signup_invite_email(invitee, invited, url)
+        messages.success(self.request, "Your invitation was sent!")
+        return HttpResponseRedirect("/invite")

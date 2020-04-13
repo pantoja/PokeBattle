@@ -8,7 +8,7 @@
 
 @mixin list-item($grid-columns) {
   background-color: $white;
-  padding:  1rem 2rem;
+  padding: 1rem 2rem;
   border-radius: 30px;
   display: grid;
   grid-template-columns: $grid-columns;
@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-@mixin error-message{
+@mixin message {
   background-color: $orange;
   color: $white;
   border-radius: 10px;
@@ -26,6 +26,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   padding: 1rem;
+  justify-self: center;
 }
 
 @mixin form-grid {
@@ -53,4 +54,17 @@
 @mixin form-title {
   margin: 30px;
   justify-self: center;
+}
+
+@mixin google-btn {
+  background-color: $white;
+  .google-icon {
+    margin-right: 10px;
+  }
+  .google-btn-text {
+    font-family: 'Roboto', sans-serif;
+    color: $grey;
+    font-weight: 700;
+    vertical-align: middle;
+  }
 }

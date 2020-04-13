@@ -2,7 +2,7 @@
   @include form-grid;
 
   .errorlist {
-    @include error-message;
+    @include message;
     justify-self: center;
   }
   .sign-up-title {
@@ -17,5 +17,12 @@
   }
   .sign-up-submit {
     @include form-submit;
+  }
+  .google-btn-signup {
+    @include google-btn;
+
+    .google-btn-text {
+      padding: 0 75px;
+    }
   }
 }

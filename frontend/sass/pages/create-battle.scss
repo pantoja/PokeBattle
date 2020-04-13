@@ -16,4 +16,28 @@
   #id_user_creator {
     display: none;
   }
+  .other-option-text {
+    font-weight: 700;
+    margin: 20px 0;
+  }
+
+  .invite-button {
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-weight: 500;
+  }
+  .invite-button:before {
+    background: $rainbow-gradient;
+    border-radius: inherit;
+    bottom: 0;
+    content: "";
+    left: 0;
+    margin: -2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+  }
 }

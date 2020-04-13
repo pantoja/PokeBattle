@@ -2,7 +2,7 @@
   @include form-grid;
 
   .errorlist {
-    @include error-message;
+    @include message;
     justify-self: center;
     max-width: 330px;
     text-align: center;
@@ -18,5 +18,12 @@
   }
   .login-submit {
     @include form-submit;
+  }
+  .google-btn-login {
+    @include google-btn;
+
+    .google-btn-text {
+      padding: 0 50px;
+    }
   }
 }

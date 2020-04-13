@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
 {% block body %}
+
+{% if user.is_authenticated %}
+  <h3>You're already logged in.</h3>
+{% else %}
 <form method="post" class="login-form">
   {{ form.non_field_errors }}
   <h2 class="login-title">Login</h2>
@@ -16,5 +21,12 @@
     {{ form.password }}
   </div>
   <input type="submit" value="Login" class="login-submit">
+  <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-btn-login">
+    <img src="{% static "image/google.svg" %}" alt="" class="google-icon">
+    <span class="google-btn-text">
+      Sign In with Google
+    </span>
+  </a>
 </form>
+{% endif %}
 {% endblock %}

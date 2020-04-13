@@ -25,12 +25,15 @@ AUTH_USER_MODEL = "users.User"
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'social_django',
     "django_js_reverse",
     "webpack_loader",
     "import_export",
@@ -81,6 +84,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -95,7 +103,9 @@ STATICFILES_DIRS = (base_dir_join("../frontend"),)
 
 LOGIN_REDIRECT_URL = '/'
 
-LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = 'users:login'
 
 # Webpack
 WEBPACK_LOADER = {
@@ -119,3 +129,8 @@ COMMIT_SHA = config("HEROKU_SLUG_COMMIT", default="")
 
 # Django-templated-email
 TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'
+
+# Social auth
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", default="")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", default="")
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
