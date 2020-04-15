@@ -36,6 +36,7 @@ pylint:
     - too-many-ancestors
     - attribute-defined-outside-init
     - import-error
+    - no-name-in-module
   options:
     max-line-length: 100
 
