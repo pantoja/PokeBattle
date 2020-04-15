@@ -26,7 +26,7 @@ def send_result_email(result, url):
     logger.info("Sent email with battle results")
 
 
-def send_invite_to_match(invitee, invited, url):
+def send_invite_to_battle(invitee, invited, url):
     send_templated_mail(
         template_name="invite_to_battle",
         from_email=settings.SERVER_EMAIL,

@@ -4,7 +4,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from battles.models import Battle
-from battles.tasks import run_battle_task
+from battles.tasks import run_battle_task, send_invite_to_battle_task
 
 
 class TestBattleTasks(TestCase):
@@ -28,3 +28,11 @@ class TestBattleTasks(TestCase):
         run_battle_task(self.battle.pk, self.url)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "PokeBattle - Here's the result of your battle")
+
+    def test_send_invite_email(self):
+        send_invite_to_battle_task(self.battle.user_creator, self.battle.user_opponent, self.url)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject,
+            "PokeBattle - {} invited you to a match".format(self.battle.user_creator),
+        )
