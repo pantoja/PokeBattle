@@ -3,13 +3,7 @@ from django import forms
 from dal import autocomplete
 
 from battles.choices import POKEMON_ORDER_CHOICES
-from battles.helpers.common import (
-    change_battle_status,
-    duplicate_in_set,
-    pokemon_team_exceeds_limit,
-)
-from battles.helpers.email import send_result_email
-from battles.helpers.fight import run_battle
+from battles.helpers.common import duplicate_in_set, pokemon_team_exceeds_limit
 from battles.models import Battle, Team
 from pokemon.models import Pokemon
 from users.models import User
@@ -83,16 +77,6 @@ class CreateTeamForm(forms.ModelForm):
             second_pokemon=battle_order["2"],
             third_pokemon=battle_order["3"],
         )
-
-        # Runs battle
-
-        battle = Battle.objects.get(pk=self.initial["battle"].pk)
-        creator = battle.user_creator
-        opponent = battle.user_opponent
-        if trainer == opponent:
-            result = run_battle(creator.teams.get(battle=battle.pk), instance)
-            change_battle_status(battle, result["winner"].trainer)
-            send_result_email(result)
         return instance
 
     def clean(self):
