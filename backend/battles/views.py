@@ -49,18 +49,18 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
         return context
 
     def form_valid(self, form):
-        self.object = form.save()
-        battle = self.object.battle
+        team = form.save()
+        battle = team.battle
         creator = battle.user_creator
         opponent = battle.user_opponent
 
-        if self.object.trainer == battle.user_creator:
+        if team.trainer == battle.user_creator:
             send_invite_to_battle_task(
                 creator.email,
                 opponent.email,
                 self.request.build_absolute_uri(f"/create-team/{battle.id}"),
             )
-        if self.object.trainer == battle.user_opponent:
+        if team.trainer == battle.user_opponent:
             run_battle_task.delay(battle.pk, self.request.build_absolute_uri("/"))
         return HttpResponseRedirect(self.request.path)
 
