@@ -1,4 +1,9 @@
 from django.urls import include, path
 
 
-urlpatterns = [path("", include("api.pokemon.urls"))]
+app_name = "api"
+
+urlpatterns = [
+    path("", include("api.pokemon.urls")),
+    path("", include("api.battles.urls")),
+]
