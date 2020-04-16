@@ -7,10 +7,9 @@ from django.views.generic import CreateView, DetailView, ListView
 
 from battles.forms import CreateBattleForm, CreateTeamForm
 from battles.helpers.common import get_battle_opponent, get_respective_teams_in_battle
-from battles.helpers.email import send_invite_to_match
 from battles.mixins import UserIsNotInThisBattleMixin, UserNotInvitedToBattleMixin
 from battles.models import Battle
-from battles.tasks import run_battle_task
+from battles.tasks import run_battle_task, send_invite_to_battle_task
 from users.models import User
 
 
@@ -50,18 +49,18 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
         return context
 
     def form_valid(self, form):
-        self.object = form.save()
-        battle = self.object.battle
+        team = form.save()
+        battle = team.battle
         creator = battle.user_creator
         opponent = battle.user_opponent
 
-        if self.object.trainer == battle.user_creator:
-            send_invite_to_match(
+        if team.trainer == battle.user_creator:
+            send_invite_to_battle_task.delay(
                 creator.email,
                 opponent.email,
                 self.request.build_absolute_uri(f"/create-team/{battle.id}"),
             )
-        if self.object.trainer == battle.user_opponent:
+        if team.trainer == battle.user_opponent:
             run_battle_task.delay(battle.pk, self.request.build_absolute_uri("/"))
         return HttpResponseRedirect(self.request.path)
 
