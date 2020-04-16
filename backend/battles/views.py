@@ -55,7 +55,7 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
         opponent = battle.user_opponent
 
         if team.trainer == battle.user_creator:
-            send_invite_to_battle_task(
+            send_invite_to_battle_task.delay(
                 creator.email,
                 opponent.email,
                 self.request.build_absolute_uri(f"/create-team/{battle.id}"),
