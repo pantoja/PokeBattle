@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -172,15 +173,15 @@ class TestCreateTeamView(TestCase):
     def setUp(self):
         self.creator = mommy.make("users.User")
         self.opponent = mommy.make("users.User")
-
+        self.battle = mommy.make(
+            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent
+        )
         self.client = Client()
         self.client.force_login(self.creator)
         self.view_url = reverse(self.view_name, kwargs={"pk": 1})
+        self.pokemon_set = mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=50, _quantity=3)
 
     def test_user_allowed_to_create_team(self):
-        mommy.make(
-            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
-        )
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
@@ -189,26 +190,43 @@ class TestCreateTeamView(TestCase):
         mommy.make(
             "battles.Battle", user_creator=self.opponent, user_opponent=user_creator, settled=False,
         )
-        response = self.client.get(self.view_url)
+        url = reverse(self.view_name, kwargs={"pk": 2})
+        response = self.client.get(url)
         self.assertRedirects(
-            response, "/", status_code=302, target_status_code=200, fetch_redirect_response=True,
+            response,
+            "/create-battle/",
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
         )
 
     def test_user_already_has_team_in_this_battle(self):
-        battle = mommy.make(
-            "battles.Battle", user_creator=self.creator, user_opponent=self.opponent, settled=False,
-        )
-
         mommy.make(
-            "battles.Team",
-            trainer=self.creator,
-            battle=battle,
-            first_pokemon=mommy.make("pokemon.Pokemon", id=1),
-            second_pokemon=mommy.make("pokemon.Pokemon", id=2),
-            third_pokemon=mommy.make("pokemon.Pokemon", id=3),
+            "battles.Team", trainer=self.creator, battle=self.battle,
         )
         response = self.client.get(self.view_url)
-        self.assertTrue(response.context["user_has_team"])
+        message = list(response.context.get("messages"))[0]
+        self.assertEqual(
+            message.message, "You've chosen your team for this battle. Check your email for results"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_invite_email_is_sent(self):
+        post_data = {
+            "trainer": self.creator.id,
+            "battle": self.battle.id,
+            "pokemon_1": self.pokemon_set[0].id,
+            "pokemon_2": self.pokemon_set[1].id,
+            "pokemon_3": self.pokemon_set[2].id,
+            "order_1": "1",
+            "order_2": "2",
+            "order_3": "3",
+        }
+        self.client.post(self.view_url, post_data)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, f"PokeBattle - {self.creator.email} invited you to a match"
+        )
 
 
 class TestListActiveBattles(TestCase):
