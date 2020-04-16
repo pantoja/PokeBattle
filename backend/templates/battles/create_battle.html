@@ -3,8 +3,13 @@
 {% block title %}Create Battle{% endblock %}
 
 {% block body %}
+
+
 <form method="post" class="choose-opponent-form">
   {% csrf_token %}
+  {% for message in messages %}
+    <p class="create-battle-message">{{ message }}</p>
+  {% endfor %}
   {{ form.errors }}
   {{ form.non_field_errors}}
   <h2 class="choose-opponent-title">Choose your opponent:</h2>

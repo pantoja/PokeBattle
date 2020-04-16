@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 
@@ -21,4 +22,8 @@ class UserNotInvitedToBattleMixin(UserPassesTestMixin):
         return self.request.user in [battle_object.user_creator, battle_object.user_opponent]
 
     def handle_no_permission(self):
-        return redirect("home")
+        messages.info(
+            self.request,
+            "Oops. You weren't invited to this battle :( . Try challenging another friend instead",
+        )
+        return redirect("battles:create_battle")
