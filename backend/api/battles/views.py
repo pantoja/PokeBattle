@@ -1,14 +1,20 @@
 from django.db.models import Q
 
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from api.battles.serializers import BattleSerializer
-from battles.models import Battle
+from api.battles.permissions import IsInBattle
+from api.battles.serializers import (
+    BattleSerializer,
+    DetailBattleSerializer,
+    ListBattleSerializer,
+    TeamSerializer,
+)
+from battles.models import Battle, Team
 
 
-class ListActiveBattlesAPI(ListAPIView):
-    serializer_class = BattleSerializer
+class ListActiveBattlesView(ListAPIView):
+    serializer_class = ListBattleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -19,11 +25,34 @@ class ListActiveBattlesAPI(ListAPIView):
         return queryset
 
 
-class ListSettledBattlesAPI(ListAPIView):
-    serializer_class = BattleSerializer
+class ListSettledBattlesView(ListAPIView):
+    serializer_class = ListBattleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         queryset = Battle.objects.filter(Q(user_creator=user) | Q(user_opponent=user), settled=True)
         return queryset
+
+
+class DetailBattleView(RetrieveAPIView):
+    serializer_class = DetailBattleSerializer
+    queryset = Battle.objects.all()
+    permission_classes = [IsInBattle]
+
+
+class CreateBattleView(CreateAPIView):
+    serializer_class = BattleSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class CreateTeamView(CreateAPIView):
+    serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Team.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        # battle = Battle.objects.get(pk=request.data["battle"])
+        # if request.data['trainer'] not in [battle.user_creator, battle.user_opponent]:
+        #     raise serializers.ValidationError("You are not part of this team")
+        return self.create(request, *args, **kwargs)

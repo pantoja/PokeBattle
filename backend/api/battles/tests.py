@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 
-class TestListBattlesAPI(APITestCase):
+class TestListBattlesView(APITestCase):
     def setUp(self):
         self.settled_url = reverse("api:battle:list_settled")
         self.active_url = reverse("api:battle:list_active")
@@ -34,3 +34,8 @@ class TestListBattlesAPI(APITestCase):
         data = [battle["id"] for battle in response.json()]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(data), 2)
+
+    def test_unauthenticated_raises_error(self):
+        self.client.logout()
+        response = self.client.get(self.active_url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
