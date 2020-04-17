@@ -1,10 +1,11 @@
 from rest_framework import exceptions, serializers
 
+from api.pokemon.serializers import PokemonSerializer
 from battles.helpers.common import duplicate_in_set, pokemon_team_exceeds_limit
 from battles.models import Battle, Team
 
 
-# from pokemon.models import Pokemon
+# from battles.choices import POKEMON_ORDER_CHOICES
 
 
 class ListBattleSerializer(serializers.ModelSerializer):
@@ -13,8 +14,15 @@ class ListBattleSerializer(serializers.ModelSerializer):
         fields = ["id", "settled", "winner", "user_creator", "user_opponent"]
 
 
-# TODO: Make nested representation
 class BattleTeamSerializer(serializers.ModelSerializer):
+    first_pokemon = PokemonSerializer()
+    second_pokemon = PokemonSerializer()
+    third_pokemon = PokemonSerializer()
+    trainer = serializers.SerializerMethodField()
+
+    def get_trainer(self, obj):
+        return obj.trainer.email
+
     class Meta:
         model = Team
         fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon"]
@@ -22,8 +30,7 @@ class BattleTeamSerializer(serializers.ModelSerializer):
 
 # TODO: add choice fields
 class TeamSerializer(serializers.ModelSerializer):
-
-    # pokemon_1 = serializers.RelatedField(source='first_pokemon', queryset=Pokemon.objects.all())
+    # choice_1 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, write_only=True)
     class Meta:
         model = Team
         fields = [
@@ -48,14 +55,29 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class DetailBattleSerializer(serializers.ModelSerializer):
-    teams = BattleTeamSerializer(many=True, read_only=True)
+    creator_team = serializers.SerializerMethodField()
+    opponent_team = serializers.SerializerMethodField()
+    winner = serializers.SerializerMethodField()
+
+    def get_winner(self, obj):
+        return obj.winner.email
+
+    def get_creator_team(self, obj):
+        team = Team.objects.get(battle=obj, trainer=obj.user_creator)
+        serializer = BattleTeamSerializer(team)
+        return serializer.data
+
+    def get_opponent_team(self, obj):
+        team = Team.objects.get(battle=obj, trainer=obj.user_opponent)
+        serializer = BattleTeamSerializer(team)
+        return serializer.data
 
     class Meta:
         model = Battle
-        fields = ["id", "winner", "user_creator", "user_opponent", "teams"]
+        fields = ["id", "winner", "creator_team", "opponent_team"]
 
 
-class BattleSerializer(serializers.ModelSerializer):
+class CreateBattleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Battle
         fields = ["user_creator", "user_opponent"]

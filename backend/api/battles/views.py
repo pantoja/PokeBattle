@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from api.battles.permissions import IsInBattle
 from api.battles.serializers import (
-    BattleSerializer,
+    CreateBattleSerializer,
     DetailBattleSerializer,
     ListBattleSerializer,
     TeamSerializer,
@@ -42,7 +42,7 @@ class DetailBattleView(RetrieveAPIView):
 
 
 class CreateBattleView(CreateAPIView):
-    serializer_class = BattleSerializer
+    serializer_class = CreateBattleSerializer
     permission_classes = [IsAuthenticated]
 
 
