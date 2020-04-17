@@ -50,9 +50,3 @@ class CreateTeamView(CreateAPIView):
     serializer_class = TeamSerializer
     permission_classes = [IsAuthenticated]
     queryset = Team.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        # battle = Battle.objects.get(pk=request.data["battle"])
-        # if request.data['trainer'] not in [battle.user_creator, battle.user_opponent]:
-        #     raise serializers.ValidationError("You are not part of this team")
-        return self.create(request, *args, **kwargs)
