@@ -1,5 +1,6 @@
 from rest_framework import exceptions, serializers
 
+from api.battles.helpers import order_pokemon_in_team
 from api.pokemon.serializers import PokemonSerializer
 from battles.choices import POKEMON_ORDER_CHOICES
 from battles.helpers.common import duplicate_in_set, pokemon_team_exceeds_limit
@@ -27,9 +28,9 @@ class DetailTeamSerializer(serializers.ModelSerializer):
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
-    choice_1 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1)
-    choice_2 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2)
-    choice_3 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3)
+    choice_1 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, write_only=True)
+    choice_2 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, write_only=True)
+    choice_3 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, write_only=True)
 
     class Meta:
         model = Team
@@ -58,20 +59,7 @@ class CreateTeamSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Your team exceeds the 600 points limit, please choose another team"
             )
-
-        # rounds = {
-        #     attrs['choice_1']: attrs['first_pokemon'],
-        #     attrs['choice_2']: attrs['second_pokemon'],
-        #     attrs['choice_3']: attrs['third_pokemon'],
-        # }
-        # attrs['first_pokemon'] = rounds[1]
-        # attrs['second_pokemon'] = rounds[2]
-        # attrs['third_pokemon'] = rounds[3]
-
-        # attrs.pop('choice_1')
-        # attrs.pop('choice_2')
-        # attrs.pop('choice_3')
-
+        attrs = order_pokemon_in_team(attrs)
         return attrs
 
 
