@@ -100,3 +100,20 @@ class TestCreateBattleView(APITestCase):
         battle = CreateBattleSerializer(battle)
         response = self.client.post(self.url, battle.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TestCreateTeamView(APITestCase):
+    def setUp(self):
+        self.user = mommy.make("users.User")
+        self.client = Client()
+        self.client.force_login(self.user)
+        self.url = reverse("api:battle:create_team")
+        self.pokemon_set = mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=50, _quantity=3)
+
+    # TODO: Create team test
+    # TODO: User not in battle cant create team
+
+    def test_unlogged_cant_create_battle(self):
+        self.client.logout()
+        response = self.client.get(self.url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
