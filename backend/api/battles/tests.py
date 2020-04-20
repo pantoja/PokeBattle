@@ -5,6 +5,8 @@ from model_mommy import mommy
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from api.battles.serializers import CreateBattleSerializer, DetailBattleSerializer
+
 
 class TestListBattlesView(APITestCase):
     def setUp(self):
@@ -39,3 +41,62 @@ class TestListBattlesView(APITestCase):
         self.client.logout()
         response = self.client.get(self.active_url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class TestDetailBattleView(APITestCase):
+    def setUp(self):
+        self.user = mommy.make("users.User")
+        self.user_2 = mommy.make("users.User")
+        self.client = Client()
+        self.client.force_login(self.user)
+        self.battle = mommy.make(
+            "battles.Battle", user_creator=self.user, user_opponent=self.user_2
+        )
+        self.team = mommy.make("battles.Team", battle=self.battle, trainer=self.user)
+        self.url = "/api/battle/1"
+
+    def test_detail_battle(self):
+        response = self.client.get(self.url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        battle = DetailBattleSerializer(self.battle)
+        self.assertEqual(battle.data, response.data)
+
+    def test_unlogged_cant_see_battle(self):
+        self.client.logout()
+        response = self.client.get(self.url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_opponent_cant_see_unsettled_battle(self):
+        self.client.force_login(self.user_2)
+        response = self.client.get(self.url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_not_in_battle_cant_see_battle(self):
+        self.client.force_login(mommy.make("users.User"))
+        response = self.client.get(self.url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class TestCreateBattleView(APITestCase):
+    def setUp(self):
+        self.user = mommy.make("users.User")
+        self.client = Client()
+        self.client.force_login(self.user)
+        self.url = reverse("api:battle:create_battle")
+
+    def test_create_battle(self):
+        battle = mommy.make("battles.Battle", user_creator=self.user)
+        battle = CreateBattleSerializer(battle)
+        response = self.client.post(self.url, battle.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_unlogged_cant_create_battle(self):
+        self.client.logout()
+        response = self.client.get(self.url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_logged_user_not_creator_of_battle(self):
+        battle = mommy.make("battles.Battle")
+        battle = CreateBattleSerializer(battle)
+        response = self.client.post(self.url, battle.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

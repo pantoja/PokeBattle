@@ -6,9 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from api.battles.permissions import IsInBattle
 from api.battles.serializers import (
     CreateBattleSerializer,
+    CreateTeamSerializer,
     DetailBattleSerializer,
     ListBattleSerializer,
-    TeamSerializer,
 )
 from battles.models import Battle, Team
 
@@ -47,6 +47,6 @@ class CreateBattleView(CreateAPIView):
 
 
 class CreateTeamView(CreateAPIView):
-    serializer_class = TeamSerializer
+    serializer_class = CreateTeamSerializer
     permission_classes = [IsAuthenticated]
     queryset = Team.objects.all()
