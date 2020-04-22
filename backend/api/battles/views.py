@@ -1,5 +1,6 @@
 from django.db.models import Q
 
+from rest_framework import exceptions
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -13,26 +14,24 @@ from api.battles.serializers import (
 from battles.models import Battle, Team
 
 
-class ListActiveBattlesView(ListAPIView):
+class ListBattlesView(ListAPIView):
     serializer_class = ListBattleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
+        status = self.kwargs["status"]
+        # TODO: Create manager
         queryset = Battle.objects.filter(
-            Q(user_creator=user) | Q(user_opponent=user), settled=False
+            Q(user_creator=user) | Q(user_opponent=user), settled=status == "settled"
         )
         return queryset
 
-
-class ListSettledBattlesView(ListAPIView):
-    serializer_class = ListBattleSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = Battle.objects.filter(Q(user_creator=user) | Q(user_opponent=user), settled=True)
-        return queryset
+    def dispatch(self, request, *args, **kwargs):
+        status = self.kwargs["status"]
+        if status not in ["settled", "active"]:
+            raise exceptions.ValidationError("This status in non-existant")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class DetailBattleView(RetrieveAPIView):
