@@ -4,6 +4,6 @@ from api.pokemon.serializers import PokemonSerializer
 from pokemon.models import Pokemon
 
 
-class DetailPokemonAPI(RetrieveAPIView):
+class DetailPokemonEndpoint(RetrieveAPIView):
     queryset = Pokemon.objects.all()
     serializer_class = PokemonSerializer
