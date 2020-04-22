@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from battles.managers import BattleManager
 from pokemon.models import Pokemon
 from users.models import User
 
@@ -22,6 +23,8 @@ class Battle(models.Model):
         blank=True,
         null=True,
     )
+
+    objects = BattleManager()
 
     class Meta:
         ordering = ["-pk"]

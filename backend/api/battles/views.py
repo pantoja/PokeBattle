@@ -1,5 +1,3 @@
-from django.db.models import Q
-
 from rest_framework import exceptions
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -14,17 +12,14 @@ from api.battles.serializers import (
 from battles.models import Battle, Team
 
 
-class ListBattlesView(ListAPIView):
+class ListBattlesEndpoint(ListAPIView):
     serializer_class = ListBattleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         status = self.kwargs["status"]
-        # TODO: Create manager
-        queryset = Battle.objects.filter(
-            Q(user_creator=user) | Q(user_opponent=user), settled=status == "settled"
-        )
+        queryset = Battle.objects.filter_by_status(user, status == "settled")
         return queryset
 
     def dispatch(self, request, *args, **kwargs):
@@ -34,18 +29,18 @@ class ListBattlesView(ListAPIView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class DetailBattleView(RetrieveAPIView):
+class DetailBattleEndpoint(RetrieveAPIView):
     serializer_class = DetailBattleSerializer
     queryset = Battle.objects.all()
     permission_classes = [IsInBattle]
 
 
-class CreateBattleView(CreateAPIView):
+class CreateBattleEndpoint(CreateAPIView):
     serializer_class = CreateBattleSerializer
     permission_classes = [IsAuthenticated]
 
 
-class CreateTeamView(CreateAPIView):
+class CreateTeamEndpoint(CreateAPIView):
     serializer_class = CreateTeamSerializer
     permission_classes = [IsAuthenticated]
     queryset = Team.objects.all()

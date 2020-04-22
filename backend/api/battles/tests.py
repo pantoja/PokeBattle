@@ -111,7 +111,6 @@ class TestCreateTeamView(APITestCase):
         self.pokemon_set = mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=50, _quantity=3)
 
     # TODO: Create team test
-    # TODO: User not in battle cant create team
 
     def test_unlogged_cant_create_battle(self):
         self.client.logout()
