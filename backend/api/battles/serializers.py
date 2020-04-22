@@ -28,6 +28,8 @@ class DetailTeamSerializer(serializers.ModelSerializer):
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
+    trainer = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     choice_1 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, write_only=True)
     choice_2 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, write_only=True)
     choice_3 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, write_only=True)
@@ -91,12 +93,13 @@ class DetailBattleSerializer(serializers.ModelSerializer):
 
 
 class CreateBattleSerializer(serializers.ModelSerializer):
-    # TODO: Filter logged user from user_opponent
+    user_creator = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Battle
         fields = ["user_creator", "user_opponent"]
 
     def validate(self, attrs):
-        if self.context["request"].user != attrs["user_creator"]:
-            raise serializers.ValidationError("You should be the creator of this battle")
+        if self.context["request"].user == attrs["user_opponent"]:
+            raise serializers.ValidationError("You can't battle yourself")
         return attrs

@@ -10,8 +10,8 @@ from api.battles.serializers import CreateBattleSerializer, DetailBattleSerializ
 
 class TestListBattlesView(APITestCase):
     def setUp(self):
-        self.settled_url = reverse("api:battle:list_settled")
-        self.active_url = reverse("api:battle:list_active")
+        self.settled_url = "/api/battles/settled"
+        self.active_url = "/api/battles/active"
         self.user = mommy.make("users.User")
         self.client = Client()
         self.client.force_login(self.user)
@@ -26,20 +26,20 @@ class TestListBattlesView(APITestCase):
         ]
 
     def test_list_active_battles(self):
-        response = self.client.get(self.settled_url)
+        response = self.client.get(self.settled_url, follow=True)
         data = [battle["id"] for battle in response.json()]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(data), 3)
 
     def test_list_settled_battles(self):
-        response = self.client.get(self.active_url)
+        response = self.client.get(self.active_url, follow=True)
         data = [battle["id"] for battle in response.json()]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(data), 2)
 
     def test_unauthenticated_raises_error(self):
         self.client.logout()
-        response = self.client.get(self.active_url)
+        response = self.client.get(self.active_url, follow=True)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
@@ -95,8 +95,8 @@ class TestCreateBattleView(APITestCase):
         response = self.client.get(self.url, follow=True)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_logged_user_not_creator_of_battle(self):
-        battle = mommy.make("battles.Battle")
+    def test_user_cant_battle_themselves(self):
+        battle = mommy.make("battles.Battle", user_opponent=self.user)
         battle = CreateBattleSerializer(battle)
         response = self.client.post(self.url, battle.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
