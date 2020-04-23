@@ -14,17 +14,22 @@ class ListBattleSerializer(serializers.ModelSerializer):
 
 
 class DetailTeamSerializer(serializers.ModelSerializer):
-    first_pokemon = PokemonSerializer()
-    second_pokemon = PokemonSerializer()
-    third_pokemon = PokemonSerializer()
     trainer = serializers.SerializerMethodField()
+    team = serializers.SerializerMethodField()
+
+    def get_team(self, obj):
+        return [
+            PokemonSerializer(obj.first_pokemon).data,
+            PokemonSerializer(obj.second_pokemon).data,
+            PokemonSerializer(obj.third_pokemon).data,
+        ]
 
     def get_trainer(self, obj):
         return obj.trainer.email
 
     class Meta:
         model = Team
-        fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon"]
+        fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon", "team"]
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
@@ -66,8 +71,8 @@ class CreateTeamSerializer(serializers.ModelSerializer):
 
 
 class DetailBattleSerializer(serializers.ModelSerializer):
-    creator_team = serializers.SerializerMethodField()
-    opponent_team = serializers.SerializerMethodField()
+    creatorTeam = serializers.SerializerMethodField()
+    opponentTeam = serializers.SerializerMethodField()
     winner = serializers.SerializerMethodField()
 
     def get_winner(self, obj):
@@ -75,21 +80,21 @@ class DetailBattleSerializer(serializers.ModelSerializer):
             return None
         return obj.winner.email
 
-    def get_creator_team(self, obj):
+    def get_creatorTeam(self, obj):
         team = Team.objects.get(battle=obj, trainer=obj.user_creator)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
-    def get_opponent_team(self, obj):
+    def get_opponentTeam(self, obj):
         if not obj.settled:
-            return None
+            return {"trainer": obj.user_opponent.email}
         team = Team.objects.get(battle=obj, trainer=obj.user_opponent)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
     class Meta:
         model = Battle
-        fields = ["id", "winner", "creator_team", "opponent_team"]
+        fields = ["id", "winner", "creatorTeam", "opponentTeam"]
 
 
 class CreateBattleSerializer(serializers.ModelSerializer):
