@@ -42,7 +42,7 @@ class DetailBattle extends Component {
   }
 
   async componentDidMount() {
-    // Will use pathname from props when I implement react-router-dom
+    // TODO: Will use pathname from props when I implement react-router-dom
     const { pathname } = window.location;
     const id = pathname.slice(pathname.lastIndexOf('/') + 1);
     axios
