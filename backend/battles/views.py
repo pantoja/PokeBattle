@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
@@ -72,9 +71,7 @@ class ListSettledBattlesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)
         user = self.request.user.id
-        context["battles"] = Battle.objects.filter(
-            Q(user_creator=user) | Q(user_opponent=user), settled=True
-        )
+        context["battles"] = Battle.objects.filter_by_status(user, True)
         return context
 
 
@@ -85,9 +82,8 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)
         user = self.request.user.id
-        context["battles"] = Battle.objects.filter(
-            Q(user_creator=user) | Q(user_opponent=user), settled=False
-        )
+        context["battles"] = Battle.objects.filter_by_status(user, False)
+
         return context
 
 
