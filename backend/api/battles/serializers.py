@@ -29,7 +29,7 @@ class DetailTeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon", "team"]
+        fields = ["trainer", "team"]
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
