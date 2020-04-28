@@ -66,7 +66,7 @@ class CreateTeamView(LoginRequiredMixin, UserNotInvitedToBattleMixin, CreateView
 
 class ListSettledBattlesView(LoginRequiredMixin, ListView):
     model = Battle
-    template_name = "battles/list_settled_battles.html"
+    template_name = "react/list_battle.html"
 
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)
@@ -77,7 +77,7 @@ class ListSettledBattlesView(LoginRequiredMixin, ListView):
 
 class ListActiveBattlesView(LoginRequiredMixin, ListView):
     model = Battle
-    template_name = "battles/list_active_battles.html"
+    template_name = "react/list_battle.html"
 
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)

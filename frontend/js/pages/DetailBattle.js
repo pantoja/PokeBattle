@@ -1,4 +1,5 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -42,9 +43,8 @@ class DetailBattle extends Component {
   }
 
   async componentDidMount() {
-    // TODO: Will use pathname from props when I implement react-router-dom
-    const { pathname } = window.location;
-    const id = pathname.slice(pathname.lastIndexOf('/') + 1);
+    const { match } = this.props;
+    const { id } = match.params;
     axios
       .get(`/api/battle/${id}`)
       .then((response) => {
@@ -91,5 +91,9 @@ class DetailBattle extends Component {
     );
   }
 }
+
+DetailBattle.propTypes = {
+  match: PropTypes.object,
+};
 
 export default DetailBattle;
