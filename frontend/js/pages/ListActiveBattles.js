@@ -1,21 +1,21 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 
+import TableActiveRow from '../components/TableActiveRow';
 import TableHeader from '../components/TableHeader';
-import TableSettledRow from '../components/TableSettledRow';
 
-class ListSettledBattles extends Component {
+class ListActiveBattles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableHeader: ['', 'Battle Number', 'Created', 'Trainers', 'You Won'],
+      tableHeader: ['', 'Battle Number', 'Created', 'Trainers', 'Pending Answer From'],
       battles: [],
     };
   }
 
   async componentDidMount() {
     axios
-      .get(`/api/battles/settled`)
+      .get(`/api/battles/active`)
       .then((response) => {
         this.setState({ battles: response.data });
         return response.data;
@@ -29,12 +29,12 @@ class ListSettledBattles extends Component {
     const { battles, tableHeader } = this.state;
     return (
       <>
-        <h1>List Settled Battles</h1>
-        <TableHeader header={tableHeader} settled />
-        <TableSettledRow battles={battles} />
+        <h1>List Active Battles</h1>
+        <TableHeader header={tableHeader} />
+        <TableActiveRow battles={battles} />
       </>
     );
   }
 }
 
-export default ListSettledBattles;
+export default ListActiveBattles;

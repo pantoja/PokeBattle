@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
+import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
+import tick from '../../image/tick.svg';
 
 const StyledRow = styled.div`
   background-color: #fff;
@@ -14,14 +16,18 @@ const StyledRow = styled.div`
   text-align: center;
   font-weight: 500;
   font-size: 0.8rem;
+  margin-bottom: 1rem;
 `;
 
 const StyledImage = styled.img`
   width: 20px;
+  justify-self: center;
 `;
 
-const TableRow = (props) => {
+const TableSettledRow = (props) => {
   const { battles } = props;
+  // TODO: Replace this constant with user in session from redux
+  const user = 'admin@admin.com';
   return (
     <div>
       {battles.map((battle) => (
@@ -32,16 +38,15 @@ const TableRow = (props) => {
           <span>
             {battle.userCreator.name} VS {battle.userOpponent.name}
           </span>
-          {/* TODO: Conditional if user is winner use icons to represent */}
-          <span>{battle.winner}</span>
+          {battle.winner === user ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
         </StyledRow>
       ))}
     </div>
   );
 };
 
-TableRow.propTypes = {
+TableSettledRow.propTypes = {
   battles: PropTypes.object,
 };
 
-export default TableRow;
+export default TableSettledRow;
