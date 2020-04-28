@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
 import tick from '../../image/tick.svg';
 
-const StyledRow = styled.div`
+const StyledRow = styled(Link)`
   background-color: #fff;
   padding: 1rem 2rem;
   border-radius: 30px;
@@ -31,7 +32,7 @@ const TableSettledRow = (props) => {
   return (
     <div>
       {battles.map((battle) => (
-        <StyledRow key={battle.id}>
+        <StyledRow key={battle.id} to={`/battle/${battle.id}`}>
           <StyledImage alt="pokeball-icon" src={pokeball} />
           <span>Battle nº {battle.id}</span>
           <span>{battle.created}</span>

@@ -39,9 +39,9 @@ const StyledCall = styled.span`
 const getLink = (opponent, id) => {
   const user = 'admin@admin.com';
   if (user === opponent) {
-    return `create-team/${id}`;
+    return `/create-team/${id}`;
   }
-  return `battle/${id}`;
+  return `/battle/${id}`;
 };
 // TODO: Replace const user with session user from redux
 const TableActiveRow = (props) => {
