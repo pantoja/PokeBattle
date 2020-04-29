@@ -78,14 +78,14 @@ class DetailBattleSerializer(serializers.ModelSerializer):
         return obj.winner.email
 
     def get_creator_team(self, obj):
-        team = Team.objects.get(battle=obj, trainer=obj.user_creator)
+        team = obj.teams.get(trainer=obj.user_creator)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
     def get_opponent_team(self, obj):
         if not obj.settled:
             return {"trainer": obj.user_opponent.email}
-        team = Team.objects.get(battle=obj, trainer=obj.user_opponent)
+        team = obj.teams.get(trainer=obj.user_opponent)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
