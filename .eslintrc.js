@@ -3,9 +3,7 @@ const path = require('path');
 module.exports = {
   root: true,
   extends: ['vinta/recommended'],
-  rules: {
-    'no-console': 'warn',
-  },
+  rules: {},
   env: {
     es6: true,
     browser: true,

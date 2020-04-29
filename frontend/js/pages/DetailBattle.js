@@ -41,19 +41,14 @@ class DetailBattle extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     // TODO: Will use pathname from props when I implement react-router-dom
     const { pathname } = window.location;
     const id = pathname.slice(pathname.lastIndexOf('/') + 1);
-    axios
-      .get(`/api/battle/${id}`)
-      .then((response) => {
-        this.setState({ battle: response.data });
-        return response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    axios.get(`/api/battle/${id}`).then((response) => {
+      this.setState({ battle: response.data });
+      return response.data;
+    });
   }
 
   render() {
