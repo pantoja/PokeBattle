@@ -28,7 +28,7 @@ const TableHeader = (props) => {
 };
 
 TableHeader.propTypes = {
-  header: PropTypes.object,
+  header: PropTypes.array,
   settled: PropTypes.bool,
 };
 

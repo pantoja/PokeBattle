@@ -14,15 +14,10 @@ class ListSettledBattles extends Component {
   }
 
   async componentDidMount() {
-    axios
-      .get(`/api/battles/settled`)
-      .then((response) => {
-        this.setState({ battles: response.data });
-        return response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    axios.get(`/api/battles/settled`).then((response) => {
+      this.setState({ battles: response.data });
+      return response.data;
+    });
   }
 
   render() {

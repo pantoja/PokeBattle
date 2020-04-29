@@ -28,9 +28,9 @@ const StyledVersus = styled.span`
 class DetailBattle extends Component {
   componentDidMount() {
     const { getBattle } = this.props;
-    // TODO: Will use pathname from props when I implement react-router-dom
-    const { pathname } = window.location;
-    const id = pathname.slice(pathname.lastIndexOf('/') + 1);
+    const { match } = this.props;
+    const { id } = match.params;
+
     axios.get(`/api/battle/${id}`).then((response) => {
       return getBattle(response.data);
     });
@@ -79,6 +79,7 @@ DetailBattle.propTypes = {
   battle: PropTypes.object,
   isLoading: PropTypes.bool,
   getBattle: PropTypes.func,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

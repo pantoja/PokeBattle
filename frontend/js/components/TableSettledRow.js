@@ -47,7 +47,7 @@ const TableSettledRow = (props) => {
 };
 
 TableSettledRow.propTypes = {
-  battles: PropTypes.object,
+  battles: PropTypes.array,
 };
 
 export default TableSettledRow;
