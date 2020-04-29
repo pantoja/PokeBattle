@@ -18,18 +18,15 @@ class DetailTeamSerializer(serializers.ModelSerializer):
     team = serializers.SerializerMethodField()
 
     def get_team(self, obj):
-        return [
-            PokemonSerializer(obj.first_pokemon).data,
-            PokemonSerializer(obj.second_pokemon).data,
-            PokemonSerializer(obj.third_pokemon).data,
-        ]
+        team_set = [obj.first_pokemon, obj.second_pokemon, obj.third_pokemon]
+        return PokemonSerializer(team_set, many=True).data
 
     def get_trainer(self, obj):
         return obj.trainer.email
 
     class Meta:
         model = Team
-        fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon", "team"]
+        fields = ["trainer", "team"]
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
