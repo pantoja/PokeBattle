@@ -34,18 +34,15 @@ class DetailTeamSerializer(serializers.ModelSerializer):
     team = serializers.SerializerMethodField()
 
     def get_team(self, obj):
-        return [
-            PokemonSerializer(obj.first_pokemon).data,
-            PokemonSerializer(obj.second_pokemon).data,
-            PokemonSerializer(obj.third_pokemon).data,
-        ]
+        team_set = [obj.first_pokemon, obj.second_pokemon, obj.third_pokemon]
+        return PokemonSerializer(team_set, many=True).data
 
     def get_trainer(self, obj):
         return obj.trainer.email
 
     class Meta:
         model = Team
-        fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon", "team"]
+        fields = ["trainer", "team"]
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
@@ -87,8 +84,8 @@ class CreateTeamSerializer(serializers.ModelSerializer):
 
 
 class DetailBattleSerializer(serializers.ModelSerializer):
-    creatorTeam = serializers.SerializerMethodField()
-    opponentTeam = serializers.SerializerMethodField()
+    creator_team = serializers.SerializerMethodField()
+    opponent_team = serializers.SerializerMethodField()
     winner = serializers.SerializerMethodField()
 
     def get_winner(self, obj):
@@ -96,21 +93,21 @@ class DetailBattleSerializer(serializers.ModelSerializer):
             return None
         return obj.winner.email
 
-    def get_creatorTeam(self, obj):
-        team = Team.objects.get(battle=obj, trainer=obj.user_creator)
+    def get_creator_team(self, obj):
+        team = obj.teams.get(trainer=obj.user_creator)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
-    def get_opponentTeam(self, obj):
+    def get_opponent_team(self, obj):
         if not obj.settled:
             return {"trainer": obj.user_opponent.email}
-        team = Team.objects.get(battle=obj, trainer=obj.user_opponent)
+        team = obj.teams.get(trainer=obj.user_opponent)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
     class Meta:
         model = Battle
-        fields = ["id", "winner", "creatorTeam", "opponentTeam"]
+        fields = ["id", "winner", "creator_team", "opponent_team"]
 
 
 class CreateBattleSerializer(serializers.ModelSerializer):

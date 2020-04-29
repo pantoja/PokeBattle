@@ -1,8 +1,10 @@
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { getBattle } from '../actions';
 import PokemonCard from '../components/PokemonCard';
 
 const StyledTitle = styled.span`
@@ -24,47 +26,28 @@ const StyledVersus = styled.span`
 `;
 
 class DetailBattle extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battle: {
-        winner: '',
-        id: 0,
-        creatorTeam: {
-          trainer: '',
-          team: [],
-        },
-        opponentTeam: {
-          trainer: '',
-          team: [],
-        },
-      },
-    };
-  }
-
-  async componentDidMount() {
-    const { match } = this.props;
-    const { id } = match.params;
-    axios
-      .get(`/api/battle/${id}`)
-      .then((response) => {
-        this.setState({ battle: response.data });
-        return response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  componentDidMount() {
+    const { getBattle } = this.props;
+    // TODO: Will use pathname from props when I implement react-router-dom
+    const { pathname } = window.location;
+    const id = pathname.slice(pathname.lastIndexOf('/') + 1);
+    axios.get(`/api/battle/${id}`).then((response) => {
+      return getBattle(response.data);
+    });
   }
 
   render() {
-    const { battle } = this.state;
+    const { battle, isLoading } = this.props;
+    if (isLoading) {
+      return <>Loading</>;
+    }
     return (
       <>
         <h1>Battle nº {battle.id}</h1>
         <div>
           <p>
             <StyledTitle>Players: </StyledTitle>
-            {battle.creatorTeam.trainer} <span>VS</span> {battle.opponentTeam.trainer}
+            {battle.creator_team.trainer} <span>VS</span> {battle.opponent_team.trainer}
           </p>
 
           <p>
@@ -72,18 +55,18 @@ class DetailBattle extends Component {
             {battle.winner ? battle.winner : '?'}
           </p>
           <StyledContainer>
-            {battle.creatorTeam.team.map((pokemon, index) => (
-              <>
+            {battle.creator_team.team.map((pokemon, index) => (
+              <div key={pokemon.id}>
                 <StyledTitle>Round {index + 1}</StyledTitle>
                 <StyledRoundContainer>
-                  <PokemonCard pokemon={pokemon} trainer={battle.creatorTeam.trainer} />
+                  <PokemonCard pokemon={pokemon} trainer={battle.creator_team.trainer} />
                   <StyledVersus>VS</StyledVersus>
                   <PokemonCard
-                    pokemon={battle.winner ? battle.opponentTeam.team[index] : undefined}
-                    trainer={battle.opponentTeam.trainer}
+                    pokemon={battle.winner ? battle.opponent_team.team[index] : undefined}
+                    trainer={battle.opponent_team.trainer}
                   />
                 </StyledRoundContainer>
-              </>
+              </div>
             ))}
           </StyledContainer>
         </div>
@@ -93,7 +76,20 @@ class DetailBattle extends Component {
 }
 
 DetailBattle.propTypes = {
-  match: PropTypes.object,
+  battle: PropTypes.object,
+  isLoading: PropTypes.bool,
+  getBattle: PropTypes.func,
 };
 
-export default DetailBattle;
+const mapStateToProps = (state) => ({
+  battle: state.battles.battle,
+  isLoading: state.battles.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBattle: (battle) => dispatch(getBattle(battle)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailBattle);
