@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import { getBattle } from '../actions';
+import { getBattle } from '../actions/getBattle';
 import PokemonCard from '../components/PokemonCard';
 
 const StyledTitle = styled.span`
