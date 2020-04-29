@@ -1,3 +1,5 @@
+import { GET_BATTLE } from '../constants';
+
 const initialState = {
   battle: {},
   isLoading: true,
@@ -5,7 +7,7 @@ const initialState = {
 
 const battleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_BATTLE':
+    case GET_BATTLE:
       return {
         ...state,
         battle: action.payload,

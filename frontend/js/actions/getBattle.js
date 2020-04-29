@@ -1,4 +1,4 @@
-const GET_BATTLE = 'GET_BATTLE';
+import { GET_BATTLE } from '../constants';
 
 function getBattle(battle) {
   return { type: GET_BATTLE, payload: battle };
