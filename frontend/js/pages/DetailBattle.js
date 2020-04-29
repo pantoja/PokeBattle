@@ -1,7 +1,10 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { getBattle } from '../actions';
 import PokemonCard from '../components/PokemonCard';
 
 const StyledTitle = styled.span`
@@ -23,41 +26,21 @@ const StyledVersus = styled.span`
 `;
 
 class DetailBattle extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battle: {
-        winner: '',
-        id: 0,
-        creatorTeam: {
-          trainer: '',
-          team: [],
-        },
-        opponentTeam: {
-          trainer: '',
-          team: [],
-        },
-      },
-    };
-  }
-
-  async componentDidMount() {
+  componentDidMount() {
+    const { getBattle } = this.props;
     // TODO: Will use pathname from props when I implement react-router-dom
     const { pathname } = window.location;
     const id = pathname.slice(pathname.lastIndexOf('/') + 1);
-    axios
-      .get(`/api/battle/${id}`)
-      .then((response) => {
-        this.setState({ battle: response.data });
-        return response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    axios.get(`/api/battle/${id}`).then((response) => {
+      return getBattle(response.data);
+    });
   }
 
   render() {
-    const { battle } = this.state;
+    const { battle, isLoading } = this.props;
+    if (isLoading) {
+      return <>Loading</>;
+    }
     return (
       <>
         <h1>Battle nº {battle.id}</h1>
@@ -73,7 +56,7 @@ class DetailBattle extends Component {
           </p>
           <StyledContainer>
             {battle.creatorTeam.team.map((pokemon, index) => (
-              <>
+              <div key={pokemon.id}>
                 <StyledTitle>Round {index + 1}</StyledTitle>
                 <StyledRoundContainer>
                   <PokemonCard pokemon={pokemon} trainer={battle.creatorTeam.trainer} />
@@ -83,7 +66,7 @@ class DetailBattle extends Component {
                     trainer={battle.opponentTeam.trainer}
                   />
                 </StyledRoundContainer>
-              </>
+              </div>
             ))}
           </StyledContainer>
         </div>
@@ -92,4 +75,21 @@ class DetailBattle extends Component {
   }
 }
 
-export default DetailBattle;
+DetailBattle.propTypes = {
+  battle: PropTypes.object,
+  isLoading: PropTypes.bool,
+  getBattle: PropTypes.func,
+};
+
+const mapStateToProps = (state) => ({
+  battle: state.battles.battle,
+  isLoading: state.battles.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBattle: (battle) => dispatch(getBattle(battle)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailBattle);
