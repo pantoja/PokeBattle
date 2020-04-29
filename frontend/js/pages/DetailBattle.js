@@ -29,11 +29,11 @@ class DetailBattle extends Component {
       battle: {
         winner: '',
         id: 0,
-        creatorTeam: {
+        creator_team: {
           trainer: '',
           team: [],
         },
-        opponentTeam: {
+        opponent_team: {
           trainer: '',
           team: [],
         },
@@ -59,7 +59,7 @@ class DetailBattle extends Component {
         <div>
           <p>
             <StyledTitle>Players: </StyledTitle>
-            {battle.creatorTeam.trainer} <span>VS</span> {battle.opponentTeam.trainer}
+            {battle.creator_team.trainer} <span>VS</span> {battle.opponent_team.trainer}
           </p>
 
           <p>
@@ -67,15 +67,15 @@ class DetailBattle extends Component {
             {battle.winner ? battle.winner : '?'}
           </p>
           <StyledContainer>
-            {battle.creatorTeam.team.map((pokemon, index) => (
+            {battle.creator_team.team.map((pokemon, index) => (
               <>
                 <StyledTitle>Round {index + 1}</StyledTitle>
                 <StyledRoundContainer>
-                  <PokemonCard pokemon={pokemon} trainer={battle.creatorTeam.trainer} />
+                  <PokemonCard pokemon={pokemon} trainer={battle.creator_team.trainer} />
                   <StyledVersus>VS</StyledVersus>
                   <PokemonCard
-                    pokemon={battle.winner ? battle.opponentTeam.team[index] : undefined}
-                    trainer={battle.opponentTeam.trainer}
+                    pokemon={battle.winner ? battle.opponent_team.team[index] : undefined}
+                    trainer={battle.opponent_team.trainer}
                   />
                 </StyledRoundContainer>
               </>

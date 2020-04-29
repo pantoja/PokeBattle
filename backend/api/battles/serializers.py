@@ -68,8 +68,8 @@ class CreateTeamSerializer(serializers.ModelSerializer):
 
 
 class DetailBattleSerializer(serializers.ModelSerializer):
-    creatorTeam = serializers.SerializerMethodField()
-    opponentTeam = serializers.SerializerMethodField()
+    creator_team = serializers.SerializerMethodField()
+    opponent_team = serializers.SerializerMethodField()
     winner = serializers.SerializerMethodField()
 
     def get_winner(self, obj):
@@ -77,12 +77,12 @@ class DetailBattleSerializer(serializers.ModelSerializer):
             return None
         return obj.winner.email
 
-    def get_creatorTeam(self, obj):
+    def get_creator_team(self, obj):
         team = Team.objects.get(battle=obj, trainer=obj.user_creator)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
-    def get_opponentTeam(self, obj):
+    def get_opponent_team(self, obj):
         if not obj.settled:
             return {"trainer": obj.user_opponent.email}
         team = Team.objects.get(battle=obj, trainer=obj.user_opponent)
@@ -91,7 +91,7 @@ class DetailBattleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Battle
-        fields = ["id", "winner", "creatorTeam", "opponentTeam"]
+        fields = ["id", "winner", "creator_team", "opponent_team"]
 
 
 class CreateBattleSerializer(serializers.ModelSerializer):
