@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
@@ -71,7 +72,8 @@ class ListSettledBattlesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):  # noqa
         context = super().get_context_data(**kwargs)
         user = self.request.user.id
-        context["battles"] = Battle.objects.filter_by_status(user, True)
+        queryset = Battle.objects.filter_by_status(user, True)
+        context["battles"] = queryset.annotate(num_teams=Count("teams")).filter(num_teams__gt=1)
         return context
 
 
@@ -89,7 +91,7 @@ class ListActiveBattlesView(LoginRequiredMixin, ListView):
 
 class DetailBattleView(UserIsNotInThisBattleMixin, DetailView):
     model = Battle
-    template_name = "battles/detail_battle.html"
+    template_name = "react/detail_battle.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

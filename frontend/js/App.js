@@ -1,13 +1,8 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
 
-import Home from './pages/Home';
-import SentryBoundary from './utils/SentryBoundary';
+import DetailBattle from './pages/DetailBattle';
 
-const App = () => (
-  <SentryBoundary>
-    <Home />
-  </SentryBoundary>
-);
+const App = () => <DetailBattle />;
 
 export default hot(App);

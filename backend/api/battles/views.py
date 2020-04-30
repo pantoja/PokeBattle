@@ -1,3 +1,5 @@
+from django.db.models import Count
+
 from rest_framework import exceptions
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -20,6 +22,9 @@ class ListBattlesEndpoint(ListAPIView):
         user = self.request.user
         status = self.kwargs["status"]
         queryset = Battle.objects.filter_by_status(user, status == "settled")
+        if status == "settled":
+            # Return only battles with two teams
+            return queryset.annotate(num_teams=Count("teams")).filter(num_teams__gt=1)
         return queryset
 
     def dispatch(self, request, *args, **kwargs):

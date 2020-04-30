@@ -14,17 +14,19 @@ class ListBattleSerializer(serializers.ModelSerializer):
 
 
 class DetailTeamSerializer(serializers.ModelSerializer):
-    first_pokemon = PokemonSerializer()
-    second_pokemon = PokemonSerializer()
-    third_pokemon = PokemonSerializer()
     trainer = serializers.SerializerMethodField()
+    team = serializers.SerializerMethodField()
+
+    def get_team(self, obj):
+        team_set = [obj.first_pokemon, obj.second_pokemon, obj.third_pokemon]
+        return PokemonSerializer(team_set, many=True).data
 
     def get_trainer(self, obj):
         return obj.trainer.email
 
     class Meta:
         model = Team
-        fields = ["trainer", "first_pokemon", "second_pokemon", "third_pokemon"]
+        fields = ["trainer", "team"]
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
@@ -76,14 +78,14 @@ class DetailBattleSerializer(serializers.ModelSerializer):
         return obj.winner.email
 
     def get_creator_team(self, obj):
-        team = Team.objects.get(battle=obj, trainer=obj.user_creator)
+        team = obj.teams.get(trainer=obj.user_creator)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 
     def get_opponent_team(self, obj):
         if not obj.settled:
-            return None
-        team = Team.objects.get(battle=obj, trainer=obj.user_opponent)
+            return {"trainer": obj.user_opponent.email}
+        team = obj.teams.get(trainer=obj.user_opponent)
         serializer = DetailTeamSerializer(team)
         return serializer.data
 

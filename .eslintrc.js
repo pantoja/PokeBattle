@@ -3,7 +3,9 @@ const path = require('path');
 module.exports = {
   root: true,
   extends: ['vinta/recommended'],
-  rules: {},
+  rules: {
+    'babel/camelcase': 'off'
+  },
   env: {
     es6: true,
     browser: true,
