@@ -26,9 +26,8 @@ const StyledImage = styled.img`
 `;
 
 const TableSettledRow = (props) => {
-  const { battles } = props;
-  // TODO: Replace this constant with user in session from redux
-  const user = 'admin@admin.com';
+  const { battles, user } = props;
+
   return (
     <div>
       {battles.map((battle) => (
@@ -39,7 +38,7 @@ const TableSettledRow = (props) => {
           <span>
             {battle.userCreator.name} VS {battle.userOpponent.name}
           </span>
-          {battle.winner === user ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
+          {battle.winner === user.id ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
         </StyledRow>
       ))}
     </div>
@@ -48,6 +47,7 @@ const TableSettledRow = (props) => {
 
 TableSettledRow.propTypes = {
   battles: PropTypes.array,
+  user: PropTypes.object,
 };
 
 export default TableSettledRow;

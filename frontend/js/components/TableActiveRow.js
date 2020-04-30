@@ -36,28 +36,26 @@ const StyledCall = styled.span`
   }
 `;
 
-const getLink = (opponent, id) => {
-  const user = 'admin@admin.com';
+const getLink = (opponent, user, id) => {
   if (user === opponent) {
     return `/create-team/${id}`;
   }
   return `/battle/${id}`;
 };
-// TODO: Replace const user with session user from redux
+
 const TableActiveRow = (props) => {
-  const { battles } = props;
-  const user = 'admin@admin.com';
+  const { battles, user } = props;
   return (
     <div>
       {battles.map((battle) => (
-        <StyledRow key={battle.id} to={getLink(battle.userOpponent.email, battle.id)}>
+        <StyledRow key={battle.id} to={getLink(battle.userOpponent.id, user.id, battle.id)}>
           <StyledImage alt="pokeball-icon" src={pokeball} />
           <span>Battle nº {battle.id}</span>
           <span>{battle.created}</span>
           <span>
             {battle.userCreator.name} VS {battle.userOpponent.name}
           </span>
-          {battle.userOpponent.email === user ? (
+          {battle.userOpponent.id === user.id ? (
             <StyledCall>You</StyledCall>
           ) : (
             <span>{battle.userOpponent.name}</span>
@@ -70,6 +68,7 @@ const TableActiveRow = (props) => {
 
 TableActiveRow.propTypes = {
   battles: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default TableActiveRow;

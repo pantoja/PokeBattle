@@ -11,18 +11,12 @@ class ListBattleSerializer(serializers.ModelSerializer):
     userCreator = serializers.SerializerMethodField()
     userOpponent = serializers.SerializerMethodField()
     created = serializers.DateTimeField(format="%d/%m/%y")
-    winner = serializers.SerializerMethodField()
 
     def get_userCreator(self, obj):
-        return {"email": obj.user_creator.email, "name": obj.user_creator.get_short_name()}
+        return {"id": obj.user_creator.id, "name": obj.user_creator.get_short_name()}
 
     def get_userOpponent(self, obj):
-        return {"email": obj.user_opponent.email, "name": obj.user_opponent.get_short_name()}
-
-    def get_winner(self, obj):
-        if obj.winner:
-            return obj.winner.email
-        return None
+        return {"id": obj.user_opponent.id, "name": obj.user_opponent.get_short_name()}
 
     class Meta:
         model = Battle

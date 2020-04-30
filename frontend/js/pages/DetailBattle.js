@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import party from '../../image/party-popper.png';
 import { getBattle } from '../actions/getBattle';
 import PokemonCard from '../components/PokemonCard';
 
@@ -24,11 +25,14 @@ const StyledVersus = styled.span`
   font-weight: 700;
   align-self: center;
 `;
+const StyledIcon = styled.img`
+  width: 30px;
+  padding-left: 5px;
+`;
 
 class DetailBattle extends Component {
   componentDidMount() {
-    const { getBattle } = this.props;
-    const { match } = this.props;
+    const { getBattle, match } = this.props;
     const { id } = match.params;
 
     axios.get(`/api/battle/${id}`).then((response) => {
@@ -37,7 +41,7 @@ class DetailBattle extends Component {
   }
 
   render() {
-    const { battle, isLoading } = this.props;
+    const { battle, isLoading, user } = this.props;
     if (isLoading) {
       return <>Loading</>;
     }
@@ -53,6 +57,7 @@ class DetailBattle extends Component {
           <p>
             <StyledTitle>Winner: </StyledTitle>
             {battle.winner ? battle.winner : '?'}
+            {battle.winner === user.email && <StyledIcon alt="winner" src={party} />}
           </p>
           <StyledContainer>
             {battle.creator_team.team.map((pokemon, index) => (
@@ -77,9 +82,10 @@ class DetailBattle extends Component {
 
 DetailBattle.propTypes = {
   battle: PropTypes.object,
-  isLoading: PropTypes.bool,
   getBattle: PropTypes.func,
+  isLoading: PropTypes.bool,
   match: PropTypes.object,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

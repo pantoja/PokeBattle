@@ -1,4 +1,5 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import TableActiveRow from '../components/TableActiveRow';
@@ -22,14 +23,19 @@ class ListActiveBattles extends Component {
 
   render() {
     const { battles, tableHeader } = this.state;
+    const { user } = this.props;
     return (
       <>
         <h1>List Active Battles</h1>
         <TableHeader header={tableHeader} />
-        <TableActiveRow battles={battles} />
+        <TableActiveRow battles={battles} user={user} />
       </>
     );
   }
 }
+
+ListActiveBattles.propTypes = {
+  user: PropTypes.object,
+};
 
 export default ListActiveBattles;
