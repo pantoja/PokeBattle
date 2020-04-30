@@ -8,8 +8,6 @@ from api.battles.views import (
 )
 
 
-app_name = "battle"
-
 urlpatterns = [
     path("battles/<status>/", ListBattlesEndpoint.as_view(), name="list_active"),
     path("battle/<pk>/", DetailBattleEndpoint.as_view(), name="detail_battle"),
