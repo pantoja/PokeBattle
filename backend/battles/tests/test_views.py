@@ -286,13 +286,15 @@ class TestListSettledBattles(TestCase):
         self.view_url = reverse(self.view_name)
 
     def test_list_settled_battles_succesfully(self):
-        mommy.make(
+        battle = mommy.make(
             "battles.Battle",
             user_creator=self.trainer_1,
             user_opponent=self.trainer_2,
             settled=True,
             winner=self.trainer_1,
         )
+        mommy.make("battles.Team", trainer=self.trainer_1, battle=battle)
+        mommy.make("battles.Team", trainer=self.trainer_2, battle=battle)
 
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
@@ -311,6 +313,9 @@ class TestListSettledBattles(TestCase):
             user_opponent=self.trainer_2,
             settled=True,
         )
+
+        mommy.make("battles.Team", trainer=self.trainer_1, battle=settled_battle)
+        mommy.make("battles.Team", trainer=self.trainer_2, battle=settled_battle)
 
         response = self.client.get(self.view_url)
         battle_list = response.context["battles"]
