@@ -36,7 +36,7 @@ const TableSettledRow = (props) => {
           <span>Battle nº {battle.id}</span>
           <span>{battle.created}</span>
           <span>
-            {battle.userCreator.name} VS {battle.userOpponent.name}
+            {battle.user_creator.name} VS {battle.user_opponent.name}
           </span>
           {battle.winner === user.id ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
         </StyledRow>

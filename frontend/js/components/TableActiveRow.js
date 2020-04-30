@@ -48,17 +48,17 @@ const TableActiveRow = (props) => {
   return (
     <div>
       {battles.map((battle) => (
-        <StyledRow key={battle.id} to={getLink(battle.userOpponent.id, user.id, battle.id)}>
+        <StyledRow key={battle.id} to={getLink(battle.user_opponent.id, user.id, battle.id)}>
           <StyledImage alt="pokeball-icon" src={pokeball} />
           <span>Battle nº {battle.id}</span>
           <span>{battle.created}</span>
           <span>
-            {battle.userCreator.name} VS {battle.userOpponent.name}
+            {battle.user_creator.name} VS {battle.user_opponent.name}
           </span>
-          {battle.userOpponent.id === user.id ? (
+          {battle.user_opponent.id === user.id ? (
             <StyledCall>You</StyledCall>
           ) : (
-            <span>{battle.userOpponent.name}</span>
+            <span>{battle.user_opponent.name}</span>
           )}
         </StyledRow>
       ))}
