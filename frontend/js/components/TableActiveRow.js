@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -48,14 +49,14 @@ const TableActiveRow = (props) => {
   return (
     <div>
       {battles.map((battle) => (
-        <StyledRow key={battle.id} to={getLink(battle.user_opponent.id, user.id, battle.id)}>
+        <StyledRow key={battle.id} to={getLink(battle.user_opponent.id, user.user.id, battle.id)}>
           <StyledImage alt="pokeball-icon" src={pokeball} />
           <span>Battle nº {battle.id}</span>
           <span>{battle.created}</span>
           <span>
             {battle.user_creator.name} VS {battle.user_opponent.name}
           </span>
-          {battle.user_opponent.id === user.id ? (
+          {battle.user_opponent.id === user.user.id ? (
             <StyledCall>You</StyledCall>
           ) : (
             <span>{battle.user_opponent.name}</span>
@@ -71,4 +72,8 @@ TableActiveRow.propTypes = {
   user: PropTypes.object,
 };
 
-export default TableActiveRow;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, null)(TableActiveRow);

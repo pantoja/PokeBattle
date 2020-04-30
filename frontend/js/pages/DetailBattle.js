@@ -91,6 +91,7 @@ DetailBattle.propTypes = {
 const mapStateToProps = (state) => ({
   battle: state.battles.battle,
   isLoading: state.battles.isLoading,
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => {

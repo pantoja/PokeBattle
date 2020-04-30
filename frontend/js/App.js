@@ -26,18 +26,9 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route
-            path="/battle/:id"
-            render={(props) => <DetailBattle {...props} user={user.user} />}
-          />
-          <Route
-            path="/active-battles"
-            render={(props) => <ListActiveBattles {...props} user={user.user} />}
-          />
-          <Route
-            path="/settled-battles"
-            render={(props) => <ListSettledBattles {...props} user={user.user} />}
-          />
+          <Route component={DetailBattle} path="/battle/:id" />
+          <Route component={ListActiveBattles} path="/active-battles" />
+          <Route component={ListSettledBattles} path="/settled-battles" />
         </Switch>
       </Router>
     );

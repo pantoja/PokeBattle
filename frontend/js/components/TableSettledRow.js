@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -38,7 +39,11 @@ const TableSettledRow = (props) => {
           <span>
             {battle.user_creator.name} VS {battle.user_opponent.name}
           </span>
-          {battle.winner === user.id ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
+          {battle.winner === user.user.id ? (
+            <StyledImage src={tick} />
+          ) : (
+            <StyledImage src={cross} />
+          )}
         </StyledRow>
       ))}
     </div>
@@ -50,4 +55,8 @@ TableSettledRow.propTypes = {
   user: PropTypes.object,
 };
 
-export default TableSettledRow;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, null)(TableSettledRow);

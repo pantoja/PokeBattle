@@ -1,5 +1,4 @@
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import TableHeader from '../components/TableHeader';
@@ -23,19 +22,14 @@ class ListSettledBattles extends Component {
 
   render() {
     const { battles, tableHeader } = this.state;
-    const { user } = this.props;
     return (
       <>
         <h1>List Settled Battles</h1>
         <TableHeader header={tableHeader} settled />
-        <TableSettledRow battles={battles} user={user} />
+        <TableSettledRow battles={battles} />
       </>
     );
   }
 }
-
-ListSettledBattles.propTypes = {
-  user: PropTypes.object,
-};
 
 export default ListSettledBattles;
