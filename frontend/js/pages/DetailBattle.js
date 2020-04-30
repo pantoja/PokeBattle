@@ -68,7 +68,7 @@ class DetailBattle extends Component {
           </p>
           <StyledContainer>
             {battle.creator_team.team.map((pokemon, index) => (
-              <>
+              <div key={pokemon.id}>
                 <StyledTitle>Round {index + 1}</StyledTitle>
                 <StyledRoundContainer>
                   <PokemonCard pokemon={pokemon} trainer={battle.creator_team.trainer} />
@@ -78,7 +78,7 @@ class DetailBattle extends Component {
                     trainer={battle.opponent_team.trainer}
                   />
                 </StyledRoundContainer>
-              </>
+              </div>
             ))}
           </StyledContainer>
         </div>
