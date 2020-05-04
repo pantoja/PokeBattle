@@ -1,7 +1,10 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { getBattle } from '../actions/getBattle';
 import PokemonCard from '../components/PokemonCard';
 
 const StyledTitle = styled.span`
@@ -23,36 +26,19 @@ const StyledVersus = styled.span`
 `;
 
 class DetailBattle extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battle: {
-        winner: '',
-        id: 0,
-        creator_team: {
-          trainer: '',
-          team: [],
-        },
-        opponent_team: {
-          trainer: '',
-          team: [],
-        },
-      },
-    };
-  }
-
   componentDidMount() {
+    const { getBattle } = this.props;
     // TODO: Will use pathname from props when I implement react-router-dom
     const { pathname } = window.location;
     const id = pathname.slice(pathname.lastIndexOf('/') + 1);
     axios.get(`/api/battle/${id}`).then((response) => {
-      this.setState({ battle: response.data });
-      return response.data;
+      return getBattle(response.data);
     });
   }
 
   render() {
-    const { battle } = this.state;
+    const { battle, isLoading } = this.props;
+    if (isLoading) return <>Loading</>;
     return (
       <>
         <h1>Battle nº {battle.id}</h1>
@@ -87,4 +73,21 @@ class DetailBattle extends Component {
   }
 }
 
-export default DetailBattle;
+DetailBattle.propTypes = {
+  battle: PropTypes.object,
+  isLoading: PropTypes.bool,
+  getBattle: PropTypes.func,
+};
+
+const mapStateToProps = (state) => ({
+  battle: state.battles.battle,
+  isLoading: state.battles.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBattle: (battle) => dispatch(getBattle(battle)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailBattle);

@@ -4,6 +4,8 @@ module.exports = {
   root: true,
   extends: ['vinta/recommended'],
   rules: {
+    'default-param-last': 'warn',
+    'sonarjs/no-small-switch': 'off',
     'babel/camelcase': 'off'
   },
   env: {
