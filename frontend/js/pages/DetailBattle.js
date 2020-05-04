@@ -38,9 +38,7 @@ class DetailBattle extends Component {
 
   render() {
     const { battle, isLoading } = this.props;
-    if (isLoading) {
-      return <>Loading</>;
-    }
+    if (isLoading) return <>Loading</>;
     return (
       <>
         <h1>Battle nº {battle.id}</h1>
