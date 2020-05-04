@@ -1,4 +1,3 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
@@ -13,9 +12,7 @@ import ListSettledBattles from './pages/ListSettledBattles';
 class App extends Component {
   componentDidMount() {
     const { getUser } = this.props;
-    axios.get(`/api/user/`).then((response) => {
-      return getUser(response.data);
-    });
+    getUser();
   }
 
   render() {
@@ -46,7 +43,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUser: (user) => dispatch(getUser(user)),
+    getUser: () => dispatch(getUser()),
   };
 };
 

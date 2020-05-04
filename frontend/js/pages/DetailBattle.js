@@ -1,4 +1,3 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -34,10 +33,7 @@ class DetailBattle extends Component {
   componentDidMount() {
     const { getBattle, match } = this.props;
     const { id } = match.params;
-
-    axios.get(`/api/battle/${id}`).then((response) => {
-      return getBattle(response.data);
-    });
+    getBattle(id);
   }
 
   render() {
