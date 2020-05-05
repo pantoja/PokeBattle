@@ -68,7 +68,7 @@ const TableActiveRow = (props) => {
 };
 
 TableActiveRow.propTypes = {
-  battles: PropTypes.object,
+  battles: PropTypes.array,
   user: PropTypes.object,
 };
 

@@ -21,7 +21,7 @@ const TableHeader = (props) => {
   return (
     <StyledRow settled={settled}>
       {header.map((item) => (
-        <span key={item.id}>{item}</span>
+        <span key={item.id}>{item.content}</span>
       ))}
     </StyledRow>
   );

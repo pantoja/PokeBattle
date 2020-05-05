@@ -8,7 +8,13 @@ class ListActiveBattles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableHeader: ['', 'Battle Number', 'Created', 'Trainers', 'Pending Answer From'],
+      tableHeader: [
+        { id: 0, content: '' },
+        { id: 1, content: 'Battle Number' },
+        { id: 2, content: 'Created' },
+        { id: 3, content: 'Trainers' },
+        { id: 4, content: 'Pending Answer From' },
+      ],
       battles: [],
     };
   }
