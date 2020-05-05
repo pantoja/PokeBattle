@@ -42,31 +42,32 @@ class DetailBattle extends Component {
 
   render() {
     const { battle, isLoading, user } = this.props;
+    const { id, creator_team, opponent_team, winner } = battle;
     if (isLoading) return <>Loading</>;
     return (
       <>
-        <h1>Battle nº {battle.id}</h1>
+        <h1>Battle nº {id}</h1>
         <div>
           <p>
             <StyledTitle>Players: </StyledTitle>
-            {battle.creator_team.trainer} <span>VS</span> {battle.opponent_team.trainer}
+            {creator_team.trainer} <span>VS</span> {opponent_team.trainer}
           </p>
 
           <p>
             <StyledTitle>Winner: </StyledTitle>
-            {battle.winner ? battle.winner : '?'}
-            {battle.winner === user.email && <StyledIcon alt="winner" src={party} />}
+            {winner || '?'}
+            {winner === user.email && <StyledIcon alt="winner" src={party} />}
           </p>
           <StyledContainer>
-            {battle.creator_team.team.map((pokemon, index) => (
+            {creator_team.team.map((pokemon, index) => (
               <div key={pokemon.id}>
                 <StyledTitle>Round {index + 1}</StyledTitle>
                 <StyledRoundContainer>
-                  <PokemonCard pokemon={pokemon} trainer={battle.creator_team.trainer} />
+                  <PokemonCard pokemon={pokemon} trainer={creator_team.trainer} />
                   <StyledVersus>VS</StyledVersus>
                   <PokemonCard
-                    pokemon={battle.winner ? battle.opponent_team.team[index] : undefined}
-                    trainer={battle.opponent_team.trainer}
+                    pokemon={winner ? opponent_team.team[index] : undefined}
+                    trainer={opponent_team.trainer}
                   />
                 </StyledRoundContainer>
               </div>

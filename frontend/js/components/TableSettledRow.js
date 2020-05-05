@@ -31,21 +31,20 @@ const TableSettledRow = (props) => {
 
   return (
     <div>
-      {battles.map((battle) => (
-        <StyledRow key={battle.id} to={`/battle/${battle.id}`}>
-          <StyledImage alt="pokeball-icon" src={pokeball} />
-          <span>Battle nº {battle.id}</span>
-          <span>{battle.created}</span>
-          <span>
-            {battle.user_creator.name} VS {battle.user_opponent.name}
-          </span>
-          {battle.winner === user.user.id ? (
-            <StyledImage src={tick} />
-          ) : (
-            <StyledImage src={cross} />
-          )}
-        </StyledRow>
-      ))}
+      {battles.map((battle) => {
+        const { id, created, user_opponent, user_creator, winner } = battle;
+        return (
+          <StyledRow key={id} to={`/battle/${id}`}>
+            <StyledImage alt="pokeball-icon" src={pokeball} />
+            <span>Battle nº {id}</span>
+            <span>{created}</span>
+            <span>
+              {user_creator.name} VS {user_opponent.name}
+            </span>
+            {winner === user.user.id ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
+          </StyledRow>
+        );
+      })}
     </div>
   );
 };
