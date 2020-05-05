@@ -1,6 +1,8 @@
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import { listBattle } from '../actions/getBattle';
 import TableActiveRow from '../components/TableActiveRow';
 import TableHeader from '../components/TableHeader';
 
@@ -9,27 +11,42 @@ class ListActiveBattles extends Component {
     super(props);
     this.state = {
       tableHeader: ['', 'Battle Number', 'Created', 'Trainers', 'Pending Answer From'],
-      battles: [],
     };
   }
 
-  async componentDidMount() {
-    axios.get(`/api/battles/active`).then((response) => {
-      this.setState({ battles: response.data });
-      return response.data;
-    });
+  componentDidMount() {
+    const { listBattle } = this.props;
+    listBattle();
   }
 
   render() {
-    const { battles, tableHeader } = this.state;
+    const { tableHeader } = this.state;
+    const { battles } = this.props;
+    if (!battles) return <>Loading</>;
     return (
       <>
         <h1>List Active Battles</h1>
         <TableHeader header={tableHeader} />
-        <TableActiveRow battles={battles} />
+        <TableActiveRow battles={Object.values(battles).reverse()} />
       </>
     );
   }
 }
 
-export default ListActiveBattles;
+ListActiveBattles.propTypes = {
+  battles: PropTypes.object,
+  listBattle: PropTypes.func,
+};
+
+const mapStateToProps = (state) => ({
+  battles: state.battles,
+  isLoading: state.battles.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    listBattle: () => dispatch(listBattle()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListActiveBattles);
