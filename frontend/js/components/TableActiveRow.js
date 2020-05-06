@@ -37,11 +37,11 @@ const StyledCall = styled.span`
   }
 `;
 
-const getLink = (opponent, user, id) => {
+const getLinkAttributes = (opponent, user, id) => {
   if (user === opponent) {
-    return `/create-team/${id}`;
+    return { as: 'a', href: `/create-team/${id}` };
   }
-  return `/battle/${id}`;
+  return { to: `/battle/${id}` };
 };
 
 const TableActiveRow = (props) => {
@@ -51,7 +51,7 @@ const TableActiveRow = (props) => {
       {battles.map((battle) => {
         const { id, created, user_opponent, user_creator } = battle;
         return (
-          <StyledRow key={id} to={getLink(user_opponent.id, user.user.id, id)}>
+          <StyledRow key={id} {...getLinkAttributes(user_opponent.id, user.user.id, id)}>
             <StyledImage alt="pokeball-icon" src={pokeball} />
             <span>Battle nº {id}</span>
             <span>{created}</span>
