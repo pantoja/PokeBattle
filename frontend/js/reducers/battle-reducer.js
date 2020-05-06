@@ -1,4 +1,4 @@
-import { GET_BATTLE } from '../constants';
+import { SET_BATTLE } from '../constants';
 
 const initialState = {
   battle: {},
@@ -7,7 +7,7 @@ const initialState = {
 
 const battleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_BATTLE:
+    case SET_BATTLE:
       return {
         ...state,
         battle: action.payload,
