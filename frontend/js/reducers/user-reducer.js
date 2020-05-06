@@ -1,8 +1,8 @@
-import { GET_USER } from '../constants';
+import { SET_USER } from '../constants';
 
 const userReducer = (state = {}, action) => {
   switch (action.type) {
-    case GET_USER:
+    case SET_USER:
       return {
         ...state,
         user: action.payload,

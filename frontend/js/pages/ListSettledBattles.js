@@ -1,22 +1,27 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 
 import TableHeader from '../components/TableHeader';
 import TableSettledRow from '../components/TableSettledRow';
+import { getSettledBattlesAPI } from '../utils/services';
 
 class ListSettledBattles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableHeader: ['', 'Battle Number', 'Created', 'Trainers', 'You Won'],
+      tableHeader: [
+        { id: 0, content: '' },
+        { id: 1, content: 'Battle Number' },
+        { id: 2, content: 'Created' },
+        { id: 3, content: 'Trainers' },
+        { id: 4, content: 'You Won' },
+      ],
       battles: [],
     };
   }
 
   async componentDidMount() {
-    axios.get(`/api/battles/settled`).then((response) => {
-      this.setState({ battles: response.data });
-      return response.data;
+    getSettledBattlesAPI().then((battlesData) => {
+      return this.setState({ battles: battlesData });
     });
   }
 

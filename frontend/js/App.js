@@ -4,15 +4,15 @@ import { hot } from 'react-hot-loader/root';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { getUser } from './actions/getUser';
+import { setUser } from './actions/setUser';
 import DetailBattle from './pages/DetailBattle';
 import ListActiveBattles from './pages/ListActiveBattles';
 import ListSettledBattles from './pages/ListSettledBattles';
 
 class App extends Component {
   componentDidMount() {
-    const { getUser } = this.props;
-    getUser();
+    const { setUser } = this.props;
+    setUser();
   }
 
   render() {
@@ -33,7 +33,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  getUser: PropTypes.func,
+  setUser: PropTypes.func,
   user: PropTypes.object,
 };
 
@@ -43,7 +43,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUser: () => dispatch(getUser()),
+    setUser: (user) => dispatch(setUser(user)),
   };
 };
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import party from '../../image/party-popper.png';
-import { getBattle } from '../actions/getBattle';
+import { setBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 
 const StyledTitle = styled.span`
@@ -31,38 +31,39 @@ const StyledIcon = styled.img`
 
 class DetailBattle extends Component {
   componentDidMount() {
-    const { getBattle, match } = this.props;
+    const { setBattle, match } = this.props;
     const { id } = match.params;
-    getBattle(id);
+    setBattle(id);
   }
 
   render() {
     const { battle, isLoading, user } = this.props;
+    const { id, creator_team, opponent_team, winner } = battle;
     if (isLoading) return <>Loading</>;
     return (
       <>
-        <h1>Battle nº {battle.id}</h1>
+        <h1>Battle nº {id}</h1>
         <div>
           <p>
             <StyledTitle>Players: </StyledTitle>
-            {battle.creator_team.trainer} <span>VS</span> {battle.opponent_team.trainer}
+            {creator_team.trainer} <span>VS</span> {opponent_team.trainer}
           </p>
 
           <p>
             <StyledTitle>Winner: </StyledTitle>
-            {battle.winner ? battle.winner : '?'}
-            {battle.winner === user.email && <StyledIcon alt="winner" src={party} />}
+            {winner || '?'}
+            {winner === user.email && <StyledIcon alt="winner" src={party} />}
           </p>
           <StyledContainer>
-            {battle.creator_team.team.map((pokemon, index) => (
+            {creator_team.team.map((pokemon, index) => (
               <div key={pokemon.id}>
                 <StyledTitle>Round {index + 1}</StyledTitle>
                 <StyledRoundContainer>
-                  <PokemonCard pokemon={pokemon} trainer={battle.creator_team.trainer} />
+                  <PokemonCard pokemon={pokemon} trainer={creator_team.trainer} />
                   <StyledVersus>VS</StyledVersus>
                   <PokemonCard
-                    pokemon={battle.winner ? battle.opponent_team.team[index] : undefined}
-                    trainer={battle.opponent_team.trainer}
+                    pokemon={winner ? opponent_team.team[index] : undefined}
+                    trainer={opponent_team.trainer}
                   />
                 </StyledRoundContainer>
               </div>
@@ -76,7 +77,7 @@ class DetailBattle extends Component {
 
 DetailBattle.propTypes = {
   battle: PropTypes.object,
-  getBattle: PropTypes.func,
+  setBattle: PropTypes.func,
   isLoading: PropTypes.bool,
   match: PropTypes.object,
   user: PropTypes.object,
@@ -90,7 +91,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getBattle: (battle) => dispatch(getBattle(battle)),
+    setBattle: (battle) => dispatch(setBattle(battle)),
   };
 };
 
