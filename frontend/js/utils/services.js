@@ -11,15 +11,15 @@ const getBattleAPI = (id) => {
 };
 
 const getActiveBattlesAPI = () => {
-  return getAPI(`/api/battles/active`);
+  return getAPI('/api/battles/active');
 };
 
 const getSettledBattlesAPI = () => {
-  return getAPI(`/api/battles/settled`);
+  return getAPI('/api/battles/settled');
 };
 
 const getUserAPI = () => {
-  return getAPI(`/api/user/`);
+  return getAPI('/api/user/');
 };
 
 export { getBattleAPI, getActiveBattlesAPI, getSettledBattlesAPI, getUserAPI };
