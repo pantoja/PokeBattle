@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { listBattle } from '../actions/setBattle';
+import { setBattleList } from '../actions/setBattle';
 import TableActiveRow from '../components/TableActiveRow';
 import TableHeader from '../components/TableHeader';
 
@@ -21,8 +21,8 @@ class ListActiveBattles extends Component {
   }
 
   componentDidMount() {
-    const { listBattle } = this.props;
-    listBattle();
+    const { setBattleList } = this.props;
+    setBattleList();
   }
 
   render() {
@@ -33,7 +33,7 @@ class ListActiveBattles extends Component {
       <>
         <h1>List Active Battles</h1>
         <TableHeader header={tableHeader} />
-        <TableActiveRow battles={battles} />
+        <TableActiveRow battles={Object.values(battles)} />
       </>
     );
   }
@@ -41,7 +41,7 @@ class ListActiveBattles extends Component {
 
 ListActiveBattles.propTypes = {
   battles: PropTypes.object,
-  listBattle: PropTypes.func,
+  setBattleList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    listBattle: () => dispatch(listBattle()),
+    setBattleList: () => dispatch(setBattleList()),
   };
 };
 

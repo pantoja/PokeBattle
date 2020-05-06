@@ -37,11 +37,12 @@ class DetailBattle extends Component {
   }
 
   render() {
-    const { battles, isLoading, user } = this.props;
+    const { battles, user } = this.props;
     const { match } = this.props;
     const battle = battles[match.params.id];
+    if (!battle) return <>Loading</>;
+
     const { id, creator, opponent, winner } = battle;
-    if (isLoading) return <>Loading</>;
     return (
       <>
         <h1>Battle nº {id}</h1>
@@ -80,14 +81,12 @@ class DetailBattle extends Component {
 DetailBattle.propTypes = {
   battles: PropTypes.object,
   setBattle: PropTypes.func,
-  isLoading: PropTypes.bool,
   match: PropTypes.object,
   user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   battles: state.battles,
-  isLoading: state.battles.isLoading,
   user: state.user,
 });
 

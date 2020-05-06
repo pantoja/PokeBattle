@@ -21,13 +21,13 @@ function setBattle(battle) {
     });
 }
 
-function listBattle() {
+function setBattleList() {
   return (dispatch) =>
     getActiveBattlesAPI().then((battleList) => {
-      // const normalizedBattleList = normalize(battleList, schema.battleList);
-      // return dispatch(writeBattleList(normalizedBattleList.entities.battles));
-      return dispatch(writeBattleList(battleList));
+      const normalizedBattleList = normalize(battleList, schema.battleList);
+      return dispatch(writeBattleList(normalizedBattleList.entities.battles));
+      // return dispatch(writeBattleList(battleList));
     });
 }
 
-export { setBattle, listBattle };
+export { setBattle, setBattleList };
