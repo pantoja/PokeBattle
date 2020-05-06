@@ -1,4 +1,3 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -7,6 +6,7 @@ import styled from 'styled-components';
 import party from '../../image/party-popper.png';
 import { getBattle } from '../actions/getBattle';
 import PokemonCard from '../components/PokemonCard';
+import { getBattleAPI } from '../utils/services';
 
 const StyledTitle = styled.span`
   font-weight: 600;
@@ -34,9 +34,8 @@ class DetailBattle extends Component {
   componentDidMount() {
     const { getBattle, match } = this.props;
     const { id } = match.params;
-
-    axios.get(`/api/battle/${id}`).then((response) => {
-      return getBattle(response.data);
+    getBattleAPI(id).then((battleData) => {
+      return getBattle(battleData);
     });
   }
 

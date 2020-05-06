@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 
 import TableHeader from '../components/TableHeader';
 import TableSettledRow from '../components/TableSettledRow';
+import { getSettledBattlesAPI } from '../utils/services';
 
 class ListSettledBattles extends Component {
   constructor(props) {
@@ -20,9 +20,8 @@ class ListSettledBattles extends Component {
   }
 
   async componentDidMount() {
-    axios.get(`/api/battles/settled`).then((response) => {
-      this.setState({ battles: response.data });
-      return response.data;
+    getSettledBattlesAPI().then((battlesData) => {
+      return this.setState({ battles: battlesData });
     });
   }
 

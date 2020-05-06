@@ -1,4 +1,3 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
@@ -9,12 +8,13 @@ import { getUser } from './actions/getUser';
 import DetailBattle from './pages/DetailBattle';
 import ListActiveBattles from './pages/ListActiveBattles';
 import ListSettledBattles from './pages/ListSettledBattles';
+import { getUserAPI } from './utils/services';
 
 class App extends Component {
   componentDidMount() {
     const { getUser } = this.props;
-    axios.get(`/api/user/`).then((response) => {
-      return getUser(response.data);
+    getUserAPI().then((userData) => {
+      return getUser(userData);
     });
   }
 

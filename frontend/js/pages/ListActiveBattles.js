@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 
 import TableActiveRow from '../components/TableActiveRow';
 import TableHeader from '../components/TableHeader';
+import { getActiveBattlesAPI } from '../utils/services';
 
 class ListActiveBattles extends Component {
   constructor(props) {
@@ -19,10 +19,9 @@ class ListActiveBattles extends Component {
     };
   }
 
-  async componentDidMount() {
-    axios.get(`/api/battles/active`).then((response) => {
-      this.setState({ battles: response.data });
-      return response.data;
+  componentDidMount() {
+    getActiveBattlesAPI().then((battlesData) => {
+      return this.setState({ battles: battlesData });
     });
   }
 
