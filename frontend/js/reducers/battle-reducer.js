@@ -1,4 +1,4 @@
-import { GET_BATTLE } from '../constants';
+import { SET_BATTLE, LIST_BATTLE } from '../constants';
 
 const initialState = {
   battle: {},
@@ -8,19 +8,15 @@ const initialState = {
 
 const battleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_BATTLE: {
+    case SET_BATTLE: {
       const key = Object.keys(action.payload);
-      const value = action.payload[key];
       return {
         ...state,
-        [key]: {
-          creator_team: value.creator_team,
-          opponent_team: value.opponent_team,
-        },
+        [key]: action.payload[key],
         isLoading: false,
       };
     }
-    case 'LIST_BATTLE': {
+    case LIST_BATTLE: {
       return action.payload;
     }
     default:
