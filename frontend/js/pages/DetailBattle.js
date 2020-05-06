@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import party from '../../image/party-popper.png';
-import { getBattle } from '../actions/getBattle';
+import { setBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 import { getBattleAPI } from '../utils/services';
 
@@ -32,10 +32,10 @@ const StyledIcon = styled.img`
 
 class DetailBattle extends Component {
   componentDidMount() {
-    const { getBattle, match } = this.props;
+    const { setBattle, match } = this.props;
     const { id } = match.params;
     getBattleAPI(id).then((battleData) => {
-      return getBattle(battleData);
+      return setBattle(battleData);
     });
   }
 
@@ -80,7 +80,7 @@ class DetailBattle extends Component {
 
 DetailBattle.propTypes = {
   battle: PropTypes.object,
-  getBattle: PropTypes.func,
+  setBattle: PropTypes.func,
   isLoading: PropTypes.bool,
   match: PropTypes.object,
   user: PropTypes.object,
@@ -94,7 +94,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getBattle: (battle) => dispatch(getBattle(battle)),
+    setBattle: (battle) => dispatch(setBattle(battle)),
   };
 };
 
