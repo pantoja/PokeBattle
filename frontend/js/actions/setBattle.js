@@ -25,7 +25,7 @@ function setBattleList() {
   return (dispatch) =>
     getActiveBattlesAPI().then((battleList) => {
       const normalizedBattleList = normalize(battleList, schema.battleList);
-      return dispatch(writeBattleList(normalizedBattleList.entities.battles));
+      return dispatch(writeBattleList(normalizedBattleList.entities));
       // return dispatch(writeBattleList(battleList));
     });
 }

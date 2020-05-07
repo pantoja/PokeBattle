@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import pokeball from '../../image/pokeball.svg';
+import { setBattleList } from '../actions/setBattle';
+
+import PendingAnswer from './PendingAnswer';
+import TrainersInBattle from './TrainersInBattle';
 
 const StyledRow = styled(Link)`
   background-color: #fff;
@@ -22,21 +26,6 @@ const StyledImage = styled.img`
   width: 20px;
 `;
 
-const StyledCall = styled.span`
-  position: relative;
-  &&:after {
-    content: 'Answer';
-    color: #fff;
-    background-color: #f9ab2f;
-    padding: 5px;
-    position: absolute;
-    right: -40px;
-    bottom: -5px;
-    font-weight: 500;
-    outline: dashed #29344c;
-  }
-`;
-
 const getLinkAttributes = (opponent, user, id) => {
   if (user === opponent) {
     return { as: 'a', href: `/create-team/${id}` };
@@ -44,39 +33,50 @@ const getLinkAttributes = (opponent, user, id) => {
   return { to: `/battle/${id}` };
 };
 
-const TableActiveRow = (props) => {
-  const { battles, user } = props;
-  return (
-    <div>
-      {battles.map((battle) => {
-        const { id, created, opponent, creator } = battle;
-        return (
-          <StyledRow key={id} {...getLinkAttributes(opponent.trainer.id, user.user.id, id)}>
-            <StyledImage alt="pokeball-icon" src={pokeball} />
-            <span>Battle nº {id}</span>
-            <span>{created}</span>
-            <span>
-              {creator.trainer.name} VS {opponent.trainer.name}
-            </span>
-            {opponent.trainer.id === user.user.id ? (
-              <StyledCall>You</StyledCall>
-            ) : (
-              <span>{opponent.trainer.name}</span>
-            )}
-          </StyledRow>
-        );
-      })}
-    </div>
-  );
-};
+class TableActiveRow extends Component {
+  componentDidMount() {
+    const { setBattleList } = this.props;
+    setBattleList();
+  }
+
+  render() {
+    const { battles, user } = this.props;
+    if (!battles) return <>Loading</>;
+
+    const battleList = Object.values(battles);
+    return (
+      <div>
+        {battleList.map((battle) => {
+          const { id, created, opponent, creator } = battle;
+          return (
+            <StyledRow key={id} {...getLinkAttributes(opponent.trainer.id, user.user.id, id)}>
+              <StyledImage alt="pokeball-icon" src={pokeball} />
+              <span>Battle nº {id}</span>
+              <span>{created}</span>
+              <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
+              <PendingAnswer opponent={opponent.trainer} user={user.user.id} />
+            </StyledRow>
+          );
+        })}
+      </div>
+    );
+  }
+}
 
 TableActiveRow.propTypes = {
-  battles: PropTypes.array,
+  battles: PropTypes.object,
   user: PropTypes.object,
+  setBattleList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  battles: state.battles.battles,
 });
 
-export default connect(mapStateToProps, null)(TableActiveRow);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setBattleList: () => dispatch(setBattleList()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TableActiveRow);
