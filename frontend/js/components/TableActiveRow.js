@@ -26,8 +26,8 @@ const StyledImage = styled.img`
   width: 20px;
 `;
 
-const getLinkAttributes = (opponent, user, id) => {
-  if (user === opponent) {
+const getLinkAttributes = (opponent, session, id) => {
+  if (session === opponent) {
     return { as: 'a', href: `/create-team/${id}` };
   }
   return { to: `/battle/${id}` };
@@ -40,7 +40,7 @@ class TableActiveRow extends Component {
   }
 
   render() {
-    const { battles, user } = this.props;
+    const { battles, session } = this.props;
     if (!battles) return <>Loading</>;
 
     const battleList = Object.values(battles);
@@ -49,12 +49,12 @@ class TableActiveRow extends Component {
         {battleList.map((battle) => {
           const { id, created, opponent, creator } = battle;
           return (
-            <StyledRow key={id} {...getLinkAttributes(opponent.trainer.id, user.user.id, id)}>
+            <StyledRow key={id} {...getLinkAttributes(opponent.trainer, session.id, id)}>
               <StyledImage alt="pokeball-icon" src={pokeball} />
               <span>Battle nº {id}</span>
               <span>{created}</span>
               <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
-              <PendingAnswer opponent={opponent.trainer} user={user.user.id} />
+              <PendingAnswer opponent={opponent.trainer} session={session.id} />
             </StyledRow>
           );
         })}
@@ -65,12 +65,12 @@ class TableActiveRow extends Component {
 
 TableActiveRow.propTypes = {
   battles: PropTypes.object,
-  user: PropTypes.object,
+  session: PropTypes.object,
   setBattleList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  session: state.session,
   battles: state.battles.battles,
 });
 

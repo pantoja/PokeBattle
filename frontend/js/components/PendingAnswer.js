@@ -19,8 +19,8 @@ const StyledCall = styled.span`
 `;
 
 const PendingAnswer = (props) => {
-  const { user, opponent } = props;
-  if (opponent.id === user) {
+  const { session, opponent } = props;
+  if (opponent.id === session) {
     return <StyledCall>You</StyledCall>;
   }
   return <span>{opponent.name}</span>;
@@ -28,7 +28,7 @@ const PendingAnswer = (props) => {
 
 PendingAnswer.propTypes = {
   opponent: PropTypes.object,
-  user: PropTypes.number,
+  session: PropTypes.number,
 };
 
 const mapStateToProps = (state, { opponent }) => {

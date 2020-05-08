@@ -16,10 +16,8 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.props;
-    if (Object.keys(user).length === 0) {
-      return <div>Loading</div>;
-    }
+    const { session } = this.props;
+    if (!session) return <div>Loading</div>;
     return (
       <Router>
         <Switch>
@@ -34,16 +32,16 @@ class App extends Component {
 
 App.propTypes = {
   setUser: PropTypes.func,
-  user: PropTypes.object,
+  session: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  session: state.session,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: (user) => dispatch(setUser(user)),
+    setUser: () => dispatch(setUser()),
   };
 };
 
