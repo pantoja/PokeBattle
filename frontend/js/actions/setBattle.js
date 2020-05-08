@@ -17,7 +17,6 @@ function setBattle(battle) {
     getBattleAPI(battle).then((battleData) => {
       const normalizedBattle = normalize(battleData, schema.battle);
       return dispatch(writeBattleDetail(normalizedBattle.entities));
-      // return dispatch(writeBattleDetail(battleData));
     });
 }
 
@@ -26,7 +25,6 @@ function setActiveBattles() {
     getActiveBattlesAPI().then((battleList) => {
       const normalizedBattleList = normalize(battleList, schema.battleList);
       return dispatch(writeBattleList(normalizedBattleList.entities));
-      // return dispatch(writeBattleList(battleList));
     });
 }
 
@@ -35,7 +33,6 @@ function setSettledBattles() {
     getSettledBattlesAPI().then((battleList) => {
       const normalizedBattleList = normalize(battleList, schema.battleList);
       return dispatch(writeBattleList(normalizedBattleList.entities));
-      // return dispatch(writeBattleList(battleList));
     });
 }
 

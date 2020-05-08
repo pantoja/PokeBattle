@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-const StyledCard = styled.div`
+const Card = styled.div`
   width: 300px;
   text-align: center;
   border-radius: 10px;
@@ -12,7 +12,7 @@ const StyledCard = styled.div`
   box-shadow: 0px 0px 15px -13px $shadow-black;
 `;
 
-const StyledTrainer = styled.p`
+const Trainer = styled.p`
   border-radius: 10px 10px 0 0;
   background-color: #8370cc;
   color: #ffffff;
@@ -20,15 +20,15 @@ const StyledTrainer = styled.p`
   padding: 10px;
 `;
 
-const StyledName = styled.p`
+const Name = styled.p`
   text-transform: capitalize;
 `;
 
-const StyledStats = styled.p`
+const Stats = styled.p`
   font-weight: 500;
 `;
 
-const StyledQuestionMark = styled.p`
+const QuestionMark = styled.p`
   font-weight: 700;
   height: 150px;
   display: flex;
@@ -40,20 +40,20 @@ const StyledQuestionMark = styled.p`
 const PokemonCard = (props) => {
   const { pokemon, trainer } = props;
   return (
-    <StyledCard>
-      <StyledTrainer>{trainer.email} played:</StyledTrainer>
+    <Card>
+      <Trainer>{trainer.email} played:</Trainer>
       {pokemon ? (
         <>
           <img alt={pokemon.name} src={pokemon.sprite} />
-          <StyledName>{pokemon.name}</StyledName>
-          <StyledStats>
+          <Name>{pokemon.name}</Name>
+          <Stats>
             ATT: {pokemon.attack} DEF: {pokemon.defense} HP: {pokemon.hp}
-          </StyledStats>
+          </Stats>
         </>
       ) : (
-        <StyledQuestionMark>?</StyledQuestionMark>
+        <QuestionMark>?</QuestionMark>
       )}
-    </StyledCard>
+    </Card>
   );
 };
 

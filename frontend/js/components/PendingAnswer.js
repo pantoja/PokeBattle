@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-const StyledCall = styled.span`
+const AnswerTag = styled.span`
   position: relative;
   &&:after {
     content: 'Answer';
@@ -21,7 +21,7 @@ const StyledCall = styled.span`
 const PendingAnswer = (props) => {
   const { session, opponent } = props;
   if (opponent.id === session) {
-    return <StyledCall>You</StyledCall>;
+    return <AnswerTag>You</AnswerTag>;
   }
   return <span>{opponent.name}</span>;
 };

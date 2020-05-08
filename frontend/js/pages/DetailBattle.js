@@ -8,24 +8,24 @@ import { setBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 import TrainersInBattle from '../components/TrainersInBattle';
 
-const StyledTitle = styled.span`
+const Title = styled.span`
   font-weight: 600;
 `;
 
-const StyledContainer = styled.div`
+const Container = styled.div`
   margin-top: 30px;
 `;
 
-const StyledRoundContainer = styled.div`
+const RoundContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin: 40px;
 `;
-const StyledVersus = styled.span`
+const VSTag = styled.span`
   font-weight: 700;
   align-self: center;
 `;
-const StyledIcon = styled.img`
+const Icon = styled.img`
   width: 30px;
   padding-left: 5px;
 `;
@@ -49,30 +49,30 @@ class DetailBattle extends Component {
         <h1>Battle nº {id}</h1>
         <div>
           <p>
-            <StyledTitle>Players: </StyledTitle>
+            <Title>Players: </Title>
             <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
           </p>
 
           <p>
-            <StyledTitle>Winner: </StyledTitle>
+            <Title>Winner: </Title>
             {winner || '?'}
-            {winner === session.email && <StyledIcon alt="winner" src={party} />}
+            {winner === session.email && <Icon alt="winner" src={party} />}
           </p>
-          <StyledContainer>
+          <Container>
             {creator.team.map((pokemon, index) => (
               <div key={pokemon}>
-                <StyledTitle>Round {index + 1}</StyledTitle>
-                <StyledRoundContainer>
+                <Title>Round {index + 1}</Title>
+                <RoundContainer>
                   <PokemonCard pokemon={pokemon} trainer={creator.trainer} />
-                  <StyledVersus>VS</StyledVersus>
+                  <VSTag>VS</VSTag>
                   <PokemonCard
                     pokemon={opponent.team ? opponent.team[index] : undefined}
                     trainer={opponent.trainer}
                   />
-                </StyledRoundContainer>
+                </RoundContainer>
               </div>
             ))}
-          </StyledContainer>
+          </Container>
         </div>
       </>
     );

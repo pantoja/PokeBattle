@@ -11,7 +11,7 @@ import { setSettledBattles } from '../actions/setBattle';
 
 import TrainersInBattle from './TrainersInBattle';
 
-const StyledRow = styled(Link)`
+const Row = styled(Link)`
   background-color: #fff;
   padding: 1rem 2rem;
   border-radius: 30px;
@@ -24,7 +24,7 @@ const StyledRow = styled(Link)`
   margin-bottom: 1rem;
 `;
 
-const StyledImage = styled.img`
+const Image = styled.img`
   width: 20px;
   justify-self: center;
 `;
@@ -44,13 +44,13 @@ class TableSettledRow extends Component {
         {battleList.map((battle) => {
           const { id, created, opponent, creator, winner } = battle;
           return (
-            <StyledRow key={id} to={`/battle/${id}`}>
-              <StyledImage alt="pokeball-icon" src={pokeball} />
+            <Row key={id} to={`/battle/${id}`}>
+              <Image alt="pokeball-icon" src={pokeball} />
               <span>Battle nº {id}</span>
               <span>{created}</span>
               <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
-              {winner === session.email ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
-            </StyledRow>
+              {winner === session.email ? <Image src={tick} /> : <Image src={cross} />}
+            </Row>
           );
         })}
       </div>

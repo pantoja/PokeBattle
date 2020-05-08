@@ -10,7 +10,7 @@ import { setActiveBattles } from '../actions/setBattle';
 import PendingAnswer from './PendingAnswer';
 import TrainersInBattle from './TrainersInBattle';
 
-const StyledRow = styled(Link)`
+const Row = styled(Link)`
   background-color: #fff;
   padding: 1rem 2rem;
   border-radius: 30px;
@@ -22,7 +22,7 @@ const StyledRow = styled(Link)`
   margin-bottom: 1rem;
 `;
 
-const StyledImage = styled.img`
+const Image = styled.img`
   width: 20px;
 `;
 
@@ -49,13 +49,13 @@ class TableActiveRow extends Component {
         {battleList.map((battle) => {
           const { id, created, opponent, creator } = battle;
           return (
-            <StyledRow key={id} {...getLinkAttributes(opponent.trainer, session.id, id)}>
-              <StyledImage alt="pokeball-icon" src={pokeball} />
+            <Row key={id} {...getLinkAttributes(opponent.trainer, session.id, id)}>
+              <Image alt="pokeball-icon" src={pokeball} />
               <span>Battle nº {id}</span>
               <span>{created}</span>
               <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
               <PendingAnswer opponent={opponent.trainer} session={session.id} />
-            </StyledRow>
+            </Row>
           );
         })}
       </div>
