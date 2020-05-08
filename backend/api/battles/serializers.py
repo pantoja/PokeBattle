@@ -8,9 +8,19 @@ from battles.models import Battle, Team
 
 
 class ListBattleSerializer(serializers.ModelSerializer):
+    user_creator = serializers.SerializerMethodField()
+    user_opponent = serializers.SerializerMethodField()
+    created = serializers.DateTimeField(format="%d/%m/%y")
+
+    def get_user_creator(self, obj):
+        return {"id": obj.user_creator.id, "name": obj.user_creator.get_short_name()}
+
+    def get_user_opponent(self, obj):
+        return {"id": obj.user_opponent.id, "name": obj.user_opponent.get_short_name()}
+
     class Meta:
         model = Battle
-        fields = ["id", "settled", "winner", "user_creator", "user_opponent"]
+        fields = ["id", "settled", "created", "winner", "user_creator", "user_opponent"]
 
 
 class DetailTeamSerializer(serializers.ModelSerializer):
