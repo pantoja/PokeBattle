@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +7,9 @@ import styled from 'styled-components';
 import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
 import tick from '../../image/tick.svg';
+import { setSettledBattles } from '../actions/setBattle';
+
+import TrainersInBattle from './TrainersInBattle';
 
 const StyledRow = styled(Link)`
   background-color: #fff;
@@ -26,36 +29,50 @@ const StyledImage = styled.img`
   justify-self: center;
 `;
 
-const TableSettledRow = (props) => {
-  const { battles, user } = props;
+class TableSettledRow extends Component {
+  componentDidMount() {
+    const { setSettledBattles } = this.props;
+    setSettledBattles();
+  }
 
-  return (
-    <div>
-      {battles.map((battle) => {
-        const { id, created, user_opponent, user_creator, winner } = battle;
-        return (
-          <StyledRow key={id} to={`/battle/${id}`}>
-            <StyledImage alt="pokeball-icon" src={pokeball} />
-            <span>Battle nº {id}</span>
-            <span>{created}</span>
-            <span>
-              {user_creator.name} VS {user_opponent.name}
-            </span>
-            {winner === user.user.id ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
-          </StyledRow>
-        );
-      })}
-    </div>
-  );
-};
+  render() {
+    const { battles, session } = this.props;
+    if (!battles) return <>Loading</>;
+    const battleList = Object.values(battles);
+    return (
+      <div>
+        {battleList.map((battle) => {
+          const { id, created, opponent, creator, winner } = battle;
+          return (
+            <StyledRow key={id} to={`/battle/${id}`}>
+              <StyledImage alt="pokeball-icon" src={pokeball} />
+              <span>Battle nº {id}</span>
+              <span>{created}</span>
+              <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
+              {winner === session.email ? <StyledImage src={tick} /> : <StyledImage src={cross} />}
+            </StyledRow>
+          );
+        })}
+      </div>
+    );
+  }
+}
 
 TableSettledRow.propTypes = {
-  battles: PropTypes.array,
-  user: PropTypes.object,
+  battles: PropTypes.object,
+  session: PropTypes.object,
+  setSettledBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  battles: state.battles.battles,
+  session: state.session,
 });
 
-export default connect(mapStateToProps, null)(TableSettledRow);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSettledBattles: () => dispatch(setSettledBattles()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableSettledRow);

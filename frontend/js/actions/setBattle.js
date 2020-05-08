@@ -2,7 +2,7 @@ import { normalize } from 'normalizr';
 
 import { SET_BATTLE, LIST_BATTLE } from '../constants';
 import * as schema from '../utils/schema';
-import { getBattleAPI, getActiveBattlesAPI } from '../utils/services';
+import { getBattleAPI, getActiveBattlesAPI, getSettledBattlesAPI } from '../utils/services';
 
 function writeBattleDetail(battle) {
   return { type: SET_BATTLE, payload: battle };
@@ -21,7 +21,7 @@ function setBattle(battle) {
     });
 }
 
-function setBattleList() {
+function setActiveBattles() {
   return (dispatch) =>
     getActiveBattlesAPI().then((battleList) => {
       const normalizedBattleList = normalize(battleList, schema.battleList);
@@ -30,4 +30,13 @@ function setBattleList() {
     });
 }
 
-export { setBattle, setBattleList };
+function setSettledBattles() {
+  return (dispatch) =>
+    getSettledBattlesAPI().then((battleList) => {
+      const normalizedBattleList = normalize(battleList, schema.battleList);
+      return dispatch(writeBattleList(normalizedBattleList.entities));
+      // return dispatch(writeBattleList(battleList));
+    });
+}
+
+export { setBattle, setActiveBattles, setSettledBattles };
