@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 const StyledCard = styled.div`
@@ -40,7 +41,7 @@ const PokemonCard = (props) => {
   const { pokemon, trainer } = props;
   return (
     <StyledCard>
-      <StyledTrainer>{trainer} played:</StyledTrainer>
+      <StyledTrainer>{trainer.email} played:</StyledTrainer>
       {pokemon ? (
         <>
           <img alt={pokemon.name} src={pokemon.sprite} />
@@ -58,7 +59,12 @@ const PokemonCard = (props) => {
 
 PokemonCard.propTypes = {
   pokemon: PropTypes.object,
-  trainer: PropTypes.string,
+  trainer: PropTypes.object,
 };
 
-export default PokemonCard;
+const mapStateToProps = (state, { trainer, pokemon }) => ({
+  pokemon: state.battles.pokemon[pokemon],
+  trainer: state.battles.users[trainer],
+});
+
+export default connect(mapStateToProps)(PokemonCard);

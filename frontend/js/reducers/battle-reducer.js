@@ -3,11 +3,7 @@ import { SET_BATTLE, LIST_BATTLE } from '../constants';
 const battleReducer = (state = {}, action) => {
   switch (action.type) {
     case SET_BATTLE: {
-      const key = Object.keys(action.payload);
-      return {
-        ...state,
-        [key]: action.payload[key],
-      };
+      return action.payload;
     }
     case LIST_BATTLE: {
       return action.payload;

@@ -11,6 +11,7 @@ export const battle = new schema.Entity('battles', {
   },
   opponent: {
     trainer: user,
+    team: [pokemon],
   },
 });
 

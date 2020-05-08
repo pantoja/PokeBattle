@@ -16,7 +16,7 @@ function setBattle(battle) {
   return (dispatch) =>
     getBattleAPI(battle).then((battleData) => {
       const normalizedBattle = normalize(battleData, schema.battle);
-      return dispatch(writeBattleDetail(normalizedBattle.entities.battles));
+      return dispatch(writeBattleDetail(normalizedBattle.entities));
       // return dispatch(writeBattleDetail(battleData));
     });
 }
