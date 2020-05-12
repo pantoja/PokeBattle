@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ChooseOpponent from '../components/ChooseOpponent';
+import ChooseTeam from '../components/ChooseTeam';
 
 const Page = styled.main`
   display: flex;
@@ -46,7 +46,8 @@ const CreateBattle = () => {
   return (
     <Page>
       <h2>Create a battle</h2>
-      <ChooseOpponent />
+      {/* <ChooseOpponent /> */}
+      <ChooseTeam />
       <Tag>OR</Tag>
       <InviteButton href="/invite/">Invite a friend!</InviteButton>
     </Page>

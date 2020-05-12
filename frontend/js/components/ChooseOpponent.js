@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { setUserList } from '../actions/setUser';
-import { postBattle } from '../utils/services';
+import { setUserList } from '../actions/setBattle';
+import { postBattleAPI } from '../utils/services';
 
 class ChooseOpponent extends Component {
   componentDidMount() {
@@ -27,7 +27,7 @@ class ChooseOpponent extends Component {
           const data = {
             user_opponent: fields.opponent,
           };
-          postBattle(data);
+          postBattleAPI(data);
         }}
       >
         {() => (
@@ -56,7 +56,7 @@ ChooseOpponent.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  users: state.session.users,
+  users: state.battles.users,
 });
 
 const mapDispatchToProps = (dispatch) => {
