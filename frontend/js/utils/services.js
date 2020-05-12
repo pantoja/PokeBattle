@@ -22,4 +22,8 @@ const getUserAPI = () => {
   return getAPI('/api/user/');
 };
 
-export { getBattleAPI, getActiveBattlesAPI, getSettledBattlesAPI, getUserAPI };
+const getUserListAPI = () => {
+  return getAPI('/api/users/');
+};
+
+export { getBattleAPI, getActiveBattlesAPI, getSettledBattlesAPI, getUserAPI, getUserListAPI };
