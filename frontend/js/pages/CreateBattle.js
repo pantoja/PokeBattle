@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import styled from 'styled-components';
 
-import { setUserList } from '../actions/setUser';
+import ChooseOpponent from '../components/ChooseOpponent';
 
 const Page = styled.main`
   display: flex;
@@ -43,44 +41,16 @@ const InviteButton = styled.a`
     z-index: -1;
   }
 `;
-class CreateBattle extends Component {
-  componentDidMount() {
-    const { setUserList } = this.props;
-    setUserList();
-  }
 
-  render() {
-    const { users } = this.props;
-    return (
-      <Page>
-        <h2>Choose your opponent</h2>
-        <select name="opponent" required>
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.email}
-            </option>
-          ))}
-        </select>
-        <Tag>OR</Tag>
-        <InviteButton href="/invite/">Invite a friend!</InviteButton>
-      </Page>
-    );
-  }
-}
-
-CreateBattle.propTypes = {
-  setUserList: PropTypes.func,
-  users: PropTypes.array,
+const CreateBattle = () => {
+  return (
+    <Page>
+      <h2>Create a battle</h2>
+      <ChooseOpponent />
+      <Tag>OR</Tag>
+      <InviteButton href="/invite/">Invite a friend!</InviteButton>
+    </Page>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  users: state.session.users,
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserList: () => dispatch(setUserList()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateBattle);
+export default CreateBattle;

@@ -1,8 +1,17 @@
 import axios from 'axios';
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+
 const getAPI = (url) => {
   return axios.get(url).then((response) => {
     return response.data;
+  });
+};
+
+const postAPI = (url, data) => {
+  return axios.post(url, data).then((response) => {
+    return response;
   });
 };
 
@@ -26,4 +35,15 @@ const getUserListAPI = () => {
   return getAPI('/api/users/');
 };
 
-export { getBattleAPI, getActiveBattlesAPI, getSettledBattlesAPI, getUserAPI, getUserListAPI };
+const postBattle = (data) => {
+  return postAPI('/api/battle/', data);
+};
+
+export {
+  getBattleAPI,
+  getActiveBattlesAPI,
+  getSettledBattlesAPI,
+  getUserAPI,
+  getUserListAPI,
+  postBattle,
+};
