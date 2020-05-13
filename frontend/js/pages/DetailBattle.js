@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import party from '../../image/party-popper.png';
 import { setBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
-import { getBattleAPI } from '../utils/services';
 
 const StyledTitle = styled.span`
   font-weight: 600;
@@ -34,9 +33,7 @@ class DetailBattle extends Component {
   componentDidMount() {
     const { setBattle, match } = this.props;
     const { id } = match.params;
-    getBattleAPI(id).then((battleData) => {
-      return setBattle(battleData);
-    });
+    setBattle(id);
   }
 
   render() {

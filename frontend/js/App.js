@@ -8,14 +8,11 @@ import { setUser } from './actions/setUser';
 import DetailBattle from './pages/DetailBattle';
 import ListActiveBattles from './pages/ListActiveBattles';
 import ListSettledBattles from './pages/ListSettledBattles';
-import { getUserAPI } from './utils/services';
 
 class App extends Component {
   componentDidMount() {
     const { setUser } = this.props;
-    getUserAPI().then((userData) => {
-      return setUser(userData);
-    });
+    setUser();
   }
 
   render() {
