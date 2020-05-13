@@ -43,6 +43,10 @@ const postBattleAPI = (data) => {
   return postAPI('/api/battle/', data);
 };
 
+const postTeamAPI = (data) => {
+  return postAPI('/api/team/', data);
+};
+
 export {
   getBattleAPI,
   getActiveBattlesAPI,
@@ -51,4 +55,5 @@ export {
   getUserListAPI,
   getPokemonAPI,
   postBattleAPI,
+  postTeamAPI,
 };

@@ -92,7 +92,7 @@ class CreateBattleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Battle
-        fields = ["user_creator", "user_opponent"]
+        fields = ["id", "user_creator", "user_opponent"]
 
     def validate(self, attrs):
         if self.context["request"].user == attrs["user_opponent"]:

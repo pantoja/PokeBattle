@@ -1,10 +1,9 @@
-import { Formik, Field, Form } from 'formik';
+import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { setUserList } from '../actions/setBattle';
-import { postBattleAPI } from '../utils/services';
 
 class ChooseOpponent extends Component {
   componentDidMount() {
@@ -19,33 +18,16 @@ class ChooseOpponent extends Component {
     }
 
     return (
-      <Formik
-        initialValues={{
-          opponent: '',
-        }}
-        onSubmit={(fields) => {
-          const data = {
-            user_opponent: fields.opponent,
-          };
-          postBattleAPI(data);
-        }}
-      >
-        {() => (
-          <Form>
-            <Field as="select" name="opponent" required>
-              <option disabled value="">
-                -------
-              </option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.email}
-                </option>
-              ))}
-            </Field>
-            <input type="submit" value="Go!" />
-          </Form>
-        )}
-      </Formik>
+      <Field as="select" name="opponent" required>
+        <option disabled value="">
+          -------
+        </option>
+        {users.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.email}
+          </option>
+        ))}
+      </Field>
     );
   }
 }

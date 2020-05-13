@@ -1,7 +1,10 @@
+import { Formik, Form } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
+import ChooseOpponent from '../components/ChooseOpponent';
 import ChooseTeam from '../components/ChooseTeam';
+import { postBattleAPI, postTeamAPI } from '../utils/services';
 
 const Page = styled.main`
   display: flex;
@@ -10,46 +13,43 @@ const Page = styled.main`
   padding: 2rem;
 `;
 
-const Tag = styled.span`
-  font-weight: 700;
-  margin: 20px 0;
-`;
-const InviteButton = styled.a`
-  position: relative;
-  background-color: white;
-  border-radius: 20px;
-  padding: 5px 10px;
-  font-weight: 500;
-  :before {
-    background: linear-gradient(
-      145deg,
-      #a2eef9 14%,
-      #98ccff 28%,
-      #d0b9f0 42%,
-      #fecbfe 56%,
-      #ccf998 70%,
-      #ccf9e9 84%
-    );
-    border-radius: inherit;
-    bottom: 0;
-    content: '';
-    left: 0;
-    margin: -2px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: -1;
-  }
-`;
-
 const CreateBattle = () => {
   return (
     <Page>
       <h2>Create a battle</h2>
-      {/* <ChooseOpponent /> */}
-      <ChooseTeam />
-      <Tag>OR</Tag>
-      <InviteButton href="/invite/">Invite a friend!</InviteButton>
+      <Formik
+        initialValues={{
+          opponent: '',
+          pokemon_1: '',
+          pokemon_2: '',
+          pokemon_3: '',
+        }}
+        onSubmit={(fields) => {
+          const battle_data = {
+            user_opponent: fields.opponent,
+          };
+          const team_data = {
+            first_pokemon: fields.pokemon_1,
+            second_pokemon: fields.pokemon_2,
+            third_pokemon: fields.pokemon_3,
+            choice_1: 1,
+            choice_2: 2,
+            choice_3: 3,
+          };
+          postBattleAPI(battle_data).then((response) => {
+            team_data.battle = response.data.id;
+            return postTeamAPI(team_data);
+          });
+        }}
+      >
+        {() => (
+          <Form>
+            <ChooseOpponent />
+            <ChooseTeam />
+            <input type="submit" value="Go!" />
+          </Form>
+        )}
+      </Formik>
     </Page>
   );
 };
