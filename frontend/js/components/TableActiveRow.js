@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import pokeball from '../../image/pokeball.svg';
 import { setActiveBattles } from '../actions/setBattle';
+import { sessionSelector, battleResultsSelector } from '../utils/selectors';
 
 import PendingAnswer from './PendingAnswer';
 import TrainersInBattle from './TrainersInBattle';
@@ -70,8 +71,8 @@ TableActiveRow.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  battles: state.battles.battles,
-  session: state.session,
+  battles: battleResultsSelector(state),
+  session: sessionSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => {

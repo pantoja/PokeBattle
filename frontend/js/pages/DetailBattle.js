@@ -7,6 +7,7 @@ import party from '../../image/party-popper.png';
 import { setBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 import TrainersInBattle from '../components/TrainersInBattle';
+import { battleSelector, sessionSelector } from '../utils/selectors';
 
 const Title = styled.span`
   font-weight: 600;
@@ -91,12 +92,12 @@ const mapStateToProps = (state, { match }) => {
   const { id } = match.params;
   if (state.battles.battles) {
     return {
-      battle: state.battles.battles[id],
-      session: state.session,
+      battle: battleSelector(state, id),
+      session: sessionSelector(state),
     };
   }
   return {
-    session: state.session,
+    session: sessionSelector(state),
   };
 };
 

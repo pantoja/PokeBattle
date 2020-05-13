@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { userSelector } from '../utils/selectors';
+
 const TrainersInBattle = (props) => {
   const { creator, opponent } = props;
   return (
@@ -18,8 +20,8 @@ TrainersInBattle.propTypes = {
 
 const mapStateToProps = (state, { creator, opponent }) => {
   return {
-    creator: state.battles.users[creator],
-    opponent: state.battles.users[opponent],
+    creator: userSelector(state, creator),
+    opponent: userSelector(state, opponent),
   };
 };
 

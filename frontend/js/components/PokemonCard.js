@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { pokemonSelector, userSelector } from '../utils/selectors';
+
 const Card = styled.div`
   width: 300px;
   text-align: center;
@@ -63,8 +65,8 @@ PokemonCard.propTypes = {
 };
 
 const mapStateToProps = (state, { trainer, pokemon }) => ({
-  pokemon: state.battles.pokemon[pokemon],
-  trainer: state.battles.users[trainer],
+  pokemon: pokemonSelector(state, pokemon),
+  trainer: userSelector(state, trainer),
 });
 
 export default connect(mapStateToProps)(PokemonCard);
