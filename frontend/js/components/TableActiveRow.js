@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import pokeball from '../../image/pokeball.svg';
 import { setActiveBattles } from '../actions/setBattle';
-import { sessionSelector, battleResultsSelector } from '../utils/selectors';
+import { sessionSelector, battleResultsSelector, battlesListSelector } from '../utils/selectors';
 
 import PendingAnswer from './PendingAnswer';
 import TrainersInBattle from './TrainersInBattle';
@@ -41,14 +41,13 @@ class TableActiveRow extends Component {
   }
 
   render() {
-    const { battles, session } = this.props;
-    if (!battles) return <>Loading</>;
-
-    const battleList = Object.values(battles);
+    const { battlesResult, battleList, session } = this.props;
+    if (!battlesResult) return <>Loading</>;
     return (
       <div>
-        {battleList.map((battle) => {
-          const { id, created, opponent, creator } = battle;
+        {battlesResult.map((id) => {
+          const battle = battleList[id];
+          const { created, opponent, creator } = battle;
           return (
             <Row key={id} {...getLinkAttributes(opponent.trainer, session.id, id)}>
               <Image alt="pokeball-icon" src={pokeball} />
@@ -65,13 +64,15 @@ class TableActiveRow extends Component {
 }
 
 TableActiveRow.propTypes = {
-  battles: PropTypes.object,
+  battleList: PropTypes.object,
+  battlesResult: PropTypes.array,
   session: PropTypes.object,
   setActiveBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  battles: battleResultsSelector(state),
+  battlesResult: battleResultsSelector(state),
+  battleList: battlesListSelector(state),
   session: sessionSelector(state),
 });
 

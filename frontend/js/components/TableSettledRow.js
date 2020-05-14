@@ -8,7 +8,7 @@ import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
 import tick from '../../image/tick.svg';
 import { setSettledBattles } from '../actions/setBattle';
-import { sessionSelector, battleResultsSelector } from '../utils/selectors';
+import { sessionSelector, battleResultsSelector, battlesListSelector } from '../utils/selectors';
 
 import TrainersInBattle from './TrainersInBattle';
 
@@ -37,13 +37,13 @@ class TableSettledRow extends Component {
   }
 
   render() {
-    const { battles, session } = this.props;
-    if (!battles) return <>Loading</>;
-    const battleList = Object.values(battles);
+    const { battlesResult, battleList, session } = this.props;
+    if (!battlesResult) return <>Loading</>;
     return (
       <div>
-        {battleList.map((battle) => {
-          const { id, created, opponent, creator, winner } = battle;
+        {battlesResult.map((id) => {
+          const battle = battleList[id];
+          const { created, opponent, creator, winner } = battle;
           return (
             <Row key={id} to={`/battle/${id}`}>
               <Image alt="pokeball-icon" src={pokeball} />
@@ -60,13 +60,15 @@ class TableSettledRow extends Component {
 }
 
 TableSettledRow.propTypes = {
-  battles: PropTypes.object,
+  battleList: PropTypes.object,
+  battlesResult: PropTypes.array,
   session: PropTypes.object,
   setSettledBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  battles: battleResultsSelector(state),
+  battlesResult: battleResultsSelector(state),
+  battleList: battlesListSelector(state),
   session: sessionSelector(state),
 });
 

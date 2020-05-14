@@ -10,12 +10,18 @@ const sessionSelector = (state) => {
   return state.session;
 };
 
-const battleSelector = (state, id) => {
-  return state.battles.battles[id];
+const battleResultsSelector = (state) => {
+  return state.battles.battlesResult;
 };
 
-const battleResultsSelector = (state) => {
+const battlesListSelector = (state) => {
   return state.battles.battles;
 };
 
-export { sessionSelector, pokemonSelector, userSelector, battleResultsSelector, battleSelector };
+export {
+  sessionSelector,
+  pokemonSelector,
+  userSelector,
+  battlesListSelector,
+  battleResultsSelector,
+};
