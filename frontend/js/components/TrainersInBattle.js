@@ -18,10 +18,10 @@ TrainersInBattle.propTypes = {
   opponent: PropTypes.object,
 };
 
-const mapStateToProps = (state, { creator, opponent }) => {
+const mapStateToProps = (state, { creatorId, opponentId }) => {
   return {
-    creator: userSelector(state, creator),
-    opponent: userSelector(state, opponent),
+    creator: userSelector(state, creatorId),
+    opponent: userSelector(state, opponentId),
   };
 };
 

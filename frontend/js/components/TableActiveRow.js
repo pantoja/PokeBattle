@@ -53,7 +53,7 @@ class TableActiveRow extends Component {
               <Image alt="pokeball-icon" src={pokeball} />
               <span>Battle nº {id}</span>
               <span>{created}</span>
-              <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
+              <TrainersInBattle creatorId={creator.trainer} opponentId={opponent.trainer} />
               <PendingAnswer opponent={opponent.trainer} session={session.id} />
             </Row>
           );

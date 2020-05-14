@@ -56,7 +56,7 @@ class DetailBattle extends Component {
         <div>
           <p>
             <Title>Players: </Title>
-            <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
+            <TrainersInBattle creatorId={creator.trainer} opponentId={opponent.trainer} />
           </p>
 
           <p>

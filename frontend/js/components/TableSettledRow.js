@@ -49,7 +49,7 @@ class TableSettledRow extends Component {
               <Image alt="pokeball-icon" src={pokeball} />
               <span>Battle nº {id}</span>
               <span>{created}</span>
-              <TrainersInBattle creator={creator.trainer} opponent={opponent.trainer} />
+              <TrainersInBattle creatorId={creator.trainer} opponentId={opponent.trainer} />
               {winner === session.email ? <Image src={tick} /> : <Image src={cross} />}
             </Row>
           );
