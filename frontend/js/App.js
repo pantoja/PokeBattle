@@ -4,15 +4,15 @@ import { hot } from 'react-hot-loader/root';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { setUser } from './actions/setUser';
+import { fetchUser } from './actions/setUser';
 import DetailBattle from './pages/DetailBattle';
 import ListActiveBattles from './pages/ListActiveBattles';
 import ListSettledBattles from './pages/ListSettledBattles';
 
 class App extends Component {
   componentDidMount() {
-    const { setUser } = this.props;
-    setUser();
+    const { fetchUser } = this.props;
+    fetchUser();
   }
 
   render() {
@@ -31,7 +31,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  setUser: PropTypes.func,
+  fetchUser: PropTypes.func,
   session: PropTypes.object,
 };
 
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: () => dispatch(setUser()),
+    fetchUser: () => dispatch(fetchUser()),
   };
 };
 

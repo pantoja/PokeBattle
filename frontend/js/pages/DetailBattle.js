@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import party from '../../image/party-popper.png';
-import { setBattle } from '../actions/setBattle';
+import { fetchBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 import TrainersInBattle from '../components/TrainersInBattle';
 import { battlesListSelector, sessionSelector } from '../utils/selectors';
@@ -33,10 +33,10 @@ const Icon = styled.img`
 
 class DetailBattle extends Component {
   componentDidMount() {
-    const { setBattle, match, battles } = this.props;
+    const { fetchBattle, match, battles } = this.props;
     const { id } = match.params;
     if (!battles[id]) {
-      return setBattle(id);
+      return fetchBattle(id);
     }
     return null;
   }
@@ -87,7 +87,7 @@ class DetailBattle extends Component {
 
 DetailBattle.propTypes = {
   battles: PropTypes.object,
-  setBattle: PropTypes.func,
+  fetchBattle: PropTypes.func,
   match: PropTypes.object,
   session: PropTypes.object,
 };
@@ -101,7 +101,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setBattle: (battle) => dispatch(setBattle(battle)),
+    fetchBattle: (battle) => dispatch(fetchBattle(battle)),
   };
 };
 

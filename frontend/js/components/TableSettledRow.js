@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
 import tick from '../../image/tick.svg';
-import { setSettledBattles } from '../actions/setBattle';
+import { fetchSettledBattles } from '../actions/setBattle';
 import { sessionSelector, battleResultsSelector, battlesListSelector } from '../utils/selectors';
 
 import TrainersInBattle from './TrainersInBattle';
@@ -32,8 +32,8 @@ const Image = styled.img`
 
 class TableSettledRow extends Component {
   componentDidMount() {
-    const { setSettledBattles } = this.props;
-    setSettledBattles();
+    const { fetchSettledBattles } = this.props;
+    fetchSettledBattles();
   }
 
   render() {
@@ -63,7 +63,7 @@ TableSettledRow.propTypes = {
   battleList: PropTypes.object,
   battlesResult: PropTypes.array,
   session: PropTypes.object,
-  setSettledBattles: PropTypes.func,
+  fetchSettledBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -74,7 +74,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSettledBattles: () => dispatch(setSettledBattles()),
+    fetchSettledBattles: () => dispatch(fetchSettledBattles()),
   };
 };
 

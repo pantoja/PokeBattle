@@ -8,7 +8,7 @@ function writeBattle(list) {
   return { type: SET_BATTLE, payload: list };
 }
 
-function setBattle(battle) {
+function fetchBattle(battle) {
   return (dispatch) =>
     getBattleAPI(battle).then((battleData) => {
       const normalizedBattle = normalize(battleData, schema.battle);
@@ -16,7 +16,7 @@ function setBattle(battle) {
     });
 }
 
-function setActiveBattles() {
+function fetchActiveBattles() {
   return (dispatch) =>
     getActiveBattlesAPI().then((battleList) => {
       const normalizedBattleList = normalize(battleList, schema.battleList);
@@ -24,7 +24,7 @@ function setActiveBattles() {
     });
 }
 
-function setSettledBattles() {
+function fetchSettledBattles() {
   return (dispatch) =>
     getSettledBattlesAPI().then((battleList) => {
       const normalizedBattleList = normalize(battleList, schema.battleList);
@@ -32,4 +32,4 @@ function setSettledBattles() {
     });
 }
 
-export { setBattle, setActiveBattles, setSettledBattles };
+export { fetchBattle, fetchActiveBattles, fetchSettledBattles };

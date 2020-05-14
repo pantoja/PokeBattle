@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import pokeball from '../../image/pokeball.svg';
-import { setActiveBattles } from '../actions/setBattle';
+import { fetchActiveBattles } from '../actions/setBattle';
 import { sessionSelector, battleResultsSelector, battlesListSelector } from '../utils/selectors';
 
 import PendingAnswer from './PendingAnswer';
@@ -36,8 +36,8 @@ const getLinkAttributes = (opponent, session, id) => {
 
 class TableActiveRow extends Component {
   componentDidMount() {
-    const { setActiveBattles } = this.props;
-    setActiveBattles();
+    const { fetchActiveBattles } = this.props;
+    fetchActiveBattles();
   }
 
   render() {
@@ -67,7 +67,7 @@ TableActiveRow.propTypes = {
   battleList: PropTypes.object,
   battlesResult: PropTypes.array,
   session: PropTypes.object,
-  setActiveBattles: PropTypes.func,
+  fetchActiveBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -78,7 +78,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setActiveBattles: () => dispatch(setActiveBattles()),
+    fetchActiveBattles: () => dispatch(fetchActiveBattles()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TableActiveRow);
