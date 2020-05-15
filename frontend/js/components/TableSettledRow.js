@@ -8,7 +8,7 @@ import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
 import tick from '../../image/tick.svg';
 import { fetchSettledBattles } from '../actions/setBattle';
-import { sessionSelector, battleResultsSelector, battlesListSelector } from '../utils/selectors';
+import { selectUserInSession, selectBattlesResult, selectBattles } from '../utils/selectors';
 
 import TrainersInBattle from './TrainersInBattle';
 
@@ -67,9 +67,9 @@ TableSettledRow.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  battlesResult: battleResultsSelector(state),
-  battleList: battlesListSelector(state),
-  session: sessionSelector(state),
+  battlesResult: selectBattlesResult(state),
+  battleList: selectBattles(state),
+  session: selectUserInSession(state),
 });
 
 const mapDispatchToProps = (dispatch) => {

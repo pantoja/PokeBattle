@@ -7,7 +7,7 @@ import party from '../../image/party-popper.png';
 import { fetchBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 import TrainersInBattle from '../components/TrainersInBattle';
-import { battlesListSelector, sessionSelector } from '../utils/selectors';
+import { selectBattles, selectUserInSession } from '../utils/selectors';
 
 const Title = styled.span`
   font-weight: 600;
@@ -94,8 +94,8 @@ DetailBattle.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    battles: battlesListSelector(state),
-    session: sessionSelector(state),
+    battles: selectBattles(state),
+    session: selectUserInSession(state),
   };
 };
 

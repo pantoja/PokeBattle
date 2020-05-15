@@ -1,27 +1,27 @@
-const pokemonSelector = (state, id) => {
+const selectPokemonById = (state, id) => {
   return state.battles.pokemon[id];
 };
 
-const userSelector = (state, id) => {
+const selectUserById = (state, id) => {
   return state.battles.users[id];
 };
 
-const sessionSelector = (state) => {
+const selectUserInSession = (state) => {
   return state.session;
 };
 
-const battleResultsSelector = (state) => {
+const selectBattlesResult = (state) => {
   return state.battles.battlesResult;
 };
 
-const battlesListSelector = (state) => {
+const selectBattles = (state) => {
   return state.battles.battles;
 };
 
 export {
-  sessionSelector,
-  pokemonSelector,
-  userSelector,
-  battlesListSelector,
-  battleResultsSelector,
+  selectUserInSession,
+  selectPokemonById,
+  selectUserById,
+  selectBattles,
+  selectBattlesResult,
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import { userSelector } from '../utils/selectors';
+import { selectUserById } from '../utils/selectors';
 
 const AnswerTag = styled.span`
   position: relative;
@@ -35,7 +35,7 @@ PendingAnswer.propTypes = {
 
 const mapStateToProps = (state, { opponent }) => {
   return {
-    opponent: userSelector(state, opponent),
+    opponent: selectUserById(state, opponent),
   };
 };
 
