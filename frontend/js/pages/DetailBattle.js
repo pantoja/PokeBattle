@@ -7,7 +7,7 @@ import party from '../../image/party-popper.png';
 import { fetchBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
 import TrainersInBattle from '../components/TrainersInBattle';
-import { selectBattles, selectUserInSession } from '../utils/selectors';
+import { selectUserInSession, selectBattleById } from '../utils/selectors';
 
 const Title = styled.span`
   font-weight: 600;
@@ -33,20 +33,19 @@ const Icon = styled.img`
 
 class DetailBattle extends Component {
   componentDidMount() {
-    const { fetchBattle, match, battles } = this.props;
+    const { fetchBattle, match, battle } = this.props;
     const { id } = match.params;
-    if (!battles[id]) {
+    if (!battle) {
       return fetchBattle(id);
     }
     return null;
   }
 
   render() {
-    const { battles, session } = this.props;
+    const { session, battle } = this.props;
     const { match } = this.props;
     const { id } = match.params;
 
-    const battle = battles[id];
     if (!battle) return <>Loading</>;
 
     const { creator, opponent, winner } = battle;
@@ -86,16 +85,17 @@ class DetailBattle extends Component {
 }
 
 DetailBattle.propTypes = {
-  battles: PropTypes.object,
+  battle: PropTypes.object,
   fetchBattle: PropTypes.func,
   match: PropTypes.object,
   session: PropTypes.object,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, { match }) => {
+  const { id } = match.params;
   return {
-    battles: selectBattles(state),
     session: selectUserInSession(state),
+    battle: selectBattleById(state, id),
   };
 };
 

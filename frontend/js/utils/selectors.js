@@ -18,10 +18,15 @@ const selectBattles = (state) => {
   return state.battles.battles;
 };
 
+const selectBattleById = (state, id) => {
+  return state.battles.battles[id];
+};
+
 export {
   selectUserInSession,
   selectPokemonById,
   selectUserById,
   selectBattles,
   selectBattlesResult,
+  selectBattleById,
 };
