@@ -44,6 +44,7 @@ const CreateBattle = () => {
           postBattleAPI(battle_data)
             .then((response) => {
               team_data.battle = response.data.id;
+              console.log(team_data);
               return postTeamAPI(team_data);
             })
             .catch((err) => {

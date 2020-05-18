@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Typeahead, Menu, MenuItem } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
-// import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import styled from 'styled-components';
 
@@ -57,6 +57,19 @@ const Error = styled.div`
   padding: 0.5rem;
 `;
 
+const DragHandle = sortableHandle(() => <span>::</span>);
+
+const SortableItem = sortableElement(({ children }) => (
+  <li>
+    <DragHandle />
+    {children}
+  </li>
+));
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <ul>{children}</ul>;
+});
+
 class ChooseTeam extends Component {
   componentDidMount() {
     const { setPokemonList } = this.props;
@@ -72,37 +85,41 @@ class ChooseTeam extends Component {
     return (
       <Container>
         {errors.team && <Error>{errors.team}</Error>}
-        {indexList.map((index) => (
-          <Field key={index} name={`pokemon_${index}`}>
-            {({ field }) => (
-              <>
-                {/* <label htmlFor={`pokemon_${index}`}>Opponent:</label> */}
-                <Typeahead
-                  id={`pokemon-${index}-select`}
-                  inputProps={{ required: true }}
-                  labelKey="name"
-                  maxHeight="150px"
-                  options={pokemon}
-                  placeholder="Choose a pokemon"
-                  renderMenu={(results, menuProps) => (
-                    <StyledMenu {...menuProps}>
-                      {results.map((result, index) => (
-                        <StyledItem key={result.id} option={result} position={index}>
-                          {result.name}
-                        </StyledItem>
-                      ))}
-                    </StyledMenu>
-                  )}
-                  onChange={(selected) => {
-                    if (selected[0]) {
-                      setFieldValue(field.name, selected[0].id);
-                    }
-                  }}
-                />
-              </>
-            )}
-          </Field>
-        ))}
+        <SortableContainer useDragHandle>
+          {indexList.map((value, index) => (
+            <SortableItem key={`item-${value}`} index={index} value={value}>
+              <Field name={`pokemon_${value}`}>
+                {({ field }) => (
+                  <>
+                    {/* <label htmlFor={`pokemon_${index}`}>Opponent:</label> */}
+                    <Typeahead
+                      id={`pokemon-${value}-select`}
+                      inputProps={{ required: true }}
+                      labelKey="name"
+                      maxHeight="150px"
+                      options={pokemon}
+                      placeholder="Choose a pokemon"
+                      renderMenu={(results, menuProps) => (
+                        <StyledMenu {...menuProps}>
+                          {results.map((result, index) => (
+                            <StyledItem key={result.id} option={result} position={index}>
+                              {result.name}
+                            </StyledItem>
+                          ))}
+                        </StyledMenu>
+                      )}
+                      onChange={(selected) => {
+                        if (selected[0]) {
+                          setFieldValue(field.name, selected[0].id);
+                        }
+                      }}
+                    />
+                  </>
+                )}
+              </Field>
+            </SortableItem>
+          ))}
+        </SortableContainer>
       </Container>
     );
   }
