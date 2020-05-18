@@ -1,4 +1,5 @@
 import { Formik, Form } from 'formik';
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,6 +12,10 @@ const Page = styled.main`
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+`;
+
+const StyledForm = styled(Form)`
+  display: flex;
 `;
 
 const CreateBattle = () => {
@@ -42,16 +47,20 @@ const CreateBattle = () => {
           });
         }}
       >
-        {() => (
-          <Form>
+        {(props) => (
+          <StyledForm>
             <ChooseOpponent />
-            <ChooseTeam />
+            <ChooseTeam setFieldValue={props.setFieldValue} />
             <input type="submit" value="Go!" />
-          </Form>
+          </StyledForm>
         )}
       </Formik>
     </Page>
   );
+};
+
+CreateBattle.propTypes = {
+  setFieldValue: PropTypes.func,
 };
 
 export default CreateBattle;

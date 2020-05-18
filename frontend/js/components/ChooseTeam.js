@@ -1,8 +1,10 @@
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 // import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 import { setPokemonList } from '../actions/setBattle';
 
@@ -13,41 +15,37 @@ class ChooseTeam extends Component {
   }
 
   render() {
-    const { pokemon } = this.props;
+    const { pokemon, setFieldValue } = this.props;
     if (!pokemon) {
       return <div>Loading</div>;
     }
-    return (
-      <>
-        <Field as="select" name="pokemon_1" required>
-          {pokemon.map((pokemon) => (
-            <option key={pokemon.id} value={pokemon.id}>
-              {pokemon.name}
-            </option>
-          ))}
-        </Field>
-        <Field as="select" name="pokemon_2" required>
-          {pokemon.map((pokemon) => (
-            <option key={pokemon.id} value={pokemon.id}>
-              {pokemon.name}
-            </option>
-          ))}
-        </Field>
-        <Field as="select" name="pokemon_3" required>
-          {pokemon.map((pokemon) => (
-            <option key={pokemon.id} value={pokemon.id}>
-              {pokemon.name}
-            </option>
-          ))}
-        </Field>
-      </>
-    );
+    const indexList = [1, 2, 3];
+
+    return indexList.map((index) => (
+      <Field key={index} name={`pokemon_${index}`}>
+        {({ field }) => (
+          <Typeahead
+            id={`pokemon-${index}-select`}
+            labelKey="name"
+            maxHeight="150px"
+            options={pokemon}
+            placeholder="Choose a pokemon"
+            onChange={(selected) => {
+              if (selected[0]) {
+                setFieldValue(field.name, selected[0].id);
+              }
+            }}
+          />
+        )}
+      </Field>
+    ));
   }
 }
 
 ChooseTeam.propTypes = {
   setPokemonList: PropTypes.func,
   pokemon: PropTypes.array,
+  setFieldValue: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

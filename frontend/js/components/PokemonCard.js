@@ -20,10 +20,6 @@ const Trainer = styled.p`
   padding: 10px;
 `;
 
-const Name = styled.p`
-  text-transform: capitalize;
-`;
-
 const Stats = styled.p`
   font-weight: 500;
 `;
@@ -45,7 +41,7 @@ const PokemonCard = (props) => {
       {pokemon ? (
         <>
           <img alt={pokemon.name} src={pokemon.sprite} />
-          <Name>{pokemon.name}</Name>
+          <p>{pokemon.name}</p>
           <Stats>
             ATT: {pokemon.attack} DEF: {pokemon.defense} HP: {pokemon.hp}
           </Stats>
