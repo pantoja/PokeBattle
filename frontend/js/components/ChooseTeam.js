@@ -1,7 +1,7 @@
+import arrayMove from 'array-move';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Typeahead, Menu, MenuItem } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -9,38 +9,7 @@ import styled from 'styled-components';
 
 import { setPokemonList } from '../actions/setBattle';
 
-const StyledMenu = styled(Menu)`
-  z-index: 1000;
-  float: left;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-  .active {
-    background-color: #e2e2e2;
-  }
-`;
-
-const StyledItem = styled(MenuItem)`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  padding: 0.25rem 1.5rem;
-  clear: both;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-`;
+import TypeaheadField from './TypeaheadField';
 
 const Container = styled.div`
   // display: grid;
@@ -57,65 +26,84 @@ const Error = styled.div`
   padding: 0.5rem;
 `;
 
-const DragHandle = sortableHandle(() => <span>::</span>);
+const Handle = styled.span`
+  font-weight: 700;
+  padding-right: 20px;
+  color: #909090;
+`;
+
+const List = styled.ul`
+  background-color: #f3f3f3;
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  outline: none;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #e0e0e0;
+  list-style: none;
+  padding: 0;
+`;
+
+const Item = styled.li`
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #efefef;
+  box-sizing: border-box;
+  user-select: none;
+  color: #333;
+  font-weight: 500;
+`;
+
+const DragHandle = sortableHandle(() => <Handle>☰</Handle>);
 
 const SortableItem = sortableElement(({ children }) => (
-  <li>
+  <Item>
     <DragHandle />
     {children}
-  </li>
+  </Item>
 ));
 
 const SortableContainer = sortableContainer(({ children }) => {
-  return <ul>{children}</ul>;
+  return <List>{children}</List>;
 });
 
 class ChooseTeam extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      indexList: [1, 2, 3],
+    };
+    this.onSortEnd = this.onSortEnd.bind(this);
+  }
+
   componentDidMount() {
     const { setPokemonList } = this.props;
     setPokemonList();
   }
 
+  onSortEnd({ oldIndex, newIndex }) {
+    this.setState(({ indexList }) => ({
+      indexList: arrayMove(indexList, oldIndex, newIndex),
+    }));
+  }
+
   render() {
-    const { pokemon, setFieldValue, errors } = this.props;
+    const { pokemon, errors } = this.props;
+    const { indexList } = this.state;
     if (!pokemon) {
       return <div>Loading</div>;
     }
-    const indexList = [1, 2, 3];
     return (
       <Container>
         {errors.team && <Error>{errors.team}</Error>}
-        <SortableContainer useDragHandle>
+        <SortableContainer onSortEnd={this.onSortEnd}>
           {indexList.map((value, index) => (
             <SortableItem key={`item-${value}`} index={index} value={value}>
               <Field name={`pokemon_${value}`}>
-                {({ field }) => (
-                  <>
-                    {/* <label htmlFor={`pokemon_${index}`}>Opponent:</label> */}
-                    <Typeahead
-                      id={`pokemon-${value}-select`}
-                      inputProps={{ required: true }}
-                      labelKey="name"
-                      maxHeight="150px"
-                      options={pokemon}
-                      placeholder="Choose a pokemon"
-                      renderMenu={(results, menuProps) => (
-                        <StyledMenu {...menuProps}>
-                          {results.map((result, index) => (
-                            <StyledItem key={result.id} option={result} position={index}>
-                              {result.name}
-                            </StyledItem>
-                          ))}
-                        </StyledMenu>
-                      )}
-                      onChange={(selected) => {
-                        if (selected[0]) {
-                          setFieldValue(field.name, selected[0].id);
-                        }
-                      }}
-                    />
-                  </>
-                )}
+                {({ field }) => <TypeaheadField {...this.props} field={field} value={value} />}
               </Field>
             </SortableItem>
           ))}

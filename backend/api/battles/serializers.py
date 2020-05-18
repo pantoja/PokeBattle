@@ -1,9 +1,7 @@
 from rest_framework import exceptions, serializers
 
-from api.battles.helpers import order_pokemon_in_team
 from api.pokemon.serializers import PokemonSerializer
 from api.users.serializers import UserSerializer
-from battles.choices import POKEMON_ORDER_CHOICES
 from battles.helpers.common import duplicate_in_set, pokemon_team_exceeds_limit
 from battles.models import Battle, Team
 
@@ -24,10 +22,6 @@ class DetailTeamSerializer(serializers.ModelSerializer):
 class CreateTeamSerializer(serializers.ModelSerializer):
     trainer = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
-    choice_1 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, write_only=True)
-    choice_2 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, write_only=True)
-    choice_3 = serializers.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, write_only=True)
-
     class Meta:
         model = Team
         fields = [
@@ -36,26 +30,19 @@ class CreateTeamSerializer(serializers.ModelSerializer):
             "first_pokemon",
             "second_pokemon",
             "third_pokemon",
-            "choice_1",
-            "choice_2",
-            "choice_3",
         ]
 
     def validate(self, attrs):
         team = (attrs["first_pokemon"], attrs["second_pokemon"], attrs["third_pokemon"])
-        choices = (attrs["choice_1"], attrs["choice_2"], attrs["choice_3"])
 
         if attrs["trainer"] not in (attrs["battle"].user_creator, attrs["battle"].user_opponent):
             raise exceptions.NotFound()
         if duplicate_in_set(team):
             raise serializers.ValidationError("Your team has duplicates, please use unique pokemon")
-        if duplicate_in_set(choices):
-            raise serializers.ValidationError("Please allocate one pokemon per round")
         if pokemon_team_exceeds_limit(team):
             raise serializers.ValidationError(
                 "Your team exceeds the 600 points limit, please choose another team"
             )
-        attrs = order_pokemon_in_team(attrs)
         return attrs
 
 

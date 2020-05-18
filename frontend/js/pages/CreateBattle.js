@@ -37,9 +37,6 @@ const CreateBattle = () => {
             first_pokemon: fields.pokemon_1,
             second_pokemon: fields.pokemon_2,
             third_pokemon: fields.pokemon_3,
-            choice_1: 1,
-            choice_2: 2,
-            choice_3: 3,
           };
           postBattleAPI(battle_data)
             .then((response) => {
