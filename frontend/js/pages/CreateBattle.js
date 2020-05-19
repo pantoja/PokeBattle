@@ -34,14 +34,13 @@ const CreateBattle = () => {
             user_opponent: fields.opponent,
           };
           const team_data = {
-            first_pokemon: fields.pokemon_1,
-            second_pokemon: fields.pokemon_2,
-            third_pokemon: fields.pokemon_3,
+            pokemon_1: fields.order[0],
+            pokemon_2: fields.order[1],
+            pokemon_3: fields.order[2],
           };
           postBattleAPI(battle_data)
             .then((response) => {
               team_data.battle = response.data.id;
-              console.log(team_data);
               return postTeamAPI(team_data);
             })
             .catch((err) => {

@@ -4,6 +4,7 @@ from api.pokemon.serializers import PokemonSerializer
 from api.users.serializers import UserSerializer
 from battles.helpers.common import duplicate_in_set, pokemon_team_exceeds_limit
 from battles.models import Battle, Team
+from pokemon.models import Pokemon
 
 
 class DetailTeamSerializer(serializers.ModelSerializer):
@@ -21,15 +22,24 @@ class DetailTeamSerializer(serializers.ModelSerializer):
 
 class CreateTeamSerializer(serializers.ModelSerializer):
     trainer = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    pokemon_1 = serializers.PrimaryKeyRelatedField(
+        source="first_pokemon", queryset=Pokemon.objects.all()
+    )
+    pokemon_2 = serializers.PrimaryKeyRelatedField(
+        source="second_pokemon", queryset=Pokemon.objects.all()
+    )
+    pokemon_3 = serializers.PrimaryKeyRelatedField(
+        source="third_pokemon", queryset=Pokemon.objects.all()
+    )
 
     class Meta:
         model = Team
         fields = [
             "battle",
             "trainer",
-            "first_pokemon",
-            "second_pokemon",
-            "third_pokemon",
+            "pokemon_1",
+            "pokemon_2",
+            "pokemon_3",
         ]
 
     def validate(self, attrs):

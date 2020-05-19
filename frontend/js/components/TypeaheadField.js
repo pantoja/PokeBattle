@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { Typeahead, Menu, MenuItem } from 'react-bootstrap-typeahead';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+
+import { setPokemonList } from '../actions/setBattle';
 
 const StyledMenu = styled(Menu)`
   z-index: 1000;
@@ -36,11 +39,16 @@ const StyledItem = styled(MenuItem)`
   border: 0;
 `;
 
-const TypeaheadField = (props) => {
-  const { pokemon, setFieldValue, field, value } = props;
-  return (
-    <>
-      {/* <label htmlFor={`pokemon_${index}`}>Opponent:</label> */}
+class TypeaheadField extends Component {
+  componentDidMount() {
+    const { setPokemonList } = this.props;
+    setPokemonList();
+  }
+
+  render() {
+    const { pokemon, setFieldValue, index, value } = this.props;
+    if (!pokemon) return <>Loading</>;
+    return (
       <Typeahead
         id={`pokemon_${value}`}
         inputProps={{ required: true }}
@@ -59,13 +67,13 @@ const TypeaheadField = (props) => {
         )}
         onChange={(selected) => {
           if (selected[0]) {
-            setFieldValue(field.name, selected[0].id);
+            setFieldValue(`pokemon_${index}`, selected[0].id);
           }
         }}
       />
-    </>
-  );
-};
+    );
+  }
+}
 
 TypeaheadField.propTypes = {
   setPokemonList: PropTypes.func,
@@ -74,6 +82,17 @@ TypeaheadField.propTypes = {
   errors: PropTypes.object,
   field: PropTypes.object,
   value: PropTypes.number,
+  index: PropTypes.number,
 };
 
-export default TypeaheadField;
+const mapStateToProps = (state) => ({
+  pokemon: state.battles.pokemon,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setPokemonList: () => dispatch(setPokemonList()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TypeaheadField);
