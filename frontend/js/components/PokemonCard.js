@@ -64,9 +64,9 @@ PokemonCard.propTypes = {
   trainer: PropTypes.object,
 };
 
-const mapStateToProps = (state, { trainer, pokemon }) => ({
-  pokemon: selectPokemonById(state, pokemon),
-  trainer: selectUserById(state, trainer),
+const mapStateToProps = (state, { trainerId, pokemonId }) => ({
+  pokemon: selectPokemonById(state, pokemonId),
+  trainer: selectUserById(state, trainerId),
 });
 
 export default connect(mapStateToProps)(PokemonCard);

@@ -68,11 +68,11 @@ class DetailBattle extends Component {
               <div key={pokemon}>
                 <Title>Round {index + 1}</Title>
                 <RoundContainer>
-                  <PokemonCard pokemon={pokemon} trainer={creator.trainer} />
+                  <PokemonCard pokemonId={pokemon} trainerId={creator.trainer} />
                   <VSTag>VS</VSTag>
                   <PokemonCard
-                    pokemon={opponent.team ? opponent.team[index] : undefined}
-                    trainer={opponent.trainer}
+                    pokemonId={opponent.team ? opponent.team[index] : undefined}
+                    trainerId={opponent.trainer}
                   />
                 </RoundContainer>
               </div>

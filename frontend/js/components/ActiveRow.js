@@ -42,7 +42,7 @@ const ActiveRow = (props) => {
       <span>Battle nº {id}</span>
       <span>{created}</span>
       <TrainersInBattle creatorId={creator.trainer} opponentId={opponent.trainer} />
-      <PendingAnswer opponent={opponent.trainer} session={session.id} />
+      <PendingAnswer opponentId={opponent.trainer} sessionId={session.id} />
     </Row>
   );
 };
