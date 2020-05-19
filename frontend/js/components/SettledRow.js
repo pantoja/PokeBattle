@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import cross from '../../image/cross.svg';
 import pokeball from '../../image/pokeball.svg';
 import tick from '../../image/tick.svg';
-import { selectUserInSession } from '../utils/selectors';
+import { selectUserInSession, selectBattleById } from '../utils/selectors';
 
 import TrainersInBattle from './TrainersInBattle';
 
@@ -48,8 +48,9 @@ SettledRow.propTypes = {
   session: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, { battleId }) => ({
   session: selectUserInSession(state),
+  battle: selectBattleById(state, battleId),
 });
 
 export default connect(mapStateToProps)(SettledRow);

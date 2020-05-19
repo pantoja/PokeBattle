@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchSettledBattles } from '../actions/setBattle';
-import { selectBattlesResult, selectBattles } from '../utils/selectors';
+import { selectBattlesResult } from '../utils/selectors';
 
 import SettledRow from './SettledRow';
 
@@ -14,24 +14,21 @@ class TableSettledRows extends Component {
   }
 
   render() {
-    const { battlesResult, battleList } = this.props;
+    const { battlesResult } = this.props;
     if (!battlesResult) return <>Loading</>;
     return battlesResult.map((id) => {
-      const battle = battleList[id];
-      return <SettledRow key={id} battle={battle} />;
+      return <SettledRow key={id} battleId={id} />;
     });
   }
 }
 
 TableSettledRows.propTypes = {
-  battleList: PropTypes.object,
   battlesResult: PropTypes.array,
   fetchSettledBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   battlesResult: selectBattlesResult(state),
-  battleList: selectBattles(state),
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import pokeball from '../../image/pokeball.svg';
-import { selectUserInSession } from '../utils/selectors';
+import { selectUserInSession, selectBattleById } from '../utils/selectors';
 
 import PendingAnswer from './PendingAnswer';
 import TrainersInBattle from './TrainersInBattle';
@@ -52,8 +52,11 @@ ActiveRow.propTypes = {
   session: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  session: selectUserInSession(state),
-});
+const mapStateToProps = (state, { battleId }) => {
+  return {
+    session: selectUserInSession(state),
+    battle: selectBattleById(state, battleId),
+  };
+};
 
 export default connect(mapStateToProps)(ActiveRow);

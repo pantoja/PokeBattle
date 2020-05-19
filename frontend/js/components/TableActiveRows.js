@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchActiveBattles } from '../actions/setBattle';
-import { selectBattlesResult, selectBattles } from '../utils/selectors';
+import { selectBattlesResult } from '../utils/selectors';
 
 import ActiveRow from './ActiveRow';
 
@@ -14,24 +14,22 @@ class TableActiveRows extends Component {
   }
 
   render() {
-    const { battlesResult, battleList } = this.props;
+    const { battlesResult } = this.props;
     if (!battlesResult) return <>Loading</>;
     return battlesResult.map((id) => {
-      const battle = battleList[id];
-      return <ActiveRow key={id} battle={battle} />;
+      // return <div>{id}</div>;
+      return <ActiveRow key={id} battleId={id} />;
     });
   }
 }
 
 TableActiveRows.propTypes = {
-  battleList: PropTypes.object,
   battlesResult: PropTypes.array,
   fetchActiveBattles: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   battlesResult: selectBattlesResult(state),
-  battleList: selectBattles(state),
 });
 
 const mapDispatchToProps = (dispatch) => {
