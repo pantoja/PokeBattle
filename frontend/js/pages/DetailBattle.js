@@ -4,71 +4,80 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import party from '../../image/party-popper.png';
-import { setBattle } from '../actions/setBattle';
+import { fetchBattle } from '../actions/setBattle';
 import PokemonCard from '../components/PokemonCard';
+import TrainersInBattle from '../components/TrainersInBattle';
+import { selectUserInSession, selectBattleById } from '../utils/selectors';
 
-const StyledTitle = styled.span`
+const Title = styled.span`
   font-weight: 600;
 `;
 
-const StyledContainer = styled.div`
+const Container = styled.div`
   margin-top: 30px;
 `;
 
-const StyledRoundContainer = styled.div`
+const RoundContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin: 40px;
 `;
-const StyledVersus = styled.span`
+const VSTag = styled.span`
   font-weight: 700;
   align-self: center;
 `;
-const StyledIcon = styled.img`
+const Icon = styled.img`
   width: 30px;
   padding-left: 5px;
 `;
 
 class DetailBattle extends Component {
   componentDidMount() {
-    const { setBattle, match } = this.props;
+    const { fetchBattle, match, battle } = this.props;
     const { id } = match.params;
-    setBattle(id);
+    if (!battle) {
+      return fetchBattle(id);
+    }
+    return null;
   }
 
   render() {
-    const { battle, isLoading, user } = this.props;
-    const { id, creator_team, opponent_team, winner } = battle;
-    if (isLoading) return <>Loading</>;
+    const { session, battle } = this.props;
+    const { match } = this.props;
+    const { id } = match.params;
+
+    if (!battle) return <>Loading</>;
+
+    const { creator, opponent, winner } = battle;
     return (
       <>
         <h1>Battle nº {id}</h1>
         <div>
           <p>
-            <StyledTitle>Players: </StyledTitle>
-            {creator_team.trainer} <span>VS</span> {opponent_team.trainer}
+            <Title>Players: </Title>
+            <TrainersInBattle creatorId={creator.trainer} opponentId={opponent.trainer} />
           </p>
 
           <p>
-            <StyledTitle>Winner: </StyledTitle>
+            <Title>Winner: </Title>
             {winner || '?'}
-            {winner === user.email && <StyledIcon alt="winner" src={party} />}
+            {winner === session.email && <Icon alt="winner" src={party} />}
           </p>
-          <StyledContainer>
-            {creator_team.team.map((pokemon, index) => (
-              <div key={pokemon.id}>
-                <StyledTitle>Round {index + 1}</StyledTitle>
-                <StyledRoundContainer>
-                  <PokemonCard pokemon={pokemon} trainer={creator_team.trainer} />
-                  <StyledVersus>VS</StyledVersus>
+          <Container>
+            {creator.team.map((pokemon, index) => (
+              <div key={pokemon}>
+                <Title>Round {index + 1}</Title>
+                <RoundContainer>
+                  <PokemonCard pokemonId={pokemon} trainerId={creator.trainer} />
+                  <VSTag>VS</VSTag>
                   <PokemonCard
-                    pokemon={winner ? opponent_team.team[index] : undefined}
-                    trainer={opponent_team.trainer}
+                    pokemonId={opponent.team ? opponent.team[index] : undefined}
+                    trainerId={opponent.trainer}
                   />
-                </StyledRoundContainer>
+                </RoundContainer>
               </div>
             ))}
-          </StyledContainer>
+          </Container>
         </div>
       </>
     );
@@ -77,21 +86,22 @@ class DetailBattle extends Component {
 
 DetailBattle.propTypes = {
   battle: PropTypes.object,
-  setBattle: PropTypes.func,
-  isLoading: PropTypes.bool,
+  fetchBattle: PropTypes.func,
   match: PropTypes.object,
-  user: PropTypes.object,
+  session: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  battle: state.battles.battle,
-  isLoading: state.battles.isLoading,
-  user: state.user,
-});
+const mapStateToProps = (state, { match }) => {
+  const { id } = match.params;
+  return {
+    session: selectUserInSession(state),
+    battle: selectBattleById(state, id),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setBattle: (battle) => dispatch(setBattle(battle)),
+    fetchBattle: (battle) => dispatch(fetchBattle(battle)),
   };
 };
 

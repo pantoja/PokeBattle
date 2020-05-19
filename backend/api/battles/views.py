@@ -9,13 +9,12 @@ from api.battles.serializers import (
     CreateBattleSerializer,
     CreateTeamSerializer,
     DetailBattleSerializer,
-    ListBattleSerializer,
 )
 from battles.models import Battle, Team
 
 
 class ListBattlesEndpoint(ListAPIView):
-    serializer_class = ListBattleSerializer
+    serializer_class = DetailBattleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

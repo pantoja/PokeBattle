@@ -1,15 +1,35 @@
-import { SET_BATTLE } from '../constants';
-import { getBattleAPI } from '../utils/services';
+import { normalize } from 'normalizr';
 
-function writeBattle(battle) {
-  return { type: SET_BATTLE, payload: battle };
+import { SET_BATTLE } from '../constants';
+import * as schema from '../utils/schema';
+import { getBattleAPI, getActiveBattlesAPI, getSettledBattlesAPI } from '../utils/services';
+
+function writeBattle(list) {
+  return { type: SET_BATTLE, payload: list };
 }
 
-function setBattle(battle) {
+function fetchBattle(battle) {
   return (dispatch) =>
     getBattleAPI(battle).then((battleData) => {
-      return dispatch(writeBattle(battleData));
+      const normalizedBattle = normalize(battleData, schema.battle);
+      return dispatch(writeBattle(normalizedBattle));
     });
 }
 
-export { setBattle };
+function fetchActiveBattles() {
+  return (dispatch) =>
+    getActiveBattlesAPI().then((battleList) => {
+      const normalizedBattleList = normalize(battleList, schema.battleList);
+      return dispatch(writeBattle(normalizedBattleList));
+    });
+}
+
+function fetchSettledBattles() {
+  return (dispatch) =>
+    getSettledBattlesAPI().then((battleList) => {
+      const normalizedBattleList = normalize(battleList, schema.battleList);
+      return dispatch(writeBattle(normalizedBattleList));
+    });
+}
+
+export { fetchBattle, fetchActiveBattles, fetchSettledBattles };

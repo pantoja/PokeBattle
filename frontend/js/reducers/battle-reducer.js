@@ -1,18 +1,23 @@
 import { SET_BATTLE } from '../constants';
 
 const initialState = {
-  battle: {},
-  isLoading: true,
+  battles: {},
+  users: {},
+  pokemon: {},
+  battlesResult: [],
 };
 
 const battleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_BATTLE:
+    case SET_BATTLE: {
+      const { entities } = action.payload;
       return {
-        ...state,
-        battle: action.payload,
-        isLoading: false,
+        battles: { ...state.battles, ...entities.battles },
+        users: { ...state.users, ...entities.users },
+        pokemon: { ...state.pokemon, ...entities.pokemon },
+        battlesResult: action.payload.result,
       };
+    }
     default:
       return state;
   }
