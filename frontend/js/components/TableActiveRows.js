@@ -16,10 +16,7 @@ class TableActiveRows extends Component {
   render() {
     const { battlesResult } = this.props;
     if (!battlesResult) return <>Loading</>;
-    return battlesResult.map((id) => {
-      // return <div>{id}</div>;
-      return <ActiveRow key={id} battleId={id} />;
-    });
+    return battlesResult.map((id) => <ActiveRow key={id} battleId={id} />);
   }
 }
 

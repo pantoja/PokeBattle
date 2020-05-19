@@ -52,11 +52,9 @@ ActiveRow.propTypes = {
   session: PropTypes.object,
 };
 
-const mapStateToProps = (state, { battleId }) => {
-  return {
-    session: selectUserInSession(state),
-    battle: selectBattleById(state, battleId),
-  };
-};
+const mapStateToProps = (state, { battleId }) => ({
+  session: selectUserInSession(state),
+  battle: selectBattleById(state, battleId),
+});
 
 export default connect(mapStateToProps)(ActiveRow);

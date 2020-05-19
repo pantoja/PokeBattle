@@ -16,9 +16,7 @@ class TableSettledRows extends Component {
   render() {
     const { battlesResult } = this.props;
     if (!battlesResult) return <>Loading</>;
-    return battlesResult.map((id) => {
-      return <SettledRow key={id} battleId={id} />;
-    });
+    return battlesResult.map((id) => <SettledRow key={id} battleId={id} />);
   }
 }
 
