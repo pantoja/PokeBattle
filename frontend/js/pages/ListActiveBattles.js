@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import TableActiveRow from '../components/TableActiveRow';
+import TableActiveRows from '../components/TableActiveRows';
 import TableHeader from '../components/TableHeader';
 
 class ListActiveBattles extends Component {
@@ -23,7 +23,7 @@ class ListActiveBattles extends Component {
       <>
         <h1>List Active Battles</h1>
         <TableHeader header={tableHeader} />
-        <TableActiveRow />
+        <TableActiveRows />
       </>
     );
   }

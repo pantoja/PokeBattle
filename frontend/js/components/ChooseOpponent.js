@@ -5,7 +5,7 @@ import { Typeahead, Menu, MenuItem } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import { setUserList } from '../actions/setBattle';
+import { fetchUserList } from '../actions/setBattle';
 
 const Container = styled.div`
   margin-top: 5vh;
@@ -47,8 +47,8 @@ const StyledItem = styled(MenuItem)`
 
 class ChooseOpponent extends Component {
   componentDidMount() {
-    const { setUserList } = this.props;
-    setUserList();
+    const { fetchUserList } = this.props;
+    fetchUserList();
   }
 
   render() {
@@ -94,7 +94,7 @@ class ChooseOpponent extends Component {
 }
 
 ChooseOpponent.propTypes = {
-  setUserList: PropTypes.func,
+  fetchUserList: PropTypes.func,
   users: PropTypes.array,
   setFieldValue: PropTypes.func,
 };
@@ -105,7 +105,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserList: () => dispatch(setUserList()),
+    fetchUserList: () => dispatch(fetchUserList()),
   };
 };
 

@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { selectUserById } from '../utils/selectors';
+
 const AnswerTag = styled.span`
   position: relative;
   &&:after {
@@ -19,8 +21,8 @@ const AnswerTag = styled.span`
 `;
 
 const PendingAnswer = (props) => {
-  const { session, opponent } = props;
-  if (opponent.id === session) {
+  const { sessionId, opponent } = props;
+  if (opponent.id === sessionId) {
     return <AnswerTag>You</AnswerTag>;
   }
   return <span>{opponent.name}</span>;
@@ -28,12 +30,12 @@ const PendingAnswer = (props) => {
 
 PendingAnswer.propTypes = {
   opponent: PropTypes.object,
-  session: PropTypes.number,
+  sessionId: PropTypes.number,
 };
 
-const mapStateToProps = (state, { opponent }) => {
+const mapStateToProps = (state, { opponentId }) => {
   return {
-    opponent: state.battles.users[opponent],
+    opponent: selectUserById(state, opponentId),
   };
 };
 

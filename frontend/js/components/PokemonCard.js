@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { selectPokemonById, selectUserById } from '../utils/selectors';
+
 const Card = styled.div`
   width: 300px;
   text-align: center;
@@ -58,9 +60,9 @@ PokemonCard.propTypes = {
   trainer: PropTypes.object,
 };
 
-const mapStateToProps = (state, { trainer, pokemon }) => ({
-  pokemon: state.battles.pokemon[pokemon],
-  trainer: state.battles.users[trainer],
+const mapStateToProps = (state, { trainerId, pokemonId }) => ({
+  pokemon: selectPokemonById(state, pokemonId),
+  trainer: selectUserById(state, trainerId),
 });
 
 export default connect(mapStateToProps)(PokemonCard);

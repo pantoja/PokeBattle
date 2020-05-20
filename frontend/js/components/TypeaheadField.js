@@ -4,7 +4,7 @@ import { Typeahead, Menu, MenuItem } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import { setPokemonList } from '../actions/setBattle';
+import { fetchPokemonList } from '../actions/setBattle';
 
 const StyledMenu = styled(Menu)`
   z-index: 1000;
@@ -41,8 +41,8 @@ const StyledItem = styled(MenuItem)`
 
 class TypeaheadField extends Component {
   componentDidMount() {
-    const { setPokemonList } = this.props;
-    setPokemonList();
+    const { fetchPokemonList } = this.props;
+    fetchPokemonList();
   }
 
   render() {
@@ -76,7 +76,7 @@ class TypeaheadField extends Component {
 }
 
 TypeaheadField.propTypes = {
-  setPokemonList: PropTypes.func,
+  fetchPokemonList: PropTypes.func,
   pokemon: PropTypes.array,
   setFieldValue: PropTypes.func,
   errors: PropTypes.object,
@@ -91,7 +91,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setPokemonList: () => dispatch(setPokemonList()),
+    fetchPokemonList: () => dispatch(fetchPokemonList()),
   };
 };
 

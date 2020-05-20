@@ -104,7 +104,6 @@ class ChooseTeam extends Component {
 }
 
 ChooseTeam.propTypes = {
-  setPokemonList: PropTypes.func,
   setFieldValue: PropTypes.func,
   errors: PropTypes.object,
 };

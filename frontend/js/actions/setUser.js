@@ -5,11 +5,11 @@ function writeUser(user) {
   return { type: SET_USER, payload: user };
 }
 
-function setUser() {
+function fetchUser() {
   return (dispatch) =>
     getUserAPI().then((userData) => {
       return dispatch(writeUser(userData));
     });
 }
 
-export { setUser };
+export { fetchUser };

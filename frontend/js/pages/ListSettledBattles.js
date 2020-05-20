@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import TableHeader from '../components/TableHeader';
-import TableSettledRow from '../components/TableSettledRow';
+import TableSettledRows from '../components/TableSettledRows';
 
 class ListSettledBattles extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class ListSettledBattles extends Component {
       <>
         <h1>List Settled Battles</h1>
         <TableHeader header={tableHeader} settled />
-        <TableSettledRow />
+        <TableSettledRows />
       </>
     );
   }

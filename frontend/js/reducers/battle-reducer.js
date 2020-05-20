@@ -1,12 +1,22 @@
-import { SET_BATTLE, LIST_BATTLE, LIST_USER, LIST_POKEMON } from '../constants';
+import { SET_BATTLE, LIST_USER, LIST_POKEMON } from '../constants';
 
-const battleReducer = (state = {}, action) => {
+const initialState = {
+  battles: {},
+  users: {},
+  pokemon: {},
+  battlesResult: [],
+};
+
+const battleReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_BATTLE: {
-      return action.payload;
-    }
-    case LIST_BATTLE: {
-      return action.payload;
+      const { entities } = action.payload;
+      return {
+        battles: { ...state.battles, ...entities.battles },
+        users: { ...state.users, ...entities.users },
+        pokemon: { ...state.pokemon, ...entities.pokemon },
+        battlesResult: action.payload.result,
+      };
     }
     case LIST_USER: {
       return {
