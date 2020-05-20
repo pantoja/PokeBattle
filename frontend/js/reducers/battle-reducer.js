@@ -1,9 +1,9 @@
 import { SET_BATTLE, LIST_USER, LIST_POKEMON } from '../constants';
 
 const initialState = {
-  battles: {},
-  users: {},
-  pokemon: {},
+  battles: [],
+  users: [],
+  pokemon: [],
   battlesResult: [],
 };
 

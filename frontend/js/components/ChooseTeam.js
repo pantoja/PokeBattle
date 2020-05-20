@@ -29,7 +29,7 @@ const Handle = styled.span`
   color: #909090;
 `;
 
-const List = styled.div`
+const List = styled.ul`
   background-color: #f3f3f3;
   border: 1px solid #efefef;
   border-radius: 3px;
@@ -40,25 +40,25 @@ const List = styled.div`
   padding: 0;
 `;
 
-// const Item = styled.div`
-//   display: flex;
-//   align-items: center;
-//   height: 60px;
-//   padding: 0 20px;
-//   background-color: #fff;
-//   border-bottom: 1px solid #efefef;
-//   box-sizing: border-box;
-//   color: #333;
-//   font-weight: 500;
-// `;
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #efefef;
+  box-sizing: border-box;
+  color: #333;
+  font-weight: 500;
+`;
 
 const DragHandle = sortableHandle(() => <Handle>☰</Handle>);
 
 const SortableItem = sortableElement(({ children }) => (
-  <>
+  <Item>
     <DragHandle />
     {children}
-  </>
+  </Item>
 ));
 
 const SortableContainer = sortableContainer(({ children }) => {
