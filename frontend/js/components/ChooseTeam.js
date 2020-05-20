@@ -8,10 +8,7 @@ import styled from 'styled-components';
 
 import TypeaheadField from './TypeaheadField';
 
-// const Container = styled.div`
-//   display: grid;
-//   grid-template-column: 1fr 1fr 1fr;
-// `;
+const Container = styled.div``;
 
 const Error = styled.div`
   background-color: #f9ab2f;
@@ -34,10 +31,10 @@ const List = styled.ul`
   border: 1px solid #efefef;
   border-radius: 3px;
   outline: none;
-  -webkit-overflow-scrolling: touch;
   border: 1px solid #e0e0e0;
   list-style: none;
   padding: 0;
+  width: fit-content;
 `;
 
 const Item = styled.div`
@@ -95,8 +92,9 @@ class ChooseTeam extends Component {
     const { indexList } = this.state;
 
     return (
-      <>
+      <Container>
         {errors.team && <Error>{errors.team}</Error>}
+        {/* <label htmlFor="Team">Team:</label> */}
         <SortableContainer onSortEnd={this.onSortEnd}>
           {indexList.map((value, index) => (
             <SortableItem key={`item-${value}`} index={index} value={value}>
@@ -106,7 +104,7 @@ class ChooseTeam extends Component {
             </SortableItem>
           ))}
         </SortableContainer>
-      </>
+      </Container>
     );
   }
 }

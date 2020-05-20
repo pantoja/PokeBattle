@@ -10,6 +10,7 @@ import { fetchUserList } from '../actions/setBattle';
 const Container = styled.div`
   margin-top: 5vh;
   margin-bottom: 8vh;
+  width: 330px;
 `;
 
 const StyledMenu = styled(Menu)`

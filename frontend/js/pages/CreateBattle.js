@@ -10,7 +10,10 @@ import { postBattleAPI, postTeamAPI } from '../utils/services';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const StyledForm = styled(Form)`
-  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90vw;
 `;
 
 const Page = styled.main`
@@ -18,6 +21,12 @@ const Page = styled.main`
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+`;
+
+const Submit = styled.input`
+  width: 200px;
+  border-radius: 5px;
+  margin-top: 20px;
 `;
 
 const CreateBattle = (props) => {
@@ -60,7 +69,7 @@ const CreateBattle = (props) => {
           <StyledForm>
             <ChooseOpponent setFieldValue={setFieldValue} />
             <ChooseTeam errors={errors} setFieldValue={setFieldValue} />
-            <input type="submit" value="Go!" />
+            <Submit type="submit" value="Go!" />
           </StyledForm>
         )}
       </Formik>
