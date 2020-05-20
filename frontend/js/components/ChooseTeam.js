@@ -8,16 +8,10 @@ import styled from 'styled-components';
 
 import TypeaheadField from './TypeaheadField';
 
-const Container = styled.div``;
-
-const Error = styled.div`
-  background-color: #f9ab2f;
-  color: #fff;
-  border-radius: 10px;
-  border: 2px solid #f9ab2f;
-  text-align: center;
-  font-weight: 500;
-  padding: 0.5rem;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Handle = styled.span`
@@ -88,12 +82,10 @@ class ChooseTeam extends Component {
   }
 
   render() {
-    const { errors } = this.props;
     const { indexList } = this.state;
 
     return (
       <Container>
-        {errors.team && <Error>{errors.team}</Error>}
         {/* <label htmlFor="Team">Team:</label> */}
         <SortableContainer onSortEnd={this.onSortEnd}>
           {indexList.map((value, index) => (

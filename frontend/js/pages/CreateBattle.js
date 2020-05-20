@@ -29,6 +29,16 @@ const Submit = styled.input`
   margin-top: 20px;
 `;
 
+const Message = styled.div`
+  background-color: ${(props) => (props.success ? '#45a751' : '#f9ab2f')};
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 500;
+  padding: 0.5rem;
+  margin-top: 20px;
+`;
+
 const CreateBattle = (props) => {
   return (
     <Page>
@@ -40,7 +50,7 @@ const CreateBattle = (props) => {
           pokemon_2: '',
           pokemon_3: '',
         }}
-        onSubmit={(fields, { setFieldError }) => {
+        onSubmit={(fields, { setFieldError, setStatus }) => {
           const battle_data = {
             user_opponent: fields.opponent,
           };
@@ -58,6 +68,9 @@ const CreateBattle = (props) => {
               team_data.battle = response.data.id;
               return postTeamAPI(team_data);
             })
+            .then(() => {
+              return setStatus({ success: 'You have successfully created a battle!' });
+            })
             .catch((err) => {
               if (err.response.status === 400) {
                 setFieldError('team', err.response.data.non_field_errors[0]);
@@ -65,8 +78,10 @@ const CreateBattle = (props) => {
             });
         }}
       >
-        {({ setFieldValue, errors }) => (
+        {({ setFieldValue, errors, status }) => (
           <StyledForm>
+            {status && <Message success>{status.success}</Message>}
+            {errors.team && <Message>{errors.team}</Message>}
             <ChooseOpponent setFieldValue={setFieldValue} />
             <ChooseTeam errors={errors} setFieldValue={setFieldValue} />
             <Submit type="submit" value="Go!" />
