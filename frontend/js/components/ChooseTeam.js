@@ -31,7 +31,7 @@ const List = styled.ul`
   width: fit-content;
 `;
 
-const Item = styled.div`
+const Item = styled.li`
   display: flex;
   align-items: center;
   height: 60px;

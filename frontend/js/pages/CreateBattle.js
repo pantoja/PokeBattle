@@ -40,6 +40,30 @@ const Message = styled.div`
 `;
 
 const CreateBattle = (props) => {
+  const onSubmit = (fields, { setStatus, setFieldError }) => {
+    const battle_data = {
+      user_opponent: fields.opponent,
+    };
+
+    const { order } = fields;
+    const { pokemonFields } = props;
+    const team_data = orderPokemonInTeam(order, pokemonFields);
+
+    postBattleAPI(battle_data)
+      .then((response) => {
+        team_data.battle = response.data.id;
+        return postTeamAPI(team_data);
+      })
+      .then(() => {
+        return setStatus({ success: 'You have successfully created a battle!' });
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          setFieldError('team', err.response.data.non_field_errors[0]);
+        }
+      });
+  };
+
   return (
     <Page>
       <h2>Create a Battle</h2>
@@ -50,46 +74,28 @@ const CreateBattle = (props) => {
           pokemon_2: '',
           pokemon_3: '',
         }}
-        onSubmit={(fields, { setFieldError, setStatus }) => {
-          const battle_data = {
-            user_opponent: fields.opponent,
-          };
-
-          const { order } = fields;
-          const { pokemonFields } = props;
-
-          const team_data = {
-            pokemon_1: pokemonFields[order[0]],
-            pokemon_2: pokemonFields[order[1]],
-            pokemon_3: pokemonFields[order[2]],
-          };
-          postBattleAPI(battle_data)
-            .then((response) => {
-              team_data.battle = response.data.id;
-              return postTeamAPI(team_data);
-            })
-            .then(() => {
-              return setStatus({ success: 'You have successfully created a battle!' });
-            })
-            .catch((err) => {
-              if (err.response.status === 400) {
-                setFieldError('team', err.response.data.non_field_errors[0]);
-              }
-            });
-        }}
+        onSubmit={(fields, actions) => onSubmit(fields, actions)}
       >
         {({ setFieldValue, errors, status }) => (
           <StyledForm>
             {status && <Message success>{status.success}</Message>}
             {errors.team && <Message>{errors.team}</Message>}
             <ChooseOpponent setFieldValue={setFieldValue} />
-            <ChooseTeam errors={errors} setFieldValue={setFieldValue} />
+            <ChooseTeam setFieldValue={setFieldValue} />
             <Submit type="submit" value="Go!" />
           </StyledForm>
         )}
       </Formik>
     </Page>
   );
+};
+
+const orderPokemonInTeam = (order, pokemonFields) => {
+  return {
+    pokemon_1: pokemonFields[order[0]],
+    pokemon_2: pokemonFields[order[1]],
+    pokemon_3: pokemonFields[order[2]],
+  };
 };
 
 CreateBattle.propTypes = {
