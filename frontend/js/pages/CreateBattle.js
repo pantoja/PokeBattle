@@ -1,5 +1,7 @@
 import { Formik, Form } from 'formik';
+import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import ChooseOpponent from '../components/ChooseOpponent';
@@ -18,10 +20,10 @@ const Page = styled.main`
   padding: 2rem;
 `;
 
-const CreateBattle = () => {
+const CreateBattle = (props) => {
   return (
     <Page>
-      <h2>Create a battle</h2>
+      <h2>Create a Battle</h2>
       <Formik
         initialValues={{
           opponent: '',
@@ -33,10 +35,14 @@ const CreateBattle = () => {
           const battle_data = {
             user_opponent: fields.opponent,
           };
+
+          const { order } = fields;
+          const { pokemonFields } = props;
+
           const team_data = {
-            pokemon_1: fields.order[0],
-            pokemon_2: fields.order[1],
-            pokemon_3: fields.order[2],
+            pokemon_1: pokemonFields[order[0]],
+            pokemon_2: pokemonFields[order[1]],
+            pokemon_3: pokemonFields[order[2]],
           };
           postBattleAPI(battle_data)
             .then((response) => {
@@ -62,4 +68,12 @@ const CreateBattle = () => {
   );
 };
 
-export default CreateBattle;
+CreateBattle.propTypes = {
+  pokemonFields: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  pokemonFields: state.form.pokemonFields,
+});
+
+export default connect(mapStateToProps)(CreateBattle);

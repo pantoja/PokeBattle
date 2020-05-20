@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { fetchPokemonList } from '../actions/setBattle';
+import { setTeamField } from '../actions/setForm';
 
 const StyledMenu = styled(Menu)`
   z-index: 1000;
@@ -46,11 +47,11 @@ class TypeaheadField extends Component {
   }
 
   render() {
-    const { pokemon, setFieldValue, index, value } = this.props;
+    const { pokemon, index, setTeamField } = this.props;
     if (!pokemon) return <>Loading</>;
     return (
       <Typeahead
-        id={`pokemon_${value}`}
+        id={`pokemon_${index}`}
         inputProps={{ required: true }}
         labelKey="name"
         maxHeight="150px"
@@ -67,7 +68,11 @@ class TypeaheadField extends Component {
         )}
         onChange={(selected) => {
           if (selected[0]) {
-            setFieldValue(`pokemon_${index}`, selected[0].id);
+            const field = {
+              index,
+              pokemon: selected[0].id,
+            };
+            setTeamField(field);
           }
         }}
       />
@@ -76,11 +81,12 @@ class TypeaheadField extends Component {
 }
 
 TypeaheadField.propTypes = {
-  fetchPokemonList: PropTypes.func,
   pokemon: PropTypes.array,
-  setFieldValue: PropTypes.func,
   errors: PropTypes.object,
   field: PropTypes.object,
+  fetchPokemonList: PropTypes.func,
+  setTeamField: PropTypes.func,
+  setFieldValue: PropTypes.func,
   value: PropTypes.number,
   index: PropTypes.number,
 };
@@ -92,6 +98,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchPokemonList: () => dispatch(fetchPokemonList()),
+    setTeamField: (field) => dispatch(setTeamField(field)),
   };
 };
 

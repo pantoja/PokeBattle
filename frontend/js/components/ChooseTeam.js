@@ -74,9 +74,19 @@ class ChooseTeam extends Component {
     this.onSortEnd = this.onSortEnd.bind(this);
   }
 
+  componentDidMount() {
+    const { setFieldValue } = this.props;
+    const { indexList } = this.state;
+    setFieldValue('order', indexList);
+  }
+
   onSortEnd({ oldIndex, newIndex }) {
-    this.setState(({ indexList }) => ({
-      indexList: arrayMove(indexList, oldIndex, newIndex),
+    const { setFieldValue } = this.props;
+    const { indexList } = this.state;
+    const order = arrayMove(indexList, oldIndex, newIndex);
+    setFieldValue('order', order);
+    this.setState(() => ({
+      indexList: order,
     }));
   }
 
@@ -91,9 +101,7 @@ class ChooseTeam extends Component {
           {indexList.map((value, index) => (
             <SortableItem key={`item-${value}`} index={index} value={value}>
               <Field name={`pokemon_${value}`}>
-                {({ field }) => (
-                  <TypeaheadField {...this.props} field={field} index={index + 1} value={value} />
-                )}
+                {() => <TypeaheadField {...this.props} index={index + 1} />}
               </Field>
             </SortableItem>
           ))}
