@@ -17,30 +17,25 @@ const Container = styled.div`
 
 const Handle = styled.span`
   font-weight: 700;
-  padding-right: 20px;
+  padding: 0 10px;
+  justify-self: center;
+  align-self: center;
   color: #909090;
 `;
 
-const List = styled.ul`
-  background-color: #f3f3f3;
+const List = styled.div`
   border-radius: 3px;
   outline: none;
   list-style: none;
   padding: 0;
   width: 100%;
-`;
-
-const Item = styled.li`
-  display: flex;
+  padding: 20px;
+  padding-left: 10px;
+  display: grid;
+  grid-template-columns: 34px auto;
+  justify-content: center;
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #efefef;
-  box-sizing: border-box;
-  color: #333;
-  font-weight: 500;
-  border-radius: 5px;
+  grid-auto-rows: 50px;
 `;
 
 const Label = styled.span`
@@ -53,10 +48,10 @@ const Label = styled.span`
 const DragHandle = sortableHandle(() => <Handle>☰</Handle>);
 
 const SortableItem = sortableElement(({ children }) => (
-  <Item>
+  <>
     <DragHandle />
     {children}
-  </Item>
+  </>
 ));
 
 const SortableContainer = sortableContainer(({ children }) => {
