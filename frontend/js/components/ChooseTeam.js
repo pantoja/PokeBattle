@@ -6,7 +6,7 @@ import { sortableContainer, sortableElement, sortableHandle } from 'react-sortab
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import styled from 'styled-components';
 
-import TypeaheadField from './TypeaheadField';
+import TeamTypeaheadField from './TeamTypeaheadField';
 
 const Container = styled.div`
   display: flex;
@@ -83,6 +83,7 @@ class ChooseTeam extends Component {
 
   render() {
     const { indexList } = this.state;
+    const ref = React.createRef();
 
     return (
       <Container>
@@ -91,7 +92,7 @@ class ChooseTeam extends Component {
           {indexList.map((value, index) => (
             <SortableItem key={`item-${value}`} index={index} value={value}>
               <Field name={`pokemon_${value}`}>
-                {() => <TypeaheadField {...this.props} index={index + 1} />}
+                {() => <TeamTypeaheadField ref={ref} {...this.props} index={index + 1} />}
               </Field>
             </SortableItem>
           ))}

@@ -40,7 +40,7 @@ const StyledItem = styled(MenuItem)`
   border: 0;
 `;
 
-class TypeaheadField extends Component {
+class TeamTypeaheadField extends Component {
   componentDidMount() {
     const { fetchPokemonList } = this.props;
     fetchPokemonList();
@@ -60,7 +60,12 @@ class TypeaheadField extends Component {
         renderMenu={(results, menuProps) => (
           <StyledMenu {...menuProps}>
             {results.map((result, index) => (
-              <StyledItem key={result.id} option={result} position={index}>
+              <StyledItem
+                key={result.id}
+                option={result}
+                position={index}
+                onClick={() => console.log('click!')}
+              >
                 {result.name}
               </StyledItem>
             ))}
@@ -80,7 +85,7 @@ class TypeaheadField extends Component {
   }
 }
 
-TypeaheadField.propTypes = {
+TeamTypeaheadField.propTypes = {
   pokemon: PropTypes.array,
   errors: PropTypes.object,
   field: PropTypes.object,
@@ -102,4 +107,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TypeaheadField);
+export default connect(mapStateToProps, mapDispatchToProps)(TeamTypeaheadField);

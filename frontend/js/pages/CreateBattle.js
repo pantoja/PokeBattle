@@ -41,6 +41,7 @@ const Message = styled.div`
 
 const CreateBattle = (props) => {
   const onSubmit = (fields, { setStatus, setFieldError }) => {
+    setStatus(false);
     const battle_data = {
       user_opponent: fields.opponent,
     };
@@ -55,11 +56,11 @@ const CreateBattle = (props) => {
         return postTeamAPI(team_data);
       })
       .then(() => {
-        return setStatus({ success: 'You have successfully created a battle!' });
+        return setStatus(true);
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          setFieldError('team', err.response.data.non_field_errors[0]);
+          setFieldError('team', err.response.data.message);
         }
       });
   };
@@ -78,7 +79,7 @@ const CreateBattle = (props) => {
       >
         {({ setFieldValue, errors, status }) => (
           <StyledForm>
-            {status && <Message success>{status.success}</Message>}
+            {status && <Message success>You have successfully created a battle!</Message>}
             {errors.team && <Message>{errors.team}</Message>}
             <ChooseOpponent setFieldValue={setFieldValue} />
             <ChooseTeam setFieldValue={setFieldValue} />

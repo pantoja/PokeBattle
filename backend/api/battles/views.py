@@ -23,8 +23,8 @@ class ListBattlesEndpoint(ListAPIView):
         queryset = Battle.objects.filter_by_status(user, status == "settled")
         if status == "settled":
             # Return only battles with two teams
-            return queryset.annotate(num_teams=Count("teams")).filter(num_teams__gt=1)
-        return queryset
+            return queryset.annotate(num_teams=Count("teams")).filter(num_teams=2)
+        return queryset.annotate(num_teams=Count("teams")).filter(num_teams=1)
 
     def dispatch(self, request, *args, **kwargs):
         status = self.kwargs["status"]
