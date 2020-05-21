@@ -39,7 +39,7 @@ const PokemonCard = (props) => {
   const { pokemon, trainer } = props;
   return (
     <Card>
-      <Trainer>{trainer.email} played:</Trainer>
+      {trainer && <Trainer>{trainer.email} played:</Trainer>}
       {pokemon ? (
         <>
           <img alt={pokemon.name} src={pokemon.sprite} />

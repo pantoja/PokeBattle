@@ -7,6 +7,14 @@ module.exports = {
     'default-param-last': 'warn',
     'sonarjs/no-small-switch': 'off',
     'babel/camelcase': 'off',
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      {
+        required: {
+          some: ['nesting', 'id'],
+        },
+      },
+    ],
   },
   env: {
     es6: true,

@@ -12,6 +12,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-top: 1px solid #e0e0e0;
 `;
 
 const Handle = styled.span`
@@ -22,13 +23,11 @@ const Handle = styled.span`
 
 const List = styled.ul`
   background-color: #f3f3f3;
-  border: 1px solid #efefef;
   border-radius: 3px;
   outline: none;
-  border: 1px solid #e0e0e0;
   list-style: none;
   padding: 0;
-  width: fit-content;
+  width: 100%;
 `;
 
 const Item = styled.li`
@@ -41,6 +40,14 @@ const Item = styled.li`
   box-sizing: border-box;
   color: #333;
   font-weight: 500;
+  border-radius: 5px;
+`;
+
+const Label = styled.span`
+  align-self: start;
+  font-size: 0.8rem;
+  padding-left: 20px;
+  margin-top: 10px;
 `;
 
 const DragHandle = sortableHandle(() => <Handle>☰</Handle>);
@@ -83,16 +90,15 @@ class ChooseTeam extends Component {
 
   render() {
     const { indexList } = this.state;
-    const ref = React.createRef();
 
     return (
       <Container>
-        {/* <label htmlFor="Team">Team:</label> */}
+        <Label>Team:</Label>
         <SortableContainer onSortEnd={this.onSortEnd}>
           {indexList.map((value, index) => (
             <SortableItem key={`item-${value}`} index={index} value={value}>
               <Field name={`pokemon_${value}`}>
-                {() => <TeamTypeaheadField ref={ref} {...this.props} index={index + 1} />}
+                {() => <TeamTypeaheadField {...this.props} index={index + 1} />}
               </Field>
             </SortableItem>
           ))}

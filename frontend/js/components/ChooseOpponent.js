@@ -8,11 +8,14 @@ import styled from 'styled-components';
 import { fetchUserList } from '../actions/setBattle';
 
 const Container = styled.div`
-  margin-top: 5vh;
-  margin-bottom: 8vh;
-  width: 330px;
+  padding: 20px;
+  padding-top: 10px;
 `;
 
+const Label = styled.label`
+  font-size: 0.8rem;
+  margin-bottom: 0;
+`;
 const StyledMenu = styled(Menu)`
   z-index: 1000;
   float: left;
@@ -63,7 +66,7 @@ class ChooseOpponent extends Component {
         <Field name="opponent">
           {({ field }) => (
             <>
-              {/* <label htmlFor="opponent">Opponent:</label> */}
+              <Label htmlFor="opponent">Opponent:</Label>
               <Typeahead
                 id="opponent"
                 inputProps={{ required: true }}

@@ -56,16 +56,11 @@ class TeamTypeaheadField extends Component {
         labelKey="name"
         maxHeight="150px"
         options={pokemon}
-        placeholder="Choose a pokemon"
+        placeholder={`Pokemon #${index}`}
         renderMenu={(results, menuProps) => (
           <StyledMenu {...menuProps}>
             {results.map((result, index) => (
-              <StyledItem
-                key={result.id}
-                option={result}
-                position={index}
-                onClick={() => console.log('click!')}
-              >
+              <StyledItem key={result.id} option={result} position={index}>
                 {result.name}
               </StyledItem>
             ))}

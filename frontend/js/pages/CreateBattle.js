@@ -4,8 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import ChooseOpponent from '../components/ChooseOpponent';
-import ChooseTeam from '../components/ChooseTeam';
+import TeamFormContainer from '../components/TeamFormContainer';
 import { postBattleAPI, postTeamAPI } from '../utils/services';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
@@ -13,7 +12,7 @@ const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90vw;
+  margin-top: 20px;
 `;
 
 const Page = styled.main`
@@ -36,7 +35,7 @@ const Message = styled.div`
   text-align: center;
   font-weight: 500;
   padding: 0.5rem;
-  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const CreateBattle = (props) => {
@@ -60,14 +59,14 @@ const CreateBattle = (props) => {
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          setFieldError('team', err.response.data.message);
+          setFieldError('team', err.response.data.non_field_errors[0]);
         }
       });
   };
 
   return (
     <Page>
-      <h2>Create a Battle</h2>
+      <h1>Create a Battle</h1>
       <Formik
         initialValues={{
           opponent: '',
@@ -81,8 +80,7 @@ const CreateBattle = (props) => {
           <StyledForm>
             {status && <Message success>You have successfully created a battle!</Message>}
             {errors.team && <Message>{errors.team}</Message>}
-            <ChooseOpponent setFieldValue={setFieldValue} />
-            <ChooseTeam setFieldValue={setFieldValue} />
+            <TeamFormContainer setFieldValue={setFieldValue} />
             <Submit type="submit" value="Go!" />
           </StyledForm>
         )}
