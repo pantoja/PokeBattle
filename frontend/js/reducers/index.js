@@ -5,7 +5,7 @@ import userReducer from './user-reducer';
 
 const rootReducer = combineReducers({
   battles: battleReducer,
-  user: userReducer,
+  session: userReducer,
 });
 
 export default rootReducer;

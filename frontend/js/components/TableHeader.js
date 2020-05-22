@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledRow = styled.div`
+const Row = styled.div`
   background-color: #ffffff;
   padding: 1rem 2rem;
   border-radius: 30px;
@@ -19,11 +19,11 @@ const StyledRow = styled.div`
 const TableHeader = (props) => {
   const { header, settled } = props;
   return (
-    <StyledRow settled={settled}>
+    <Row settled={settled}>
       {header.map((item) => (
         <span key={item.id}>{item.content}</span>
       ))}
-    </StyledRow>
+    </Row>
   );
 };
 
