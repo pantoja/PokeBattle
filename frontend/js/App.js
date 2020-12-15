@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { fetchUser } from './actions/setUser';
+import CreateBattle from './pages/CreateBattle';
 import DetailBattle from './pages/DetailBattle';
 import ListActiveBattles from './pages/ListActiveBattles';
 import ListSettledBattles from './pages/ListSettledBattles';
@@ -24,6 +25,7 @@ class App extends Component {
           <Route component={DetailBattle} path="/battle/:id" />
           <Route component={ListActiveBattles} path="/active-battles" />
           <Route component={ListSettledBattles} path="/settled-battles" />
+          <Route component={CreateBattle} path="/create-battle" />
         </Switch>
       </Router>
     );

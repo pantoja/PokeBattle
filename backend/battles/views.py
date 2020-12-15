@@ -14,7 +14,7 @@ from users.models import User
 
 
 class CreateBattleView(LoginRequiredMixin, CreateView):
-    template_name = "battles/create_battle.html"
+    template_name = "react/create_battle.html"
     form_class = CreateBattleForm
     model = Battle
 
