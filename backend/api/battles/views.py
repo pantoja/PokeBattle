@@ -20,11 +20,12 @@ class ListBattlesEndpoint(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         status = self.kwargs["status"]
-        queryset = Battle.objects.filter_by_status(user, status == "settled")
+        queryset = Battle.objects.filter_by_status(user, status == "settled").annotate(num_teams=Count("teams"))
+   
         if status == "settled":
-            # Return only battles with two teams
-            return queryset.annotate(num_teams=Count("teams")).filter(num_teams=2)
-        return queryset.annotate(num_teams=Count("teams")).filter(num_teams=1)
+            return queryset.filter(num_teams=2)
+   
+        return queryset.filter(num_teams=1)
 
     def dispatch(self, request, *args, **kwargs):
         status = self.kwargs["status"]
